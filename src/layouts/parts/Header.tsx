@@ -23,10 +23,11 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-primary">POT</span>
-              <span className="text-xs text-muted-foreground tracking-wide">Prótesis Dental</span>
-            </div>
+            <img
+              src="/media/logo-pot.png"
+              alt="POT Prótesis Dental"
+              className="h-12 w-auto object-contain"
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">

@@ -14,10 +14,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <div className="flex flex-col mb-4">
-              <span className="text-2xl font-bold text-primary">POT</span>
-              <span className="text-sm text-muted-foreground">Prótesis Dental</span>
-            </div>
+            <img
+              src="/media/logo-pot.png"
+              alt="POT Prótesis Dental"
+              className="h-12 w-auto object-contain mb-4"
+            />
             <p className="text-sm text-muted-foreground mb-4">
               Laboratorio especializado en prótesis dental de alta calidad para dentistas y clínicas en Guadalajara.
             </p>
