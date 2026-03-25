@@ -32,22 +32,46 @@ export default function ContactoPage() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        nombre: '',
-        consultorio: '',
-        telefono: '',
-        email: '',
-        servicio: '',
-        mensaje: ''
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 3000);
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({ error: 'Error al enviar el mensaje' }));
+        throw new Error(payload.error || 'Error al enviar el mensaje');
+      }
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          nombre: '',
+          consultorio: '',
+          telefono: '',
+          email: '',
+          servicio: '',
+          mensaje: ''
+        });
+      }, 3000);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No fue posible enviar el mensaje';
+      setSubmitError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -286,10 +310,13 @@ export default function ContactoPage() {
                           />
                         </div>
 
-                        <Button type="submit" size="lg" className="w-full">
+                        <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                           <Send className="w-5 h-5 mr-2" />
-                          Enviar Mensaje
+                          {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
                         </Button>
+                        {submitError && (
+                          <p className="text-sm text-red-600">{submitError}</p>
+                        )}
                       </form>
                     )}
                   </CardContent>
