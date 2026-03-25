@@ -2,10 +2,8 @@
  * Google Maps API Configuration Endpoint
  *
  * Returns the Google Maps API key for client-side map rendering.
- * The API key is stored securely in the secrets manager.
+ * The API key is read from environment variables.
  */
-
-import { getSecret } from '#airo/secrets';
 
 function getAllowedOrigins(): string[] {
   const configuredOrigins = process.env.ALLOWED_MAPS_ORIGINS;
@@ -20,7 +18,7 @@ function getAllowedOrigins(): string[] {
 }
 
 export function GET(request: Request) {
-  const apiKey = getSecret('GOOGLE_MAPS_API_KEY');
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
     return Response.json(

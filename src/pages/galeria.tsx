@@ -29,63 +29,63 @@ export default function GaleriaPage() {
   const galleryItems = [
     {
       id: 1,
-      src: '/airo-assets/images/pages/galeria/showcase-1',
+      src: '/media/pages-home-gallery-3-94a5fe60.jpg',
       title: 'Corona de Porcelana',
       category: 'Coronas',
       description: 'Corona individual en porcelana con ajuste perfecto y estética natural'
     },
     {
       id: 2,
-      src: '/airo-assets/images/pages/galeria/showcase-2',
+      src: '/media/pages-home-gallery-3-e1a8d6f3.jpg',
       title: 'Puente Fijo',
       category: 'Puentes',
       description: 'Puente de tres unidades en metal-porcelana con excelente oclusión'
     },
     {
       id: 3,
-      src: '/airo-assets/images/pages/galeria/showcase-3',
+      src: '/media/pages-home-gallery-3-94a5fe60.jpg',
       title: 'Corona sobre Implante',
       category: 'Implantes',
       description: 'Corona de zirconia sobre implante con pilar personalizado'
     },
     {
       id: 4,
-      src: '/airo-assets/images/pages/galeria/showcase-4',
+      src: '/media/pages-home-gallery-3-e1a8d6f3.jpg',
       title: 'Prótesis Removible',
       category: 'Removibles',
       description: 'Prótesis parcial con diseño anatómico y retención óptima'
     },
     {
       id: 5,
-      src: '/airo-assets/images/pages/galeria/showcase-5',
+      src: '/media/pages-home-gallery-3-94a5fe60.jpg',
       title: 'Restauración Estética',
       category: 'Coronas',
       description: 'Restauración anterior con caracterización natural'
     },
     {
       id: 6,
-      src: '/airo-assets/images/pages/galeria/showcase-6',
+      src: '/media/pages-home-gallery-3-e1a8d6f3.jpg',
       title: 'Proceso de Fabricación',
       category: 'Laboratorio',
       description: 'Nuestro equipo técnico trabajando con precisión'
     },
     {
       id: 7,
-      src: '/airo-assets/images/pages/galeria/showcase-7',
+      src: '/media/pages-home-gallery-3-94a5fe60.jpg',
       title: 'Puente Metal-Porcelana',
       category: 'Puentes',
       description: 'Puente posterior con estructura metálica y recubrimiento estético'
     },
     {
       id: 8,
-      src: '/airo-assets/images/pages/galeria/showcase-8',
+      src: '/media/pages-home-gallery-3-e1a8d6f3.jpg',
       title: 'Implante con Pilar',
       category: 'Implantes',
       description: 'Sistema completo de implante con pilar y corona'
     },
     {
       id: 9,
-      src: '/airo-assets/images/pages/galeria/showcase-9',
+      src: '/media/pages-home-gallery-3-94a5fe60.jpg',
       title: 'Prótesis Total',
       category: 'Removibles',
       description: 'Dentadura completa con diseño personalizado'

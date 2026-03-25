@@ -100,7 +100,7 @@ export default function ServiciosPage() {
               >
                 <div className="aspect-[4/3] rounded-lg overflow-hidden">
                   <img 
-                    src="/airo-assets/images/pages/home/service-crowns"
+                    src="/media/pages-home-gallery-3-e1a8d6f3.jpg"
                     alt="Coronas y puentes dentales"
                     className="w-full h-full object-cover"
                   />
@@ -264,7 +264,7 @@ export default function ServiciosPage() {
               >
                 <div className="aspect-[4/3] rounded-lg overflow-hidden">
                   <img 
-                    src="/airo-assets/images/pages/home/service-removable"
+                    src="/media/pages-home-gallery-3-94a5fe60.jpg"
                     alt="Prótesis removibles"
                     className="w-full h-full object-cover"
                   />
@@ -286,7 +286,7 @@ export default function ServiciosPage() {
               >
                 <div className="aspect-[4/3] rounded-lg overflow-hidden">
                   <img 
-                    src="/airo-assets/images/pages/home/service-implants"
+                    src="/media/pages-home-gallery-3-e1a8d6f3.jpg"
                     alt="Prótesis sobre implantes"
                     className="w-full h-full object-cover"
                   />

@@ -2,10 +2,6 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import * as esbuild from "esbuild";
-import sourceMapperPlugin from "./source-mapper/src/index";
-import { devToolsPlugin } from "./dev-tools/src/vite-plugin";
-import { fullStoryPlugin } from "./fullstory-plugin";
-import { errorInterceptorPlugin } from "./dev-tools/src/vite-error-interceptor";
 import apiRoutes from "vite-plugin-api-routes";
 
 function extractHostname(value: string): string {
@@ -77,9 +73,7 @@ if (corsOrigins.length === 0) {
 export default defineConfig(({ mode }) => ({
 	plugins: [
 		react({
-			babel: {
-				plugins: [sourceMapperPlugin],
-			},
+			babel: {},
 		}),
 		apiRoutes({
 			mode: "isolated",
@@ -87,9 +81,6 @@ export default defineConfig(({ mode }) => ({
 			dirs: [{ dir: "./src/server/api", route: "" }],
 			forceRestart: mode === "development",
 		}),
-		...(mode === "development"
-			? [devToolsPlugin() as Plugin, fullStoryPlugin(), errorInterceptorPlugin()]
-			: []),
 		serverBundlePlugin(),
 	],
 

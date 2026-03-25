@@ -44,7 +44,7 @@ export default function HomePage() {
         <section className="relative h-[600px] lg:h-[700px] flex items-center overflow-hidden">
           <div className="absolute inset-0">
             <img 
-              src="/airo-assets/images/pages/home/hero" 
+              src="/media/pages-home-gallery-3-94a5fe60.jpg" 
               alt="Prótesis dental profesional"
               className="w-full h-full object-cover"
             />
@@ -187,7 +187,7 @@ export default function HomePage() {
                 <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
                   <div className="aspect-[4/3] overflow-hidden">
                     <img 
-                      src="/airo-assets/images/pages/home/service-crowns"
+                      src="/media/pages-home-gallery-3-e1a8d6f3.jpg"
                       alt="Coronas y puentes dentales"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                     />
@@ -224,7 +224,7 @@ export default function HomePage() {
                 <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
                   <div className="aspect-[4/3] overflow-hidden">
                     <img 
-                      src="/airo-assets/images/pages/home/service-removable"
+                      src="/media/pages-home-gallery-3-94a5fe60.jpg"
                       alt="Prótesis removibles"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                     />
@@ -261,7 +261,7 @@ export default function HomePage() {
                 <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
                   <div className="aspect-[4/3] overflow-hidden">
                     <img 
-                      src="/airo-assets/images/pages/home/service-implants"
+                      src="/media/pages-home-gallery-3-e1a8d6f3.jpg"
                       alt="Prótesis sobre implantes"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                     />
@@ -381,21 +381,21 @@ export default function HomePage() {
             >
               <motion.div variants={fadeInUp} className="aspect-square overflow-hidden rounded-lg">
                 <img 
-                  src="/airo-assets/images/pages/home/gallery-1"
+                  src="/media/pages-home-gallery-3-94a5fe60.jpg"
                   alt="Trabajo realizado 1"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                 />
               </motion.div>
               <motion.div variants={fadeInUp} className="aspect-square overflow-hidden rounded-lg">
                 <img 
-                  src="/airo-assets/images/pages/home/gallery-2"
+                  src="/media/pages-home-gallery-3-e1a8d6f3.jpg"
                   alt="Trabajo realizado 2"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                 />
               </motion.div>
               <motion.div variants={fadeInUp} className="aspect-square overflow-hidden rounded-lg">
                 <img 
-                  src="/airo-assets/images/pages/home/gallery-3"
+                  src="/media/pages-home-gallery-3-94a5fe60.jpg"
                   alt="Trabajo realizado 3"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                 />
