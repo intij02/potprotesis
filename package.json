@@ -18,8 +18,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
     "clean": "rm -rf dist node_modules/.vite",
     "reset": "npm run clean && npm install",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.5",
@@ -100,7 +100,6 @@
     "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.10.0",
-    "drizzle-kit": "^0.31.10",
     "esbuild": "^0.25.12",
     "eslint": "^9.16.0",
     "eslint-plugin-react": "^7.37.2",
