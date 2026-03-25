@@ -18,6 +18,8 @@ import {
  * Detailed services information page
  */
 export default function ServiciosPage() {
+  const whatsappUrl = 'https://wa.me/523311300050';
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } }
@@ -170,9 +172,11 @@ export default function ServiciosPage() {
                 </motion.div>
 
                 <motion.div variants={fadeInUp}>
-                  <Button size="lg">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Solicitar Información
+                  <Button size="lg" asChild>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Solicitar Información
+                    </a>
                   </Button>
                 </motion.div>
               </motion.div>

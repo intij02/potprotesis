@@ -19,6 +19,8 @@ import {
  * Professional dental laboratory landing page
  */
 export default function HomePage() {
+  const whatsappUrl = 'https://wa.me/523311300050';
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } }
@@ -82,13 +84,17 @@ export default function HomePage() {
                   variants={fadeInUp}
                   className="flex flex-col sm:flex-row gap-4"
                 >
-                  <Button size="lg" className="text-base">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Solicitar Información
+                  <Button size="lg" className="text-base" asChild>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Solicitar Información
+                    </a>
                   </Button>
-                  <Button size="lg" variant="outline" className="text-base bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20">
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    WhatsApp
+                  <Button size="lg" variant="outline" className="text-base bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20" asChild>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-5 h-5 mr-2" />
+                      WhatsApp
+                    </a>
                   </Button>
                 </motion.div>
 
@@ -211,9 +217,11 @@ export default function HomePage() {
                         <span>Ajuste perfecto y estética superior</span>
                       </li>
                     </ul>
-                    <Button variant="outline" className="w-full">
-                      Solicitar Información
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        Solicitar Información
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -248,9 +256,11 @@ export default function HomePage() {
                         <span>Diseño personalizado</span>
                       </li>
                     </ul>
-                    <Button variant="outline" className="w-full">
-                      Solicitar Información
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        Solicitar Información
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -285,9 +295,11 @@ export default function HomePage() {
                         <span>Precisión milimétrica</span>
                       </li>
                     </ul>
-                    <Button variant="outline" className="w-full">
-                      Solicitar Información
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        Solicitar Información
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -515,7 +527,7 @@ export default function HomePage() {
                   <CardContent className="p-6 text-center">
                     <MessageCircle className="w-8 h-8 mx-auto mb-3" />
                     <h3 className="font-semibold mb-2">WhatsApp</h3>
-                    <a href="https://wa.me/523311300050" className="hover:underline">
+                    <a href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer" className="hover:underline">
                       Enviar Mensaje
                     </a>
                   </CardContent>
