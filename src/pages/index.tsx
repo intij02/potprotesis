@@ -545,9 +545,11 @@ export default function HomePage() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Button size="lg" variant="secondary" className="text-base">
-                  Solicitar Cotización
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                <Button size="lg" variant="secondary" className="text-base" asChild>
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                    Solicitar Cotización
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </a>
                 </Button>
               </motion.div>
             </motion.div>

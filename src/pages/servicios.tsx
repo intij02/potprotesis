@@ -252,9 +252,11 @@ export default function ServiciosPage() {
                 </motion.div>
 
                 <motion.div variants={fadeInUp}>
-                  <Button size="lg">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Solicitar Cotización
+                  <Button size="lg" asChild>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Solicitar Cotización
+                    </a>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -360,9 +362,11 @@ export default function ServiciosPage() {
                 </motion.div>
 
                 <motion.div variants={fadeInUp}>
-                  <Button size="lg">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Consultar Compatibilidad
+                  <Button size="lg" asChild>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Consultar Compatibilidad
+                    </a>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -476,9 +480,11 @@ export default function ServiciosPage() {
                   <Phone className="w-5 h-5 mr-2" />
                   (33) 1234-5678
                 </Button>
-                <Button size="lg" variant="outline" className="bg-white/10 border-white/20 hover:bg-white/20">
-                  Solicitar Cotización
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                <Button size="lg" variant="outline" className="bg-white/10 border-white/20 hover:bg-white/20" asChild>
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                    Solicitar Cotización
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </a>
                 </Button>
               </motion.div>
             </motion.div>

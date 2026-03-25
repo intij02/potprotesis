@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
  * Professional dental laboratory navigation
  */
 export default function Header() {
+  const whatsappUrl = 'https://wa.me/523311300050';
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -45,10 +46,10 @@ export default function Header() {
               </Link>
             ))}
             <Button size="sm" className="ml-4" asChild>
-              <Link to="/contacto">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                 <Phone className="w-4 h-4 mr-2" />
                 Contactar
-              </Link>
+              </a>
             </Button>
           </nav>
 
@@ -79,10 +80,15 @@ export default function Header() {
                 </Link>
               ))}
               <Button size="sm" className="mt-2 w-full" asChild>
-                <Link to="/contacto" onClick={() => setIsMobileMenuOpen(false)}>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   <Phone className="w-4 h-4 mr-2" />
                   Contactar
-                </Link>
+                </a>
               </Button>
             </nav>
           </div>
