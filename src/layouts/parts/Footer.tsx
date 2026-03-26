@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Facebook } from 'lucide-react';
+import { Phone, MapPin, Facebook } from 'lucide-react';
 
 /**
  * Footer component for POT Prótesis Dental
@@ -59,10 +59,6 @@ export default function Footer() {
               <a href="tel:+523334735108" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Phone className="w-4 h-4" />
                 (33) 3473-5108
-              </a>
-              <a href="mailto:contacto@potprotesisdental.com" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <Mail className="w-4 h-4" />
-                contacto@potprotesisdental.com
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />

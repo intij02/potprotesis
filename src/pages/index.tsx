@@ -43,7 +43,7 @@ export default function HomePage() {
 
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative h-[600px] lg:h-[700px] flex items-center overflow-hidden">
+        <section className="relative lg:h-[700px] flex items-center overflow-hidden">
           <div className="absolute inset-0">
             <img 
               src="/media/pages-home-gallery-3-94a5fe60.jpg" 
