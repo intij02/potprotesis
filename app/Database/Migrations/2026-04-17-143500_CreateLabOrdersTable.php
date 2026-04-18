@@ -74,9 +74,8 @@ class CreateLabOrdersTable extends Migration
                 'null'       => true,
             ],
             'created_at' => [
-                'type'    => 'TIMESTAMP',
-                'null'    => false,
-                'default' => 'CURRENT_TIMESTAMP',
+                'type' => 'DATETIME',
+                'null' => true,
             ],
         ]);
 

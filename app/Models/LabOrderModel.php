@@ -11,6 +11,10 @@ class LabOrderModel extends Model
     protected $returnType       = 'array';
     protected $useAutoIncrement = true;
     protected $protectFields    = true;
+    protected $useTimestamps    = true;
+    protected $dateFormat       = 'datetime';
+    protected $createdField     = 'created_at';
+    protected $updatedField     = '';
 
     protected $allowedFields = [
         'order_number',
