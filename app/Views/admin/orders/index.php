@@ -3,14 +3,16 @@
 <?= $this->section('content') ?>
 <section class="section">
     <div class="container">
-        <div class="section-head">
-            <div>
+        <div class="row align-items-end g-3 mb-4">
+            <div class="col-12 col-lg">
                 <span class="eyebrow">Panel Admin</span>
                 <h1>Administración de órdenes</h1>
                 <p>Panel administrativo con lectura protegida y edición limitada por permisos.</p>
             </div>
             <?php if (admin_can_manage_users()): ?>
-                <a href="<?= base_url('admin/usuarios') ?>" class="btn btn-outline">Ver usuarios</a>
+                <div class="col-12 col-lg-auto">
+                    <a href="<?= base_url('admin/usuarios') ?>" class="btn btn-outline">Ver usuarios</a>
+                </div>
             <?php endif; ?>
         </div>
 
@@ -23,14 +25,19 @@
         <?php endif; ?>
 
         <div class="admin-toolbar">
-            <form method="get" class="admin-search">
-                <input type="text" name="q" value="<?= esc($searchQuery ?? '') ?>" placeholder="Buscar por dentista, paciente, orden o teléfono">
-                <button type="submit" class="btn btn-primary btn-small">Buscar</button>
+            <form method="get" class="admin-search row g-2 align-items-center">
+                <div class="col">
+                    <input type="text" name="q" class="form-control" value="<?= esc($searchQuery ?? '') ?>" placeholder="Buscar por dentista, paciente, orden o teléfono">
+                </div>
+                <div class="col-12 col-sm-auto">
+                    <button type="submit" class="btn btn-primary btn-small w-100">Buscar</button>
+                </div>
             </form>
         </div>
 
         <div class="table-card">
-            <table class="admin-table">
+            <div class="table-responsive">
+            <table class="admin-table table align-middle mb-0">
                 <thead>
                     <tr>
                         <th>Orden</th>
@@ -69,6 +76,7 @@
                     <?php endif; ?>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </section>

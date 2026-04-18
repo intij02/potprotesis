@@ -3,13 +3,15 @@
 <?= $this->section('content') ?>
 <section class="section">
     <div class="container">
-        <div class="section-head">
-            <div>
+        <div class="row align-items-end g-3 mb-4">
+            <div class="col-12 col-lg">
                 <span class="eyebrow">Panel Admin</span>
                 <h1>Usuarios</h1>
                 <p>Solo los administradores pueden dar de alta, editar y eliminar usuarios.</p>
             </div>
-            <a href="<?= base_url('admin/usuarios/nuevo') ?>" class="btn btn-primary">Nuevo usuario</a>
+            <div class="col-12 col-lg-auto">
+                <a href="<?= base_url('admin/usuarios/nuevo') ?>" class="btn btn-primary">Nuevo usuario</a>
+            </div>
         </div>
 
         <?php if (session()->getFlashdata('success')): ?>
@@ -21,14 +23,19 @@
         <?php endif; ?>
 
         <div class="admin-toolbar">
-            <form method="get" class="admin-search">
-                <input type="text" name="q" value="<?= esc($searchQuery ?? '') ?>" placeholder="Buscar por usuario, nombre o rol">
-                <button type="submit" class="btn btn-primary btn-small">Buscar</button>
+            <form method="get" class="admin-search row g-2 align-items-center">
+                <div class="col">
+                    <input type="text" name="q" class="form-control" value="<?= esc($searchQuery ?? '') ?>" placeholder="Buscar por usuario, nombre o rol">
+                </div>
+                <div class="col-12 col-sm-auto">
+                    <button type="submit" class="btn btn-primary btn-small w-100">Buscar</button>
+                </div>
             </form>
         </div>
 
         <div class="table-card">
-            <table class="admin-table">
+            <div class="table-responsive">
+            <table class="admin-table table align-middle mb-0">
                 <thead>
                     <tr>
                         <th>Usuario</th>
@@ -66,6 +73,7 @@
                     <?php endif; ?>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </section>

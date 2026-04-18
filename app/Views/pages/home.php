@@ -23,19 +23,27 @@
 </section>
 
 <section class="section muted">
-    <div class="container three-cols">
-        <article class="mini-card">
+    <div class="container">
+        <div class="row g-4">
+        <article class="col-12 col-lg-4">
+            <div class="mini-card h-100">
             <h3>Precisión Técnica</h3>
             <p>Tecnología de última generación y procesos medidos para resultados consistentes.</p>
+            </div>
         </article>
-        <article class="mini-card">
+        <article class="col-12 col-lg-4">
+            <div class="mini-card h-100">
             <h3>Materiales Certificados</h3>
             <p>Trabajos elaborados con materiales premium y protocolos de calidad controlados.</p>
+            </div>
         </article>
-        <article class="mini-card">
+        <article class="col-12 col-lg-4">
+            <div class="mini-card h-100">
             <h3>Entrega Rápida</h3>
             <p>Tiempos optimizados para responder al ritmo de trabajo del consultorio.</p>
+            </div>
         </article>
+        </div>
     </div>
 </section>
 
@@ -44,28 +52,36 @@
         <h2>Nuestros Servicios</h2>
         <p>Soluciones profesionales en prótesis dental con los más altos estándares de calidad.</p>
     </div>
-    <div class="container cards-grid">
-        <article class="service-card">
+    <div class="container">
+        <div class="row g-4">
+        <article class="col-12 col-md-6 col-xl-4">
+            <div class="service-card h-100">
             <img src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Coronas y puentes">
             <div class="card-body">
                 <h3>Coronas y Puentes</h3>
                 <p>Restauraciones fijas en porcelana, zirconia y metal-porcelana con estética natural.</p>
             </div>
+            </div>
         </article>
-        <article class="service-card">
+        <article class="col-12 col-md-6 col-xl-4">
+            <div class="service-card h-100">
             <img src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Prótesis removibles">
             <div class="card-body">
                 <h3>Prótesis Removibles</h3>
                 <p>Dentaduras parciales y completas con diseño anatómico y enfoque en comodidad.</p>
             </div>
+            </div>
         </article>
-        <article class="service-card">
+        <article class="col-12 col-md-6 col-xl-4">
+            <div class="service-card h-100">
             <img src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Implantes">
             <div class="card-body">
                 <h3>Prótesis sobre Implantes</h3>
                 <p>Soluciones avanzadas con máxima estabilidad, ajuste y precisión milimétrica.</p>
             </div>
+            </div>
         </article>
+        </div>
     </div>
 </section>
 
@@ -74,10 +90,12 @@
         <h2>Proceso de Trabajo</h2>
         <p>Un flujo de trabajo eficiente para garantizar resultados excepcionales.</p>
     </div>
-    <div class="container process-grid">
-        <article><span>1</span><h3>Pedido</h3><p>Recibimos su orden con especificaciones detalladas e impresiones.</p></article>
-        <article><span>2</span><h3>Elaboración</h3><p>Nuestro equipo técnico fabrica la prótesis con precisión y cuidado.</p></article>
-        <article><span>3</span><h3>Entrega</h3><p>Entregamos el trabajo terminado en tiempo y forma a su consultorio.</p></article>
+    <div class="container">
+        <div class="row g-4">
+        <article class="col-12 col-lg-4"><div class="mini-card h-100"><span>1</span><h3>Pedido</h3><p>Recibimos su orden con especificaciones detalladas e impresiones.</p></div></article>
+        <article class="col-12 col-lg-4"><div class="mini-card h-100"><span>2</span><h3>Elaboración</h3><p>Nuestro equipo técnico fabrica la prótesis con precisión y cuidado.</p></div></article>
+        <article class="col-12 col-lg-4"><div class="mini-card h-100"><span>3</span><h3>Entrega</h3><p>Entregamos el trabajo terminado en tiempo y forma a su consultorio.</p></div></article>
+        </div>
     </div>
 </section>
 
@@ -86,10 +104,12 @@
         <h2>Galería de Trabajos</h2>
         <p>Ejemplos de nuestra calidad y precisión en cada caso.</p>
     </div>
-    <div class="container gallery-grid">
-        <img src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Trabajo realizado 1">
-        <img src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Trabajo realizado 2">
-        <img src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Trabajo realizado 3">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4"><img class="w-100" src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Trabajo realizado 1"></div>
+            <div class="col-12 col-md-6 col-lg-4"><img class="w-100" src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Trabajo realizado 2"></div>
+            <div class="col-12 col-md-6 col-lg-4"><img class="w-100" src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Trabajo realizado 3"></div>
+        </div>
     </div>
 </section>
 

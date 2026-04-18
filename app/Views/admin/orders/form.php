@@ -3,13 +3,15 @@
 <?= $this->section('content') ?>
 <section class="section">
     <div class="container">
-        <div class="section-head">
-            <div>
+        <div class="row align-items-end g-3 mb-4">
+            <div class="col-12 col-lg">
                 <span class="eyebrow">Panel Admin</span>
                 <h1>Editar orden</h1>
                 <p>Solo los administradores pueden actualizar la información de la orden.</p>
             </div>
-            <a href="<?= base_url('admin/ordenes') ?>" class="btn btn-outline">Volver</a>
+            <div class="col-12 col-lg-auto">
+                <a href="<?= base_url('admin/ordenes') ?>" class="btn btn-outline">Volver</a>
+            </div>
         </div>
 
         <?php if ($validation->getErrors() !== []): ?>
@@ -25,37 +27,37 @@
                     <p>Orden #<?= esc($order['order_number'] !== '' ? $order['order_number'] : $order['id']) ?> registrada el <?= esc($order['created_at']) ?></p>
                 </div>
 
-                <div class="order-grid order-grid-general">
+                    <div class="order-grid order-grid-general">
                     <div class="field">
-                        <label for="order_number">Número de orden</label>
-                        <input id="order_number" name="order_number" type="text" value="<?= esc($order['order_number']) ?>">
+                        <label for="order_number" class="form-label">Número de orden</label>
+                        <input id="order_number" name="order_number" class="form-control" type="text" value="<?= esc($order['order_number']) ?>">
                     </div>
                     <div class="field">
-                        <label for="sent_date">Fecha de envío</label>
-                        <input id="sent_date" name="sent_date" type="date" value="<?= esc($order['sent_date']) ?>">
+                        <label for="sent_date" class="form-label">Fecha de envío</label>
+                        <input id="sent_date" name="sent_date" class="form-control" type="date" value="<?= esc($order['sent_date']) ?>">
                     </div>
                     <div class="field">
-                        <label for="required_date">Fecha requerida</label>
-                        <input id="required_date" name="required_date" type="date" value="<?= esc($order['required_date']) ?>">
+                        <label for="required_date" class="form-label">Fecha requerida</label>
+                        <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($order['required_date']) ?>">
                         <?php if ($validation->hasError('required_date')): ?>
                             <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
                         <?php endif; ?>
                     </div>
                     <div class="field">
-                        <label for="dentist_name">Dentista</label>
-                        <input id="dentist_name" name="dentist_name" type="text" value="<?= esc($order['dentist_name']) ?>">
+                        <label for="dentist_name" class="form-label">Dentista</label>
+                        <input id="dentist_name" name="dentist_name" class="form-control" type="text" value="<?= esc($order['dentist_name']) ?>">
                     </div>
                     <div class="field">
-                        <label for="patient_name">Paciente</label>
-                        <input id="patient_name" name="patient_name" type="text" value="<?= esc($order['patient_name']) ?>">
+                        <label for="patient_name" class="form-label">Paciente</label>
+                        <input id="patient_name" name="patient_name" class="form-control" type="text" value="<?= esc($order['patient_name']) ?>">
                     </div>
                     <div class="field">
-                        <label for="contact_phone">Teléfono de contacto</label>
-                        <input id="contact_phone" name="contact_phone" type="text" value="<?= esc($order['contact_phone']) ?>">
+                        <label for="contact_phone" class="form-label">Teléfono de contacto</label>
+                        <input id="contact_phone" name="contact_phone" class="form-control" type="text" value="<?= esc($order['contact_phone']) ?>">
                     </div>
                     <div class="field field-wide">
-                        <label for="shade">Color</label>
-                        <input id="shade" name="shade" type="text" value="<?= esc($order['shade']) ?>">
+                        <label for="shade" class="form-label">Color</label>
+                        <input id="shade" name="shade" class="form-control" type="text" value="<?= esc($order['shade']) ?>">
                     </div>
                 </div>
             </div>
@@ -160,12 +162,12 @@
             <div class="order-split order-split-bottom">
                 <div class="order-panel">
                     <div class="field">
-                        <label for="observations">Observaciones</label>
-                        <textarea id="observations" name="observations" rows="7"><?= esc($order['observations']) ?></textarea>
+                        <label for="observations" class="form-label">Observaciones</label>
+                        <textarea id="observations" name="observations" class="form-control" rows="7"><?= esc($order['observations']) ?></textarea>
                     </div>
                     <div class="field">
-                        <label for="signature_name">Nombre y firma</label>
-                        <input id="signature_name" name="signature_name" type="text" value="<?= esc($order['signature_name']) ?>">
+                        <label for="signature_name" class="form-label">Nombre y firma</label>
+                        <input id="signature_name" name="signature_name" class="form-control" type="text" value="<?= esc($order['signature_name']) ?>">
                     </div>
                 </div>
 

@@ -28,58 +28,58 @@
                     <p>Información base de la orden y del caso clínico.</p>
                 </div>
 
-                <div class="order-grid order-grid-general">
-                    <div class="field">
-                        <label for="order_number">Número de orden</label>
-                        <input id="order_number" name="order_number" type="text" value="<?= esc($formData['order_number']) ?>" placeholder="Opcional">
+                    <div class="row g-3 order-grid order-grid-general">
+                        <div class="field">
+                        <label for="order_number" class="form-label">Número de orden</label>
+                        <input id="order_number" name="order_number" class="form-control" type="text" value="<?= esc($formData['order_number']) ?>" placeholder="Opcional">
                         <?php if ($validation->hasError('order_number')): ?>
                             <p class="field-error"><?= esc($validation->getError('order_number')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field">
-                        <label for="sent_date">Fecha de envío</label>
-                        <input id="sent_date" name="sent_date" type="date" value="<?= esc($formData['sent_date']) ?>">
+                        <label for="sent_date" class="form-label">Fecha de envío</label>
+                        <input id="sent_date" name="sent_date" class="form-control" type="date" value="<?= esc($formData['sent_date']) ?>">
                         <?php if ($validation->hasError('sent_date')): ?>
                             <p class="field-error"><?= esc($validation->getError('sent_date')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field">
-                        <label for="required_date">Fecha requerida</label>
-                        <input id="required_date" name="required_date" type="date" value="<?= esc($formData['required_date']) ?>">
+                        <label for="required_date" class="form-label">Fecha requerida</label>
+                        <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($formData['required_date']) ?>">
                         <?php if ($validation->hasError('required_date')): ?>
                             <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field">
-                        <label for="dentist_name">Dentista</label>
-                        <input id="dentist_name" name="dentist_name" type="text" value="<?= esc($formData['dentist_name']) ?>">
+                        <label for="dentist_name" class="form-label">Dentista</label>
+                        <input id="dentist_name" name="dentist_name" class="form-control" type="text" value="<?= esc($formData['dentist_name']) ?>">
                         <?php if ($validation->hasError('dentist_name')): ?>
                             <p class="field-error"><?= esc($validation->getError('dentist_name')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field">
-                        <label for="patient_name">Paciente</label>
-                        <input id="patient_name" name="patient_name" type="text" value="<?= esc($formData['patient_name']) ?>">
+                        <label for="patient_name" class="form-label">Paciente</label>
+                        <input id="patient_name" name="patient_name" class="form-control" type="text" value="<?= esc($formData['patient_name']) ?>">
                         <?php if ($validation->hasError('patient_name')): ?>
                             <p class="field-error"><?= esc($validation->getError('patient_name')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field">
-                        <label for="contact_phone">Teléfono de contacto</label>
-                        <input id="contact_phone" name="contact_phone" type="text" value="<?= esc($formData['contact_phone']) ?>">
+                        <label for="contact_phone" class="form-label">Teléfono de contacto</label>
+                        <input id="contact_phone" name="contact_phone" class="form-control" type="text" value="<?= esc($formData['contact_phone']) ?>">
                         <?php if ($validation->hasError('contact_phone')): ?>
                             <p class="field-error"><?= esc($validation->getError('contact_phone')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field field-wide">
-                        <label for="shade">Color</label>
-                        <input id="shade" name="shade" type="text" value="<?= esc($formData['shade']) ?>" placeholder="Ej. A2, B1, Bleach">
+                        <label for="shade" class="form-label">Color</label>
+                        <input id="shade" name="shade" class="form-control" type="text" value="<?= esc($formData['shade']) ?>" placeholder="Ej. A2, B1, Bleach">
                         <?php if ($validation->hasError('shade')): ?>
                             <p class="field-error"><?= esc($validation->getError('shade')) ?></p>
                         <?php endif; ?>
@@ -198,16 +198,16 @@
                     </div>
 
                     <div class="field">
-                        <label for="observations">Observaciones de laboratorio</label>
-                        <textarea id="observations" name="observations" rows="7" placeholder="Instrucciones, detalles estéticos, referencias del caso, etc."><?= esc($formData['observations']) ?></textarea>
+                        <label for="observations" class="form-label">Observaciones de laboratorio</label>
+                        <textarea id="observations" name="observations" class="form-control" rows="7" placeholder="Instrucciones, detalles estéticos, referencias del caso, etc."><?= esc($formData['observations']) ?></textarea>
                         <?php if ($validation->hasError('observations')): ?>
                             <p class="field-error"><?= esc($validation->getError('observations')) ?></p>
                         <?php endif; ?>
                     </div>
 
                     <div class="field">
-                        <label for="signature_name">Nombre y firma</label>
-                        <input id="signature_name" name="signature_name" type="text" value="<?= esc($formData['signature_name']) ?>" placeholder="Nombre de quien autoriza la orden">
+                        <label for="signature_name" class="form-label">Nombre y firma</label>
+                        <input id="signature_name" name="signature_name" class="form-control" type="text" value="<?= esc($formData['signature_name']) ?>" placeholder="Nombre de quien autoriza la orden">
                         <?php if ($validation->hasError('signature_name')): ?>
                             <p class="field-error"><?= esc($validation->getError('signature_name')) ?></p>
                         <?php endif; ?>
