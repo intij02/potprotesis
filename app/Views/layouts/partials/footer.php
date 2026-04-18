@@ -18,7 +18,6 @@
             <ul>
                 <li><a href="tel:<?= esc(site_setting('contact_phone_href', '+523334735108')) ?>"><?= esc(site_setting('contact_phone', '(33) 3473-5108')) ?></a></li>
                 <li><a href="https://wa.me/<?= esc(site_setting('contact_whatsapp_href', '523311300050')) ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-                <li><a href="mailto:<?= esc(site_setting('contact_email', 'contacto@potprotesisdental.com')) ?>"><?= esc(site_setting('contact_email', 'contacto@potprotesisdental.com')) ?></a></li>
                 <li><?= esc(site_setting('contact_address', 'C. Reforma 1752, Ladrón de Guevara, Guadalajara, Jal.')) ?></li>
             </ul>
         </div>

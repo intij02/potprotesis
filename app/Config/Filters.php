@@ -80,7 +80,7 @@ class Filters extends BaseFilters
         'before' => [
             // 'honeypot',
             // 'csrf',
-            // 'invalidchars',
+            'invalidchars',
         ],
         'after' => [
             // 'honeypot',
@@ -101,7 +101,9 @@ class Filters extends BaseFilters
      *
      * @var array<string, list<string>>
      */
-    public array $methods = [];
+    public array $methods = [
+        'POST' => ['csrf'],
+    ];
 
     /**
      * List of filter aliases that should run on any

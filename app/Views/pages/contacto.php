@@ -48,6 +48,11 @@
             <?php endif; ?>
             <form method="post" class="stack-form">
                 <?= csrf_field() ?>
+                <input type="hidden" name="form_started_at" value="<?= esc((string) $formStartedAt) ?>">
+                <div class="contact-honeypot" aria-hidden="true">
+                    <label for="website">Sitio web</label>
+                    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" value="">
+                </div>
                 <div>
                     <label for="name" class="form-label">Nombre</label>
                     <input id="name" name="name" class="form-control" type="text" value="<?= esc($formData['name']) ?>">
@@ -65,7 +70,7 @@
                 </div>
                 <div>
                     <label for="message" class="form-label">Mensaje</label>
-                    <textarea id="message" name="message" class="form-control" rows="6"><?= esc($formData['message']) ?></textarea>
+                    <textarea id="message" name="message" class="form-control" rows="6" maxlength="3000"><?= esc($formData['message']) ?></textarea>
                     <?php if ($validation->hasError('message')): ?><p class="field-error"><?= esc($validation->getError('message')) ?></p><?php endif; ?>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar mensaje</button>

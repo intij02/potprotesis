@@ -434,6 +434,14 @@ img {
     font-family: "DM Sans", sans-serif;
 }
 
+.contact-honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+
 .map-frame-wrap {
     overflow: hidden;
     border-radius: 28px;
