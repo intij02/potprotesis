@@ -71,6 +71,14 @@ img {
     backdrop-filter: blur(12px);
 }
 
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 80px;
+}
+
 .brand img,
 .footer-logo {
     height: 48px;
@@ -272,9 +280,26 @@ img {
     text-align: center;
 }
 
+.three-cols,
+.cards-grid,
+.process-grid,
+.gallery-grid,
 .footer-grid {
     display: grid;
     gap: 1.5rem;
+}
+
+.three-cols,
+.contact-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .gallery-grid-large figure {
@@ -290,8 +315,20 @@ img {
     font-weight: 600;
 }
 
+.gallery-grid img {
+    margin: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.process-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .mini-card,
 .service-card,
+.process-grid article,
 .placeholder-panel,
 .admin-card {
     background: white;
@@ -301,6 +338,7 @@ img {
 }
 
 .mini-card,
+.process-grid article,
 .placeholder-panel {
     padding: 1.5rem;
 }
@@ -317,6 +355,30 @@ img {
 
 .card-body {
     padding: 1.5rem;
+}
+
+.process-grid article span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    align-items: center;
+}
+
+.split.reverse .media-block {
+    order: 2;
 }
 
 .media-block img,
@@ -811,7 +873,15 @@ img {
 }
 
 @media (max-width: 980px) {
+    .cards-grid,
+    .gallery-grid,
+    .three-cols,
+    .process-grid,
     .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .split {
         grid-template-columns: 1fr;
     }
 
