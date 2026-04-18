@@ -35,6 +35,10 @@
                             <a class="nav-link" href="<?= base_url('admin/ordenes') ?>">Órdenes</a>
                             <?php if (admin_can_manage_users()): ?>
                                 <a class="nav-link" href="<?= base_url('admin/usuarios') ?>">Usuarios</a>
+                                <a class="nav-link" href="<?= base_url('admin/servicios') ?>">Servicios</a>
+                                <a class="nav-link" href="<?= base_url('admin/galeria') ?>">Galería</a>
+                                <a class="nav-link" href="<?= base_url('admin/configuracion') ?>">Configuración</a>
+                                <a class="nav-link" href="<?= base_url('admin/mensajes-contacto') ?>">Mensajes</a>
                             <?php endif; ?>
                             <a class="nav-link" href="<?= base_url('admin/logout') ?>">Cerrar sesión</a>
                         </div>

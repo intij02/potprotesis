@@ -45,27 +45,15 @@
         <p>Soluciones profesionales en prótesis dental con los más altos estándares de calidad.</p>
     </div>
     <div class="container cards-grid">
-        <article class="service-card">
-            <img src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Coronas y puentes">
-            <div class="card-body">
-                <h3>Coronas y Puentes</h3>
-                <p>Restauraciones fijas en porcelana, zirconia y metal-porcelana con estética natural.</p>
-            </div>
-        </article>
-        <article class="service-card">
-            <img src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Prótesis removibles">
-            <div class="card-body">
-                <h3>Prótesis Removibles</h3>
-                <p>Dentaduras parciales y completas con diseño anatómico y enfoque en comodidad.</p>
-            </div>
-        </article>
-        <article class="service-card">
-            <img src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Implantes">
-            <div class="card-body">
-                <h3>Prótesis sobre Implantes</h3>
-                <p>Soluciones avanzadas con máxima estabilidad, ajuste y precisión milimétrica.</p>
-            </div>
-        </article>
+        <?php foreach ($services as $service): ?>
+            <article class="service-card">
+                <img src="<?= base_url($service['image_path'] ?: 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="<?= esc($service['title']) ?>">
+                <div class="card-body">
+                    <h3><?= esc($service['title']) ?></h3>
+                    <p><?= esc($service['summary']) ?></p>
+                </div>
+            </article>
+        <?php endforeach; ?>
     </div>
 </section>
 
@@ -87,9 +75,9 @@
         <p>Ejemplos de nuestra calidad y precisión en cada caso.</p>
     </div>
     <div class="container gallery-grid">
-        <img src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Trabajo realizado 1">
-        <img src="<?= base_url('assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="Trabajo realizado 2">
-        <img src="<?= base_url('assets/media/pages-home-gallery-3-94a5fe60.jpg') ?>" alt="Trabajo realizado 3">
+        <?php foreach ($galleryItems as $item): ?>
+            <img src="<?= base_url($item['image_path']) ?>" alt="<?= esc($item['alt_text'] ?: $item['title']) ?>">
+        <?php endforeach; ?>
     </div>
 </section>
 

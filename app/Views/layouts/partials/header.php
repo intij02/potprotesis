@@ -17,7 +17,7 @@ $navItems = [
             <button class="navbar-toggler site-navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation" aria-controls="siteNavigation" aria-expanded="false" aria-label="Abrir menú de navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse main-nav-wrap" id="siteNavigation">
+            <div class="collapse navbar-collapse justify-content-lg-end main-nav-wrap" id="siteNavigation">
                 <div class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
                     <?php foreach ($navItems as $href => $label): ?>
                         <?php

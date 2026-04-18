@@ -1,0 +1,47 @@
+<?= $this->extend('layouts/admin') ?>
+
+<?= $this->section('content') ?>
+<section class="section">
+    <div class="container narrow">
+        <div class="row align-items-end g-3 mb-4">
+            <div class="col-12 col-lg">
+                <span class="eyebrow">CMS</span>
+                <h1><?= $isEdit ? 'Editar servicio' : 'Nuevo servicio' ?></h1>
+                <p>Use una ruta relativa como `assets/media/archivo.jpg` o una URL absoluta para la imagen.</p>
+            </div>
+            <div class="col-12 col-lg-auto">
+                <a href="<?= base_url('admin/servicios') ?>" class="btn btn-outline">Volver</a>
+            </div>
+        </div>
+
+        <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
+
+        <div class="admin-card admin-form-card">
+            <form method="post" class="stack-form" action="<?= $isEdit ? base_url('admin/servicios/actualizar/' . $service['id']) : base_url('admin/servicios/guardar') ?>">
+                <?= csrf_field() ?>
+                <div>
+                    <label for="title" class="form-label">Título</label>
+                    <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $service['title'] ?? '')) ?>" required>
+                </div>
+                <div>
+                    <label for="summary" class="form-label">Descripción</label>
+                    <textarea id="summary" name="summary" class="form-control" rows="6" required><?= esc(old('summary', $service['summary'] ?? '')) ?></textarea>
+                </div>
+                <div>
+                    <label for="image_path" class="form-label">Ruta o URL de imagen</label>
+                    <input id="image_path" name="image_path" class="form-control" type="text" value="<?= esc(old('image_path', $service['image_path'] ?? '')) ?>">
+                </div>
+                <div>
+                    <label for="sort_order" class="form-label">Orden</label>
+                    <input id="sort_order" name="sort_order" class="form-control" type="number" value="<?= esc(old('sort_order', (string) ($service['sort_order'] ?? 0))) ?>">
+                </div>
+                <label class="inline-check form-check">
+                    <input type="checkbox" class="form-check-input" name="is_active" value="1" <?= old('is_active', isset($service) ? ((bool) $service['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
+                    <span>Servicio activo</span>
+                </label>
+                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear servicio' ?></button>
+            </form>
+        </div>
+    </div>
+</section>
+<?= $this->endSection() ?>

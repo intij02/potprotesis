@@ -42,3 +42,10 @@ if (! function_exists('admin_can_edit_orders')) {
         return admin_user_role() === 'admin';
     }
 }
+
+if (! function_exists('admin_can_manage_content')) {
+    function admin_can_manage_content(): bool
+    {
+        return admin_user_role() === 'admin';
+    }
+}

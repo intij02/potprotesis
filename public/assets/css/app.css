@@ -88,6 +88,11 @@ img {
 .site-navbar {
     min-height: 80px;
     padding: 0.75rem 0;
+    justify-content: space-between;
+}
+
+.site-navbar .navbar-brand {
+    margin-right: auto;
 }
 
 .site-navbar-toggler {
@@ -102,6 +107,10 @@ img {
 
 .main-nav-wrap {
     flex-grow: 0;
+}
+
+.main-nav-wrap .navbar-nav {
+    margin-left: auto;
 }
 
 .main-nav-link {
@@ -408,6 +417,32 @@ img {
     padding-left: 1.2rem;
     color: var(--muted-foreground);
     line-height: 1.8;
+}
+
+.contact-card-compact {
+    padding: 2rem;
+}
+
+.contact-stack {
+    display: grid;
+    gap: 1rem;
+}
+
+.contact-stack strong {
+    display: inline-block;
+    margin-bottom: 0.25rem;
+    font-family: "DM Sans", sans-serif;
+}
+
+.map-frame-wrap {
+    overflow: hidden;
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    background: white;
+}
+
+.map-frame-wrap iframe {
+    display: block;
 }
 
 .cta {
