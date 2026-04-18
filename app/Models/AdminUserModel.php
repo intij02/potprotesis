@@ -12,9 +12,11 @@ class AdminUserModel extends Model
     protected $useAutoIncrement = true;
     protected $protectFields    = true;
     protected $useTimestamps    = true;
+    protected $useSoftDeletes   = true;
     protected $dateFormat       = 'datetime';
     protected $createdField     = 'created_at';
-    protected $updatedField     = '';
+    protected $updatedField     = 'updated_at';
+    protected $deletedField     = 'deleted_at';
 
     protected $allowedFields = [
         'username',
