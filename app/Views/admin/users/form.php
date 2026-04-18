@@ -1,0 +1,62 @@
+<?= $this->extend('layouts/admin') ?>
+
+<?= $this->section('content') ?>
+<section class="section">
+    <div class="container narrow">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">Panel Admin</span>
+                <h1><?= $isEdit ? 'Editar usuario' : 'Nuevo usuario' ?></h1>
+                <p>Gestione credenciales y permisos del personal con acceso al panel.</p>
+            </div>
+            <a href="<?= base_url('admin/usuarios') ?>" class="btn btn-outline">Volver</a>
+        </div>
+
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+        <?php endif; ?>
+
+        <div class="admin-card admin-form-card">
+            <form method="post" class="stack-form" action="<?= $isEdit ? base_url('admin/usuarios/actualizar/' . $user['id']) : base_url('admin/usuarios/guardar') ?>">
+                <?= csrf_field() ?>
+
+                <div>
+                    <label for="username">Usuario</label>
+                    <input id="username" name="username" type="text" value="<?= esc(old('username', $user['username'] ?? '')) ?>" required>
+                </div>
+
+                <div>
+                    <label for="full_name">Nombre completo</label>
+                    <input id="full_name" name="full_name" type="text" value="<?= esc(old('full_name', $user['full_name'] ?? '')) ?>" required>
+                </div>
+
+                <div>
+                    <label for="password"><?= $isEdit ? 'Nueva contraseña' : 'Contraseña' ?></label>
+                    <input id="password" name="password" type="password" <?= $isEdit ? '' : 'required' ?>>
+                    <p class="muted-text"><?= $isEdit ? 'Déjela vacía si no desea cambiarla.' : 'Mínimo 6 caracteres.' ?></p>
+                </div>
+
+                <div>
+                    <label for="role">Rol</label>
+                    <select id="role" name="role" required>
+                        <?php $selectedRole = old('role', $user['role'] ?? 'staff'); ?>
+                        <?php foreach ($roleOptions as $roleValue => $roleLabel): ?>
+                            <option value="<?= esc($roleValue) ?>" <?= $selectedRole === $roleValue ? 'selected' : '' ?>>
+                                <?= esc($roleLabel) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <label class="inline-check">
+                    <?php $isActive = old('is_active', isset($user) ? ((bool) $user['is_active'] ? '1' : '') : '1'); ?>
+                    <input type="checkbox" name="is_active" value="1" <?= $isActive === '1' ? 'checked' : '' ?>>
+                    <span>Usuario activo</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear usuario' ?></button>
+            </form>
+        </div>
+    </div>
+</section>
+<?= $this->endSection() ?>

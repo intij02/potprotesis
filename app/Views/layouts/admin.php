@@ -12,6 +12,29 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
 </head>
 <body class="admin-body">
+    <header class="admin-shell-header">
+        <div class="container admin-shell-bar">
+            <div>
+                <strong>Panel POT</strong><br>
+                <?php if (admin_is_logged_in()): ?>
+                    <span class="muted-text">
+                        <?= esc(admin_auth_user()['full_name'] ?? admin_auth_user()['username'] ?? 'Usuario') ?>
+                        · <?= esc(admin_user_role() ?? 'sin rol') ?>
+                    </span>
+                <?php endif; ?>
+            </div>
+
+            <?php if (admin_is_logged_in()): ?>
+                <nav class="admin-shell-nav">
+                    <a href="<?= base_url('admin/ordenes') ?>">Órdenes</a>
+                    <?php if (admin_can_manage_users()): ?>
+                        <a href="<?= base_url('admin/usuarios') ?>">Usuarios</a>
+                    <?php endif; ?>
+                    <a href="<?= base_url('admin/logout') ?>">Cerrar sesión</a>
+                </nav>
+            <?php endif; ?>
+        </div>
+    </header>
     <?= $this->renderSection('content') ?>
 </body>
 </html>

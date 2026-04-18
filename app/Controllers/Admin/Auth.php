@@ -48,6 +48,7 @@ class Auth extends BaseController
             'id'        => $user['id'],
             'username'  => $user['username'],
             'full_name' => $user['full_name'],
+            'role'      => $user['role'] ?? 'admin',
         ]);
 
         return redirect()->to('/admin/ordenes')->with('success', 'Sesión iniciada correctamente.');

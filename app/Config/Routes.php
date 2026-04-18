@@ -18,4 +18,12 @@ $routes->group('admin', static function ($routes) {
     $routes->post('login', 'Admin\Auth::attempt');
     $routes->get('logout', 'Admin\Auth::logout');
     $routes->get('ordenes', 'Admin\Orders::index');
+    $routes->get('ordenes/editar/(:num)', 'Admin\Orders::edit/$1');
+    $routes->post('ordenes/actualizar/(:num)', 'Admin\Orders::update/$1');
+    $routes->get('usuarios', 'Admin\Users::index');
+    $routes->get('usuarios/nuevo', 'Admin\Users::create');
+    $routes->post('usuarios/guardar', 'Admin\Users::store');
+    $routes->get('usuarios/editar/(:num)', 'Admin\Users::edit/$1');
+    $routes->post('usuarios/actualizar/(:num)', 'Admin\Users::update/$1');
+    $routes->post('usuarios/eliminar/(:num)', 'Admin\Users::delete/$1');
 });

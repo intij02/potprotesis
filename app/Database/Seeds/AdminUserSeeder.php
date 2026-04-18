@@ -11,6 +11,7 @@ class AdminUserSeeder extends Seeder
         $username = env('seed.admin.username', 'admin');
         $password = env('seed.admin.password', 'ChangeMe123!');
         $fullName = env('seed.admin.full_name', 'Administrador POT');
+        $role     = env('seed.admin.role', 'admin');
 
         $existing = $this->db->table('admin_users')
             ->where('username', $username)
@@ -25,6 +26,7 @@ class AdminUserSeeder extends Seeder
             'username'      => $username,
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
             'full_name'     => $fullName,
+            'role'          => $role,
             'is_active'     => 1,
         ]);
     }

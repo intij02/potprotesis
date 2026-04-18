@@ -3,6 +3,8 @@
 namespace Config;
 
 use App\Filters\AdminAuth;
+use App\Filters\AdminEditOrders;
+use App\Filters\AdminManageUsers;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -36,6 +38,8 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'adminauth'     => AdminAuth::class,
+        'adminmanageusers' => AdminManageUsers::class,
+        'admineditorders'  => AdminEditOrders::class,
     ];
 
     /**
@@ -113,6 +117,20 @@ class Filters extends BaseFilters
             'before' => [
                 'admin/ordenes',
                 'admin/ordenes/*',
+                'admin/usuarios',
+                'admin/usuarios/*',
+            ],
+        ],
+        'adminmanageusers' => [
+            'before' => [
+                'admin/usuarios',
+                'admin/usuarios/*',
+            ],
+        ],
+        'admineditorders' => [
+            'before' => [
+                'admin/ordenes/editar/*',
+                'admin/ordenes/actualizar/*',
             ],
         ],
     ];

@@ -7,13 +7,19 @@
             <div>
                 <span class="eyebrow">Panel Admin</span>
                 <h1>Administración de órdenes</h1>
-                <p>Panel administrativo con sesión protegida y lectura inicial de órdenes.</p>
+                <p>Panel administrativo con lectura protegida y edición limitada por permisos.</p>
             </div>
-            <a href="<?= base_url('admin/logout') ?>" class="btn btn-outline">Cerrar sesión</a>
+            <?php if (admin_can_manage_users()): ?>
+                <a href="<?= base_url('admin/usuarios') ?>" class="btn btn-outline">Ver usuarios</a>
+            <?php endif; ?>
         </div>
 
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
+        <?php endif; ?>
+
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
         <?php endif; ?>
 
         <div class="admin-toolbar">
@@ -32,12 +38,13 @@
                         <th>Paciente</th>
                         <th>Entrega</th>
                         <th>Registro</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($orders)): ?>
                         <tr>
-                            <td colspan="5">No hay órdenes registradas todavía.</td>
+                            <td colspan="6">No hay órdenes registradas todavía.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($orders as $order): ?>
@@ -50,6 +57,13 @@
                                 </td>
                                 <td><?= esc($order['required_date']) ?></td>
                                 <td><?= esc($order['created_at']) ?></td>
+                                <td>
+                                    <?php if (admin_can_edit_orders()): ?>
+                                        <a href="<?= base_url('admin/ordenes/editar/' . $order['id']) ?>" class="btn btn-outline btn-small">Editar</a>
+                                    <?php else: ?>
+                                        <span class="muted-text">Solo lectura</span>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

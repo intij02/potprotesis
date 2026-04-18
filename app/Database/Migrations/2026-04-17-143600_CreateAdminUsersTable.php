@@ -27,6 +27,11 @@ class CreateAdminUsersTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 120,
             ],
+            'role' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+                'default'    => 'admin',
+            ],
             'is_active' => [
                 'type'    => 'BOOLEAN',
                 'default' => true,

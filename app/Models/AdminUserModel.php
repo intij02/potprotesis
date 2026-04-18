@@ -20,6 +20,7 @@ class AdminUserModel extends Model
         'username',
         'password_hash',
         'full_name',
+        'role',
         'is_active',
     ];
 
