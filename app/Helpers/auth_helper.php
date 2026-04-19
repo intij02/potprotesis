@@ -49,3 +49,19 @@ if (! function_exists('admin_can_manage_content')) {
         return admin_user_role() === 'admin';
     }
 }
+
+if (! function_exists('client_auth_user')) {
+    function client_auth_user(): ?array
+    {
+        $user = session()->get('client_user');
+
+        return is_array($user) ? $user : null;
+    }
+}
+
+if (! function_exists('client_is_logged_in')) {
+    function client_is_logged_in(): bool
+    {
+        return client_auth_user() !== null;
+    }
+}

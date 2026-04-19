@@ -37,6 +37,7 @@
                         <th>Orden</th>
                         <th>Dentista</th>
                         <th>Paciente</th>
+                        <th>Estatus</th>
                         <th>Entrega</th>
                         <th>Registro</th>
                         <th>Acciones</th>
@@ -45,7 +46,7 @@
                 <tbody>
                     <?php if (empty($orders)): ?>
                         <tr>
-                            <td colspan="6">No hay órdenes registradas todavía.</td>
+                            <td colspan="7">No hay órdenes registradas todavía.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($orders as $order): ?>
@@ -56,6 +57,7 @@
                                     <strong><?= esc($order['patient_name']) ?></strong><br>
                                     <span class="muted-text"><?= esc($order['contact_phone']) ?></span>
                                 </td>
+                                <td><span class="status-pill status-<?= esc($order['status'] ?? 'recibida') ?>"><?= esc(pot_order_status_label($order['status'] ?? 'recibida')) ?></span></td>
                                 <td><?= esc($order['required_date']) ?></td>
                                 <td><?= esc(site_datetime($order['created_at'] ?? null)) ?></td>
                                 <td>

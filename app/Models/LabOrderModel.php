@@ -22,9 +22,12 @@ class LabOrderModel extends Model
         'order_number',
         'sent_date',
         'required_date',
+        'client_id',
+        'patient_id',
         'dentist_name',
         'patient_name',
         'contact_phone',
+        'status',
         'shade',
         'work_types',
         'selected_teeth',
@@ -36,6 +39,8 @@ class LabOrderModel extends Model
     ];
 
     protected array $casts = [
+        'client_id'          => 'integer',
+        'patient_id'         => 'integer',
         'work_types'         => 'json-array',
         'selected_teeth'     => 'json-array',
         'restoration_types'  => 'json-array',

@@ -18,6 +18,10 @@
             <div class="alert alert-danger">Revise los campos marcados antes de guardar la orden.</div>
         <?php endif; ?>
 
+        <?php if ($clients === [] || $patients === []): ?>
+            <div class="alert alert-danger">Faltan clientes o pacientes activos en catálogo. Complete esos datos antes de actualizar la orden.</div>
+        <?php endif; ?>
+
         <form method="post" action="<?= base_url('admin/ordenes/actualizar/' . $order['id']) ?>" class="order-form">
             <?= csrf_field() ?>
 
@@ -29,14 +33,6 @@
 
                     <div class="order-grid order-grid-general">
                     <div class="field">
-                        <label for="order_number" class="form-label">Número de orden</label>
-                        <input id="order_number" name="order_number" class="form-control" type="text" value="<?= esc($order['order_number']) ?>">
-                    </div>
-                    <div class="field">
-                        <label for="sent_date" class="form-label">Fecha de envío</label>
-                        <input id="sent_date" name="sent_date" class="form-control" type="date" value="<?= esc($order['sent_date']) ?>">
-                    </div>
-                    <div class="field">
                         <label for="required_date" class="form-label">Fecha requerida</label>
                         <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($order['required_date']) ?>">
                         <?php if ($validation->hasError('required_date')): ?>
@@ -44,16 +40,49 @@
                         <?php endif; ?>
                     </div>
                     <div class="field">
-                        <label for="dentist_name" class="form-label">Dentista</label>
-                        <input id="dentist_name" name="dentist_name" class="form-control" type="text" value="<?= esc($order['dentist_name']) ?>">
+                        <label for="client_id" class="form-label">Cliente / Dentista</label>
+                        <select id="client_id" name="client_id" class="form-select">
+                            <option value="">Seleccione un cliente</option>
+                            <?php foreach ($clients as $client): ?>
+                                <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $order['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
+                                    <?= esc($client['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if ($validation->hasError('client_id')): ?>
+                            <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="field">
-                        <label for="patient_name" class="form-label">Paciente</label>
-                        <input id="patient_name" name="patient_name" class="form-control" type="text" value="<?= esc($order['patient_name']) ?>">
+                        <label for="patient_id" class="form-label">Paciente</label>
+                        <select id="patient_id" name="patient_id" class="form-select">
+                            <option value="">Seleccione un paciente</option>
+                            <?php foreach ($patients as $patient): ?>
+                                <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $order['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
+                                    <?= esc($patient['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if ($validation->hasError('patient_id')): ?>
+                            <p class="field-error"><?= esc($validation->getError('patient_id')) ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="field">
-                        <label for="contact_phone" class="form-label">Teléfono de contacto</label>
-                        <input id="contact_phone" name="contact_phone" class="form-control" type="text" value="<?= esc($order['contact_phone']) ?>">
+                        <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
+                        <input id="client_phone_display" class="form-control" type="text" value="<?= esc($order['contact_phone']) ?>" readonly>
+                    </div>
+                    <div class="field">
+                        <label for="status" class="form-label">Estatus</label>
+                        <select id="status" name="status" class="form-select">
+                            <?php foreach (pot_order_status_options() as $statusValue => $statusLabel): ?>
+                                <option value="<?= esc($statusValue) ?>" <?= ($order['status'] ?? 'recibida') === $statusValue ? 'selected' : '' ?>>
+                                    <?= esc($statusLabel) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if ($validation->hasError('status')): ?>
+                            <p class="field-error"><?= esc($validation->getError('status')) ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="field field-wide">
                         <label for="shade" class="form-label">Color</label>
@@ -165,10 +194,6 @@
                         <label for="observations" class="form-label">Observaciones</label>
                         <textarea id="observations" name="observations" class="form-control" rows="7"><?= esc($order['observations']) ?></textarea>
                     </div>
-                    <div class="field">
-                        <label for="signature_name" class="form-label">Nombre y firma</label>
-                        <input id="signature_name" name="signature_name" class="form-control" type="text" value="<?= esc($order['signature_name']) ?>">
-                    </div>
                 </div>
 
                 <aside class="order-submit-card">
@@ -180,4 +205,54 @@
         </form>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const clientSelect = document.getElementById('client_id');
+    const patientSelect = document.getElementById('patient_id');
+    const phoneDisplay = document.getElementById('client_phone_display');
+
+    if (!clientSelect || !patientSelect || !phoneDisplay) {
+        return;
+    }
+
+    const filterPatients = function () {
+        const selectedClientId = clientSelect.value;
+        const currentPatientId = patientSelect.value;
+        let currentStillVisible = false;
+
+        Array.from(patientSelect.options).forEach(function (option, index) {
+            if (index === 0) {
+                option.hidden = false;
+                return;
+            }
+
+            const matchesClient = selectedClientId !== '' && option.dataset.clientId === selectedClientId;
+            option.hidden = !matchesClient;
+
+            if (matchesClient && option.value === currentPatientId) {
+                currentStillVisible = true;
+            }
+        });
+
+        if (!currentStillVisible) {
+            patientSelect.value = '';
+        }
+
+        patientSelect.disabled = selectedClientId === '';
+    };
+
+    const syncPhone = function () {
+        const option = clientSelect.options[clientSelect.selectedIndex];
+        phoneDisplay.value = option ? option.dataset.phone || '' : '';
+    };
+
+    clientSelect.addEventListener('change', function () {
+        filterPatients();
+        syncPhone();
+    });
+
+    filterPatients();
+    syncPhone();
+});
+</script>
 <?= $this->endSection() ?>

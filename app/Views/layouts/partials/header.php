@@ -4,7 +4,7 @@ $navItems = [
     '/' => 'Inicio',
     'servicios' => 'Servicios',
     'galeria' => 'Galería',
-    'orden-laboratorio' => 'Orden',
+    'cliente/login' => 'Clientes',
     'contacto' => 'Contacto',
 ];
 ?>

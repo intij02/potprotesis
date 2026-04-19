@@ -5,6 +5,7 @@ namespace Config;
 use App\Filters\AdminAuth;
 use App\Filters\AdminEditOrders;
 use App\Filters\AdminManageUsers;
+use App\Filters\ClientAuth;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -40,6 +41,7 @@ class Filters extends BaseFilters
         'adminauth'     => AdminAuth::class,
         'adminmanageusers' => AdminManageUsers::class,
         'admineditorders'  => AdminEditOrders::class,
+        'clientauth'       => ClientAuth::class,
     ];
 
     /**
@@ -121,6 +123,10 @@ class Filters extends BaseFilters
                 'admin/ordenes/*',
                 'admin/usuarios',
                 'admin/usuarios/*',
+                'admin/clientes',
+                'admin/clientes/*',
+                'admin/pacientes',
+                'admin/pacientes/*',
                 'admin/servicios',
                 'admin/servicios/*',
                 'admin/galeria',
@@ -135,6 +141,10 @@ class Filters extends BaseFilters
             'before' => [
                 'admin/usuarios',
                 'admin/usuarios/*',
+                'admin/clientes',
+                'admin/clientes/*',
+                'admin/pacientes',
+                'admin/pacientes/*',
                 'admin/servicios',
                 'admin/servicios/*',
                 'admin/galeria',
@@ -149,6 +159,12 @@ class Filters extends BaseFilters
             'before' => [
                 'admin/ordenes/editar/*',
                 'admin/ordenes/actualizar/*',
+            ],
+        ],
+        'clientauth' => [
+            'before' => [
+                'cliente/panel',
+                'cliente/panel/*',
             ],
         ],
     ];

@@ -35,6 +35,8 @@
                             <a class="nav-link" href="<?= base_url('admin/ordenes') ?>">Órdenes</a>
                             <?php if (admin_can_manage_users()): ?>
                                 <a class="nav-link" href="<?= base_url('admin/usuarios') ?>">Usuarios</a>
+                                <a class="nav-link" href="<?= base_url('admin/clientes') ?>">Clientes</a>
+                                <a class="nav-link" href="<?= base_url('admin/pacientes') ?>">Pacientes</a>
                                 <a class="nav-link" href="<?= base_url('admin/servicios') ?>">Servicios</a>
                                 <a class="nav-link" href="<?= base_url('admin/galeria') ?>">Galería</a>
                                 <a class="nav-link" href="<?= base_url('admin/configuracion') ?>">Configuración</a>
