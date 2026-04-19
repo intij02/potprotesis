@@ -24,9 +24,11 @@
                         <div class="admin-image-panel">
                             <h3>Imagen activa</h3>
                             <?php if ($currentImageUrl !== null): ?>
-                                <img src="<?= esc($currentImageUrl) ?>" alt="<?= esc(old('alt_text', $item['alt_text'] ?? $item['title'] ?? 'Imagen')) ?>" class="admin-image-preview">
+                                <img id="galleryImagePreview" src="<?= esc($currentImageUrl) ?>" alt="<?= esc(old('alt_text', $item['alt_text'] ?? $item['title'] ?? 'Imagen')) ?>" class="admin-image-preview">
+                                <div id="galleryImagePlaceholder" class="admin-image-placeholder d-none">Sin imagen cargada</div>
                             <?php else: ?>
-                                <div class="admin-image-placeholder">Sin imagen cargada</div>
+                                <img id="galleryImagePreview" src="" alt="Vista previa de galería" class="admin-image-preview d-none">
+                                <div id="galleryImagePlaceholder" class="admin-image-placeholder">Sin imagen cargada</div>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -39,10 +41,6 @@
                             <label for="image_file" class="form-label">Cambiar imagen</label>
                             <input id="image_file" name="image_file" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.gif">
                             <p class="muted-text">Si selecciona un archivo, reemplaza la imagen actual.</p>
-                        </div>
-                        <div>
-                            <label for="image_path" class="form-label">Ruta o URL de imagen</label>
-                            <input id="image_path" name="image_path" class="form-control" type="text" value="<?= esc(old('image_path', $item['image_path'] ?? '')) ?>" required>
                         </div>
                         <div>
                             <label for="alt_text" class="form-label">Texto alternativo</label>
@@ -63,4 +61,38 @@
         </div>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('image_file');
+    const preview = document.getElementById('galleryImagePreview');
+    const placeholder = document.getElementById('galleryImagePlaceholder');
+
+    if (!input || !preview || !placeholder) {
+        return;
+    }
+
+    input.addEventListener('change', function (event) {
+        const file = event.target.files && event.target.files[0];
+
+        if (!file) {
+            if (preview.getAttribute('src')) {
+                preview.classList.remove('d-none');
+                placeholder.classList.add('d-none');
+            } else {
+                preview.classList.add('d-none');
+                placeholder.classList.remove('d-none');
+            }
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (loadEvent) {
+            preview.src = loadEvent.target?.result || '';
+            preview.classList.remove('d-none');
+            placeholder.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    });
+});
+</script>
 <?= $this->endSection() ?>

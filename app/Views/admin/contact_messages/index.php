@@ -31,7 +31,7 @@
                         <?php else: ?>
                             <?php foreach ($messages as $message): ?>
                                 <tr>
-                                    <td><?= esc($message['created_at']) ?></td>
+                                    <td><?= esc(site_datetime($message['created_at'] ?? null)) ?></td>
                                     <td><?= esc($message['name']) ?></td>
                                     <td><?= esc($message['email']) ?><br><span class="muted-text"><?= esc($message['phone'] ?? '') ?></span></td>
                                     <td><?= esc($message['message']) ?></td>

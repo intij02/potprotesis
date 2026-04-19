@@ -60,7 +60,7 @@
                                 <td><?= esc($user['full_name']) ?></td>
                                 <td><?= esc($roleLabels[$user['role']] ?? $user['role']) ?></td>
                                 <td><?= (bool) $user['is_active'] ? 'Activo' : 'Inactivo' ?></td>
-                                <td><?= esc($user['created_at'] ?? '') ?></td>
+                                <td><?= esc(site_datetime($user['created_at'] ?? null)) ?></td>
                                 <td>
                                     <div class="admin-actions">
                                         <a href="<?= base_url('admin/usuarios/editar/' . $user['id']) ?>" class="btn btn-outline btn-small admin-action-icon" aria-label="Editar usuario" title="Editar usuario"><i class="fa-solid fa-pen"></i></a>

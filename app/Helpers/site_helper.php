@@ -30,6 +30,23 @@ if (! function_exists('site_setting')) {
     }
 }
 
+if (! function_exists('site_datetime')) {
+    function site_datetime(?string $value, string $format = 'd-m-Y - H:i A'): string
+    {
+        if ($value === null || trim($value) === '') {
+            return '';
+        }
+
+        $timestamp = strtotime($value);
+
+        if ($timestamp === false) {
+            return $value;
+        }
+
+        return date($format, $timestamp);
+    }
+}
+
 if (! function_exists('site_services')) {
     function site_services(bool $activeOnly = true, ?int $limit = null): array
     {

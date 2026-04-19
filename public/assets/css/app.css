@@ -572,9 +572,22 @@ img {
     gap: 1rem;
 }
 
+.stack-form .form-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: auto;
+    justify-self: start;
+}
+
 .stack-form label {
     display: block;
     margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.stack-form .form-check-label {
+    margin-bottom: 0;
     font-weight: 600;
 }
 
