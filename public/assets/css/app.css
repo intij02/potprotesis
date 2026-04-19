@@ -152,6 +152,27 @@ img {
     border: 1px solid transparent;
 }
 
+.btn[disabled],
+.btn.is-loading {
+    opacity: 0.8;
+    cursor: wait;
+}
+
+.btn-spinner {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    animation: button-spinner 0.7s linear infinite;
+}
+
+@keyframes button-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .btn-small {
     padding: 0.7rem 1.05rem;
     font-size: 0.9rem;

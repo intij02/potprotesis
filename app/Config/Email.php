@@ -136,6 +136,7 @@ class Email extends BaseConfig
         $this->SMTPUser   = (string) env('email.SMTPUser', env('email.smtpUser', ''));
         $this->SMTPPass   = (string) env('email.SMTPPass', env('email.smtpPass', ''));
         $this->SMTPPort   = (int) env('email.SMTPPort', env('email.smtpPort', 587));
+        $this->SMTPTimeout = (int) env('email.SMTPTimeout', env('email.smtpTimeout', 30));
         $this->SMTPCrypto = (string) env('email.SMTPCrypto', env('email.smtpCrypto', 'tls'));
         $this->SMTPKeepAlive = $this->envBool('email.SMTPKeepAlive', env('email.smtpKeepAlive', $this->protocol === 'smtp'));
         $this->mailType   = (string) env('email.mailType', 'html');
