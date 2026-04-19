@@ -19,12 +19,17 @@ class Panel extends BaseController
             ->findAll();
 
         $patientModel = new PatientModel();
+        $patients = $patientModel
+            ->where('client_id', $clientId)
+            ->orderBy('name', 'ASC')
+            ->findAll();
         $patientCount = $patientModel->where('client_id', $clientId)->countAllResults();
 
         return view('client/panel/index', [
             'pageTitle' => 'Panel de Cliente - POT Prótesis Dental',
             'metaDescription' => 'Consulta de órdenes y estatus para clientes.',
             'orders' => $orders,
+            'patients' => $patients,
             'client' => $client,
             'patientCount' => $patientCount,
         ]);
