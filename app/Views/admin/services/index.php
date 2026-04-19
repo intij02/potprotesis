@@ -5,12 +5,12 @@
     <div class="container">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
-                <span class="eyebrow">CMS</span>
+                <span class="eyebrow eyebrow-aqua">CMS</span>
                 <h1>Servicios</h1>
                 <p>Administre los servicios publicados en la web.</p>
             </div>
             <div class="col-12 col-lg-auto">
-                <a href="<?= base_url('admin/servicios/nuevo') ?>" class="btn btn-primary">Nuevo servicio</a>
+                <a href="<?= base_url('admin/servicios/nuevo') ?>" class="btn btn-primary btn-small">Nuevo servicio</a>
             </div>
         </div>
 

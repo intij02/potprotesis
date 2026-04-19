@@ -5,7 +5,7 @@
     <div class="container narrow">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
-                <span class="eyebrow">Panel Admin</span>
+                <span class="eyebrow eyebrow-aqua">Panel Admin</span>
                 <h1><?= $isEdit ? 'Editar usuario' : 'Nuevo usuario' ?></h1>
                 <p>Gestione credenciales y permisos del personal con acceso al panel.</p>
             </div>

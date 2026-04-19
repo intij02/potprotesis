@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
-                <span class="eyebrow">Panel Admin</span>
+                <span class="eyebrow eyebrow-aqua">Panel Admin</span>
                 <h1>Editar orden</h1>
                 <p>Solo los administradores pueden actualizar la información de la orden.</p>
             </div>

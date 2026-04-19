@@ -5,7 +5,7 @@
     <div class="container narrow">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
-                <span class="eyebrow">CMS</span>
+                <span class="eyebrow eyebrow-aqua">CMS</span>
                 <h1>Configuración del sitio</h1>
                 <p>Administre datos de contacto, mapa y destinatario del formulario.</p>
             </div>

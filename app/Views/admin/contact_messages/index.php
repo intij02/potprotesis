@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
-                <span class="eyebrow">CMS</span>
+                <span class="eyebrow eyebrow-aqua">CMS</span>
                 <h1>Mensajes de contacto</h1>
                 <p>Mensajes enviados desde el formulario público.</p>
             </div>

@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-5">
                 <div class="admin-card">
-                    <span class="eyebrow">Acceso al Panel</span>
+                    <span class="eyebrow eyebrow-aqua">Acceso al Panel</span>
                     <h1>Admin POT</h1>
                     <?php if (session()->getFlashdata('error')): ?>
                         <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
