@@ -6,13 +6,30 @@
         <span class="eyebrow">Panel Cliente</span>
         <h1><?= esc($client['name'] ?? 'Cliente') ?></h1>
         <p>Consulta el estado actual de tus órdenes registradas en POT.</p>
-        <a href="<?= base_url('cliente/logout') ?>" class="btn btn-outline btn-small">Cerrar sesión</a>
+        <div class="hero-actions">
+            <a href="<?= base_url('cliente/pacientes') ?>" class="btn btn-primary btn-small">Administrar pacientes</a>
+            <a href="<?= base_url('cliente/logout') ?>" class="btn btn-outline btn-small">Cerrar sesión</a>
+        </div>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
         <?php if (session()->getFlashdata('success')): ?><div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div><?php endif; ?>
+        <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
+
+        <div class="cards-grid mb-4">
+            <article class="mini-card">
+                <span class="eyebrow">Pacientes</span>
+                <h2><?= esc((string) $patientCount) ?></h2>
+                <p>Pacientes registrados en tu cuenta para asociarlos a nuevas órdenes.</p>
+            </article>
+            <article class="mini-card">
+                <span class="eyebrow">Órdenes</span>
+                <h2><?= esc((string) count($orders)) ?></h2>
+                <p>Órdenes visibles actualmente dentro de tu panel de cliente.</p>
+            </article>
+        </div>
 
         <div class="table-card">
             <div class="table-responsive">

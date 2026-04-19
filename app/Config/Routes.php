@@ -17,6 +17,12 @@ $routes->post('/cliente/registro', 'Client\Auth::store');
 $routes->get('/cliente/activar', 'Client\Auth::activate');
 $routes->get('/cliente/logout', 'Client\Auth::logout');
 $routes->get('/cliente/panel', 'Client\Panel::index');
+$routes->get('/cliente/pacientes', 'Client\Patients::index');
+$routes->get('/cliente/pacientes/nuevo', 'Client\Patients::create');
+$routes->post('/cliente/pacientes/guardar', 'Client\Patients::store');
+$routes->get('/cliente/pacientes/editar/(:num)', 'Client\Patients::edit/$1');
+$routes->post('/cliente/pacientes/actualizar/(:num)', 'Client\Patients::update/$1');
+$routes->post('/cliente/pacientes/eliminar/(:num)', 'Client\Patients::delete/$1');
 $routes->get('/privacidad', 'Pages::privacidad');
 $routes->get('/terminos', 'Pages::terminos');
 

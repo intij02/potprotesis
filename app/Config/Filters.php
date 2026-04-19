@@ -165,6 +165,8 @@ class Filters extends BaseFilters
             'before' => [
                 'cliente/panel',
                 'cliente/panel/*',
+                'cliente/pacientes',
+                'cliente/pacientes/*',
             ],
         ],
     ];
