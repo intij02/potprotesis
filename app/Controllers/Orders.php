@@ -26,8 +26,7 @@ class Orders extends BaseController
                     $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
                     $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
                     $model = new LabOrderModel();
-
-                    $model->insert([
+                    $insertData = [
                         'order_number'      => null,
                         'sent_date'         => date('Y-m-d'),
                         'required_date'     => $formData['required_date'],
@@ -45,10 +44,16 @@ class Orders extends BaseController
                         'implant_chimney'   => $formData['implant_chimney'],
                         'observations'      => $formData['observations'] !== '' ? $formData['observations'] : null,
                         'signature_name'    => null,
-                    ]);
+                    ];
 
-                    return redirect()->to('/orden-laboratorio')
-                        ->with('success', 'La orden quedó registrada correctamente.');
+                    if (! $model->insert($insertData)) {
+                        $this->logModelFailure('lab order insert', $model->errors());
+                        $validation->setError('form', 'No fue posible guardar la orden en la base de datos.');
+                    } else {
+                        return redirect()->to('/orden-laboratorio')
+                            ->with('success', 'La orden quedó registrada correctamente.');
+                    }
+
                 }
 
                 foreach ($customErrors as $field => $message) {
@@ -105,7 +110,16 @@ class Orders extends BaseController
         }
 
         $model = new PatientModel();
-        $model->insert($data);
+        if (! $model->insert($data)) {
+            $this->logModelFailure('quick patient insert', $model->errors());
+
+            return $this->response->setStatusCode(500)->setJSON([
+                'message' => 'No fue posible crear el paciente en la base de datos.',
+                'errors' => $model->errors(),
+                'csrf' => csrf_hash(),
+            ]);
+        }
+
         $patientId = (int) $model->getInsertID();
         $patient = $model->find($patientId);
 
@@ -284,5 +298,14 @@ class Orders extends BaseController
         }
 
         return null;
+    }
+
+    private function logModelFailure(string $context, array $errors): void
+    {
+        $message = $errors !== [] ? json_encode($errors, JSON_UNESCAPED_UNICODE) : 'unknown error';
+        log_message('error', 'Database write failed during {context}: {message}', [
+            'context' => $context,
+            'message' => $message ?: 'unknown error',
+        ]);
     }
 }
