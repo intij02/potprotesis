@@ -50,11 +50,11 @@
                     </select>
                 </div>
 
-                <label class="inline-check form-check col-2">
+                <div class="mb-3 form-check">
                     <?php $isActive = old('is_active', isset($user) ? ((bool) $user['is_active'] ? '1' : '') : '1'); ?>
-                    <input type="checkbox" class="form-check-input" name="is_active" value="1" <?= $isActive === '1' ? 'checked' : '' ?>>
-                    <span>Usuario activo</span>
-                </label>
+                    <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= $isActive === '1' ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="is_active">Usuario activo</label>
+                </div>
 
                 <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear usuario' ?></button>
             </form>

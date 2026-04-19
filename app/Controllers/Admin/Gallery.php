@@ -43,6 +43,12 @@ class Gallery extends BaseController
             return redirect()->back()->withInput()->with('error', 'Revise los datos capturados.');
         }
 
+        $uploadError = $this->handleImageUpload($data);
+
+        if ($uploadError !== null) {
+            return redirect()->back()->withInput()->with('error', $uploadError);
+        }
+
         (new GalleryItemModel())->insert($data);
 
         return redirect()->to('/admin/galeria')->with('success', 'Elemento de galería creado correctamente.');
@@ -55,11 +61,17 @@ class Gallery extends BaseController
 
     public function update(int $id)
     {
-        $this->findOrFail($id);
+        $item = $this->findOrFail($id);
         $data = $this->requestData();
 
         if (! $this->validate($this->rules())) {
             return redirect()->back()->withInput()->with('error', 'Revise los datos capturados.');
+        }
+
+        $uploadError = $this->handleImageUpload($data, $item);
+
+        if ($uploadError !== null) {
+            return redirect()->back()->withInput()->with('error', $uploadError);
         }
 
         (new GalleryItemModel())->update($id, $data);
@@ -82,6 +94,7 @@ class Gallery extends BaseController
             'metaDescription' => 'Formulario de galería.',
             'item' => $item,
             'isEdit' => $isEdit,
+            'currentImageUrl' => $this->imageUrl($item['image_path'] ?? null),
         ]);
     }
 
@@ -115,5 +128,68 @@ class Gallery extends BaseController
         }
 
         return $item;
+    }
+
+    private function handleImageUpload(array &$data, ?array $current = null): ?string
+    {
+        $file = $this->request->getFile('image_file');
+
+        if ($file === null || $file->getError() === UPLOAD_ERR_NO_FILE) {
+            return null;
+        }
+
+        if (! $file->isValid()) {
+            return 'No fue posible cargar la imagen.';
+        }
+
+        if (! in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)) {
+            return 'La imagen debe ser JPG, PNG, WEBP o GIF.';
+        }
+
+        if ($file->getSizeByUnit('mb') > 5) {
+            return 'La imagen no debe superar 5 MB.';
+        }
+
+        $targetPath = FCPATH . 'uploads/cms';
+
+        if (! is_dir($targetPath)) {
+            mkdir($targetPath, 0775, true);
+        }
+
+        $newName = $file->getRandomName();
+        $file->move($targetPath, $newName, true);
+        $data['image_path'] = 'uploads/cms/' . $newName;
+
+        if ($current !== null && ! empty($current['image_path'])) {
+            $this->deleteLocalImage($current['image_path']);
+        }
+
+        return null;
+    }
+
+    private function deleteLocalImage(string $path): void
+    {
+        if (preg_match('#^uploads/cms/#', $path) !== 1) {
+            return;
+        }
+
+        $absolute = FCPATH . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+
+        if (is_file($absolute)) {
+            @unlink($absolute);
+        }
+    }
+
+    private function imageUrl(?string $path): ?string
+    {
+        if ($path === null || $path === '') {
+            return null;
+        }
+
+        if (preg_match('#^https?://#i', $path) === 1) {
+            return $path;
+        }
+
+        return base_url($path);
     }
 }

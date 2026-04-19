@@ -47,15 +47,21 @@
                             <?php foreach ($services as $service): ?>
                                 <tr>
                                     <td><strong><?= esc($service['title']) ?></strong><br><span class="muted-text"><?= esc($service['summary']) ?></span></td>
-                                    <td><?= esc($service['image_path'] ?? '') ?></td>
+                                    <td>
+                                        <?php if (! empty($service['image_path'])): ?>
+                                            <img src="<?= esc(preg_match('#^https?://#i', $service['image_path']) ? $service['image_path'] : base_url($service['image_path'])) ?>" alt="<?= esc($service['title']) ?>" class="admin-thumb">
+                                        <?php else: ?>
+                                            <span class="muted-text">Sin imagen</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= esc((string) $service['sort_order']) ?></td>
                                     <td><?= (bool) $service['is_active'] ? 'Activo' : 'Inactivo' ?></td>
                                     <td>
                                         <div class="admin-actions">
-                                            <a href="<?= base_url('admin/servicios/editar/' . $service['id']) ?>" class="btn btn-outline btn-small">Editar</a>
+                                            <a href="<?= base_url('admin/servicios/editar/' . $service['id']) ?>" class="btn btn-outline btn-small admin-action-icon" aria-label="Editar servicio" title="Editar servicio"><i class="fa-solid fa-pen"></i></a>
                                             <form method="post" action="<?= base_url('admin/servicios/eliminar/' . $service['id']) ?>" onsubmit="return confirm('¿Desea eliminar este servicio?');">
                                                 <?= csrf_field() ?>
-                                                <button type="submit" class="btn btn-outline btn-small btn-danger-soft">Eliminar</button>
+                                                <button type="submit" class="btn btn-outline btn-small btn-danger-soft admin-action-icon" aria-label="Eliminar servicio" title="Eliminar servicio"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </div>
                                     </td>

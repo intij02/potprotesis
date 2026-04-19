@@ -63,10 +63,10 @@
                                 <td><?= esc($user['created_at'] ?? '') ?></td>
                                 <td>
                                     <div class="admin-actions">
-                                        <a href="<?= base_url('admin/usuarios/editar/' . $user['id']) ?>" class="btn btn-outline btn-small">Editar</a>
+                                        <a href="<?= base_url('admin/usuarios/editar/' . $user['id']) ?>" class="btn btn-outline btn-small admin-action-icon" aria-label="Editar usuario" title="Editar usuario"><i class="fa-solid fa-pen"></i></a>
                                         <form method="post" action="<?= base_url('admin/usuarios/eliminar/' . $user['id']) ?>" onsubmit="return confirm('¿Desea eliminar este usuario?');">
                                             <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-outline btn-small btn-danger-soft">Eliminar</button>
+                                            <button type="submit" class="btn btn-outline btn-small btn-danger-soft admin-action-icon" aria-label="Eliminar usuario" title="Eliminar usuario"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>

@@ -48,16 +48,22 @@
                             <?php foreach ($items as $item): ?>
                                 <tr>
                                     <td><?= esc($item['title']) ?></td>
-                                    <td><?= esc($item['image_path']) ?></td>
+                                    <td>
+                                        <?php if (! empty($item['image_path'])): ?>
+                                            <img src="<?= esc(preg_match('#^https?://#i', $item['image_path']) ? $item['image_path'] : base_url($item['image_path'])) ?>" alt="<?= esc($item['alt_text'] ?: $item['title']) ?>" class="admin-thumb">
+                                        <?php else: ?>
+                                            <span class="muted-text">Sin imagen</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= esc($item['alt_text'] ?? '') ?></td>
                                     <td><?= esc((string) $item['sort_order']) ?></td>
                                     <td><?= (bool) $item['is_active'] ? 'Activo' : 'Inactivo' ?></td>
                                     <td>
                                         <div class="admin-actions">
-                                            <a href="<?= base_url('admin/galeria/editar/' . $item['id']) ?>" class="btn btn-outline btn-small">Editar</a>
+                                            <a href="<?= base_url('admin/galeria/editar/' . $item['id']) ?>" class="btn btn-outline btn-small admin-action-icon" aria-label="Editar elemento" title="Editar elemento"><i class="fa-solid fa-pen"></i></a>
                                             <form method="post" action="<?= base_url('admin/galeria/eliminar/' . $item['id']) ?>" onsubmit="return confirm('¿Desea eliminar este elemento?');">
                                                 <?= csrf_field() ?>
-                                                <button type="submit" class="btn btn-outline btn-small btn-danger-soft">Eliminar</button>
+                                                <button type="submit" class="btn btn-outline btn-small btn-danger-soft admin-action-icon" aria-label="Eliminar elemento" title="Eliminar elemento"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </div>
                                     </td>

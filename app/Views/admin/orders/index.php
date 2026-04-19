@@ -60,7 +60,7 @@
                                 <td><?= esc($order['created_at']) ?></td>
                                 <td>
                                     <?php if (admin_can_edit_orders()): ?>
-                                        <a href="<?= base_url('admin/ordenes/editar/' . $order['id']) ?>" class="btn btn-outline btn-small">Editar</a>
+                                        <a href="<?= base_url('admin/ordenes/editar/' . $order['id']) ?>" class="btn btn-outline btn-small admin-action-icon" aria-label="Editar orden" title="Editar orden"><i class="fa-solid fa-pen"></i></a>
                                     <?php else: ?>
                                         <span class="muted-text">Solo lectura</span>
                                     <?php endif; ?>

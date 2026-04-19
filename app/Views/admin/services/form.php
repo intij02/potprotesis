@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 <section class="section">
-    <div class="container narrow">
+    <div class="container">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
                 <span class="eyebrow eyebrow-aqua">CMS</span>
@@ -17,29 +17,48 @@
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
 
         <div class="admin-card admin-form-card">
-            <form method="post" class="stack-form" action="<?= $isEdit ? base_url('admin/servicios/actualizar/' . $service['id']) : base_url('admin/servicios/guardar') ?>">
+            <form method="post" enctype="multipart/form-data" class="stack-form" action="<?= $isEdit ? base_url('admin/servicios/actualizar/' . $service['id']) : base_url('admin/servicios/guardar') ?>">
                 <?= csrf_field() ?>
-                <div>
-                    <label for="title" class="form-label">Título</label>
-                    <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $service['title'] ?? '')) ?>" required>
+                <div class="row g-4 align-items-start">
+                    <div class="col-12 col-lg-4">
+                        <div class="admin-image-panel">
+                            <h3>Imagen activa</h3>
+                            <?php if ($currentImageUrl !== null): ?>
+                                <img src="<?= esc($currentImageUrl) ?>" alt="<?= esc(old('title', $service['title'] ?? 'Servicio')) ?>" class="admin-image-preview">
+                            <?php else: ?>
+                                <div class="admin-image-placeholder">Sin imagen cargada</div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                        <div>
+                            <label for="title" class="form-label">Título</label>
+                            <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $service['title'] ?? '')) ?>" required>
+                        </div>
+                        <div>
+                            <label for="summary" class="form-label">Descripción</label>
+                            <textarea id="summary" name="summary" class="form-control" rows="6" required><?= esc(old('summary', $service['summary'] ?? '')) ?></textarea>
+                        </div>
+                        <div>
+                            <label for="image_file" class="form-label">Cambiar imagen</label>
+                            <input id="image_file" name="image_file" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.gif">
+                            <p class="muted-text">Si selecciona un archivo, reemplaza la imagen actual.</p>
+                        </div>
+                        <div>
+                            <label for="image_path" class="form-label">Ruta o URL de imagen</label>
+                            <input id="image_path" name="image_path" class="form-control" type="text" value="<?= esc(old('image_path', $service['image_path'] ?? '')) ?>">
+                        </div>
+                        <div>
+                            <label for="sort_order" class="form-label">Orden</label>
+                            <input id="sort_order" name="sort_order" class="form-control" type="number" value="<?= esc(old('sort_order', (string) ($service['sort_order'] ?? 0))) ?>">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($service) ? ((bool) $service['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="is_active">Servicio activo</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear servicio' ?></button>
+                    </div>
                 </div>
-                <div>
-                    <label for="summary" class="form-label">Descripción</label>
-                    <textarea id="summary" name="summary" class="form-control" rows="6" required><?= esc(old('summary', $service['summary'] ?? '')) ?></textarea>
-                </div>
-                <div>
-                    <label for="image_path" class="form-label">Ruta o URL de imagen</label>
-                    <input id="image_path" name="image_path" class="form-control" type="text" value="<?= esc(old('image_path', $service['image_path'] ?? '')) ?>">
-                </div>
-                <div>
-                    <label for="sort_order" class="form-label">Orden</label>
-                    <input id="sort_order" name="sort_order" class="form-control" type="number" value="<?= esc(old('sort_order', (string) ($service['sort_order'] ?? 0))) ?>">
-                </div>
-                <label class="inline-check form-check">
-                    <input type="checkbox" class="form-check-input" name="is_active" value="1" <?= old('is_active', isset($service) ? ((bool) $service['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
-                    <span>Servicio activo</span>
-                </label>
-                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear servicio' ?></button>
             </form>
         </div>
     </div>
