@@ -5,7 +5,7 @@
     <div class="container center narrow">
         <span class="eyebrow">Acceso Cliente</span>
         <h1>Consulta el estatus de tus órdenes</h1>
-        <p>Ingresa con el email y contraseña asignados a tu cuenta de cliente.</p>
+        <p>Ingresa con el email y contraseña de tu cuenta de cliente.</p>
     </div>
 </section>
 
@@ -30,6 +30,8 @@
 
                 <button type="submit" class="btn btn-primary">Ingresar</button>
             </form>
+
+            <p class="auth-alt-link">¿Cliente nuevo? <a href="<?= base_url('cliente/registro') ?>">Crea tu cuenta aquí</a>.</p>
         </div>
     </div>
 </section>

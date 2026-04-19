@@ -572,6 +572,16 @@ img {
     gap: 1rem;
 }
 
+.auth-alt-link {
+    margin: 1.25rem 0 0;
+    text-align: center;
+}
+
+.auth-alt-link a {
+    color: var(--primary);
+    font-weight: 700;
+}
+
 .stack-form .form-check {
     display: inline-flex;
     align-items: center;

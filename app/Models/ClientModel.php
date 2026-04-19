@@ -23,6 +23,9 @@ class ClientModel extends Model
         'contact_phone',
         'email',
         'password_hash',
+        'email_verification_token',
+        'email_verification_sent_at',
+        'email_verified_at',
         'notes',
         'is_active',
     ];
@@ -30,4 +33,19 @@ class ClientModel extends Model
     protected array $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function findByEmail(string $email): ?array
+    {
+        $email = trim($email);
+
+        if ($email === '') {
+            return null;
+        }
+
+        $normalizedEmail = function_exists('mb_strtolower')
+            ? mb_strtolower($email, 'UTF-8')
+            : strtolower($email);
+
+        return $this->where('LOWER(email)', $normalizedEmail)->first();
+    }
 }
