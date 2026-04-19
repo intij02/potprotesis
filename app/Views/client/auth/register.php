@@ -14,7 +14,7 @@
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
 
         <div class="admin-card admin-form-card">
-            <form method="post" class="stack-form" action="<?= base_url('cliente/registro') ?>">
+            <form method="post" class="stack-form" action="<?= base_url('cliente/registro') ?>" id="client-register-form" novalidate>
                 <?= csrf_field() ?>
 
                 <div>
@@ -40,6 +40,7 @@
                 <div>
                     <label for="password_confirm" class="form-label">Confirmar contraseña</label>
                     <input id="password_confirm" name="password_confirm" class="form-control" type="password" required>
+                    <p class="field-error" id="password-confirm-error" hidden>Las contraseñas no coinciden.</p>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Crear cuenta</button>
@@ -49,4 +50,36 @@
         </div>
     </div>
 </section>
+
+<script>
+    (() => {
+        const form = document.getElementById('client-register-form');
+        const passwordInput = document.getElementById('password');
+        const passwordConfirmInput = document.getElementById('password_confirm');
+        const passwordError = document.getElementById('password-confirm-error');
+
+        if (!form || !passwordInput || !passwordConfirmInput || !passwordError) {
+            return;
+        }
+
+        const validatePasswords = () => {
+            const passwordsMatch = passwordInput.value === passwordConfirmInput.value;
+            const showMismatch = passwordConfirmInput.value !== '' && !passwordsMatch;
+
+            passwordConfirmInput.setCustomValidity(showMismatch ? 'Las contraseñas no coinciden.' : '');
+            passwordError.hidden = !showMismatch;
+        };
+
+        passwordInput.addEventListener('input', validatePasswords);
+        passwordConfirmInput.addEventListener('input', validatePasswords);
+
+        form.addEventListener('submit', (event) => {
+            validatePasswords();
+
+            if (!form.reportValidity()) {
+                event.preventDefault();
+            }
+        });
+    })();
+</script>
 <?= $this->endSection() ?>
