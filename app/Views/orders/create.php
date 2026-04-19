@@ -16,7 +16,21 @@
         <?php endif; ?>
 
         <?php if ($validation->getErrors() !== []): ?>
-            <div class="alert alert-danger">Revise los campos marcados antes de guardar la orden.</div>
+            <div class="alert alert-danger">
+                <?php if ($validation->hasError('form')): ?>
+                    <?= esc($validation->getError('form')) ?>
+                <?php else: ?>
+                    No fue posible guardar la orden. Revise los datos enviados.
+                <?php endif; ?>
+                <?php $visibleErrors = array_filter($validation->getErrors(), static fn ($key) => $key !== 'form', ARRAY_FILTER_USE_KEY); ?>
+                <?php if ($visibleErrors !== []): ?>
+                    <ul class="alert-list mb-0 mt-2">
+                        <?php foreach ($visibleErrors as $message): ?>
+                            <li><?= esc($message) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($clients === [] || ($clientUser === null && $patients === [])): ?>

@@ -182,17 +182,62 @@ class Auth extends BaseController
             $fromEmail = config('Email')->fromEmail !== '' ? config('Email')->fromEmail : 'no-reply@localhost';
             $fromName = config('Email')->fromName !== '' ? config('Email')->fromName : 'POT Prótesis Dental';
             $activationUrl = base_url('cliente/activar?token=' . rawurlencode($token));
+            $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            $safeActivationUrl = htmlspecialchars($activationUrl, ENT_QUOTES, 'UTF-8');
+            $htmlMessage = <<<HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activa tu cuenta</title>
+</head>
+<body style="margin:0;padding:24px;background:#f4f6fb;font-family:Arial,sans-serif;color:#1f2937;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;border-collapse:collapse;background:#ffffff;border-radius:20px;overflow:hidden;border:1px solid #dbe3ef;">
+                    <tr>
+                        <td style="padding:32px 36px;background:#3a4154;color:#ffffff;">
+                            <div style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.82;">POT Prótesis Dental</div>
+                            <h1 style="margin:12px 0 0;font-size:28px;line-height:1.15;font-weight:700;">Activa tu cuenta de cliente</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:32px 36px;">
+                            <p style="margin:0 0 16px;font-size:16px;line-height:1.7;">Hola {$safeName},</p>
+                            <p style="margin:0 0 16px;font-size:16px;line-height:1.7;">Gracias por registrarte en POT Prótesis Dental. Para completar tu acceso y activar tu cuenta, confirma tu email desde el siguiente botón:</p>
+                            <table role="presentation" cellspacing="0" cellpadding="0" style="margin:28px 0;border-collapse:collapse;">
+                                <tr>
+                                    <td style="border-radius:999px;background:#fecd0a;">
+                                        <a href="{$safeActivationUrl}" style="display:inline-block;padding:14px 24px;font-size:15px;font-weight:700;line-height:1;color:#574600;text-decoration:none;">Activar mi cuenta</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="margin:0 0 14px;font-size:14px;line-height:1.7;color:#4b5563;">Si el botón no funciona, copia y pega esta dirección en tu navegador:</p>
+                            <p style="margin:0 0 22px;font-size:14px;line-height:1.7;word-break:break-all;"><a href="{$safeActivationUrl}" style="color:#2563eb;text-decoration:underline;">{$safeActivationUrl}</a></p>
+                            <p style="margin:0;font-size:14px;line-height:1.7;color:#6b7280;">Si no solicitaste este registro, puedes ignorar este mensaje.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+HTML;
+            $textMessage =
+                "Hola {$name},\n\n"
+                . "Gracias por registrarte en POT Prótesis Dental.\n"
+                . "Para activar tu cuenta visita el siguiente enlace:\n\n"
+                . "{$activationUrl}\n\n"
+                . "Si no solicitaste este registro, puedes ignorar este mensaje.";
 
             $email->setFrom($fromEmail, $fromName);
             $email->setTo($emailAddress);
             $email->setSubject('Activa tu cuenta de cliente');
-            $email->setMessage(
-                "Hola {$name},\n\n"
-                . "Gracias por registrarte en POT Prótesis Dental.\n"
-                . "Para activar tu cuenta confirma tu email en el siguiente enlace:\n\n"
-                . "{$activationUrl}\n\n"
-                . "Si no solicitaste este registro, puedes ignorar este mensaje."
-            );
+            $email->setMessage($htmlMessage);
+            $email->setAltMessage($textMessage);
 
             return $email->send(false);
         } catch (\Throwable) {

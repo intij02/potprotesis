@@ -16,49 +16,41 @@ class Orders extends BaseController
         $catalogs   = $this->loadCatalogs($clientUser);
 
         if ($this->request->getMethod() === 'post') {
-            $formData   = $this->requestFormData($clientUser);
-            $fieldRules = $this->fieldRules();
+            $formData = $this->requestFormData($clientUser);
+            $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
+            $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
+            $model = new LabOrderModel();
+            $insertData = [
+                'order_number'      => null,
+                'sent_date'         => date('Y-m-d'),
+                'required_date'     => $formData['required_date'],
+                'client_id'         => $formData['client_id'] > 0 ? $formData['client_id'] : null,
+                'patient_id'        => $formData['patient_id'] > 0 ? $formData['patient_id'] : null,
+                'dentist_name'      => (string) ($client['name'] ?? ''),
+                'patient_name'      => (string) ($patient['name'] ?? ''),
+                'contact_phone'     => (string) ($client['contact_phone'] ?? ''),
+                'status'            => 'recibida',
+                'shade'             => $formData['shade'] !== '' ? $formData['shade'] : null,
+                'work_types'        => json_encode($formData['work_types'], JSON_UNESCAPED_UNICODE),
+                'selected_teeth'    => json_encode($formData['selected_teeth'], JSON_UNESCAPED_UNICODE),
+                'restoration_types' => json_encode($formData['restoration_types'], JSON_UNESCAPED_UNICODE),
+                'implant_case'      => $formData['implant_case'] ? 1 : 0,
+                'implant_chimney'   => $formData['implant_chimney'],
+                'observations'      => $formData['observations'] !== '' ? $formData['observations'] : null,
+                'signature_name'    => null,
+            ];
 
-            if ($validation->setRules($fieldRules)->run($formData)) {
-                $customErrors = $this->customValidationErrors($formData, null, $catalogs);
+            if (! $model->insert($insertData)) {
+                $errors = $model->errors();
+                $this->logModelFailure('lab order insert', $errors);
+                $validation->setError('form', 'No fue posible guardar la orden en la base de datos.');
 
-                if ($customErrors === []) {
-                    $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
-                    $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
-                    $model = new LabOrderModel();
-                    $insertData = [
-                        'order_number'      => null,
-                        'sent_date'         => date('Y-m-d'),
-                        'required_date'     => $formData['required_date'],
-                        'client_id'         => $formData['client_id'],
-                        'patient_id'        => $formData['patient_id'],
-                        'dentist_name'      => (string) ($client['name'] ?? ''),
-                        'patient_name'      => (string) ($patient['name'] ?? ''),
-                        'contact_phone'     => (string) ($client['contact_phone'] ?? ''),
-                        'status'            => 'recibida',
-                        'shade'             => $formData['shade'] !== '' ? $formData['shade'] : null,
-                        'work_types'        => json_encode($formData['work_types'], JSON_UNESCAPED_UNICODE),
-                        'selected_teeth'    => json_encode($formData['selected_teeth'], JSON_UNESCAPED_UNICODE),
-                        'restoration_types' => json_encode($formData['restoration_types'], JSON_UNESCAPED_UNICODE),
-                        'implant_case'      => $formData['implant_case'] ? 1 : 0,
-                        'implant_chimney'   => $formData['implant_chimney'],
-                        'observations'      => $formData['observations'] !== '' ? $formData['observations'] : null,
-                        'signature_name'    => null,
-                    ];
-
-                    if (! $model->insert($insertData)) {
-                        $this->logModelFailure('lab order insert', $model->errors());
-                        $validation->setError('form', 'No fue posible guardar la orden en la base de datos.');
-                    } else {
-                        return redirect()->to('/orden-laboratorio')
-                            ->with('success', 'La orden quedó registrada correctamente.');
-                    }
-
+                foreach ($errors as $field => $message) {
+                    $validation->setError((string) $field, (string) $message);
                 }
-
-                foreach ($customErrors as $field => $message) {
-                    $validation->setError($field, $message);
-                }
+            } else {
+                return redirect()->to('/orden-laboratorio')
+                    ->with('success', 'La orden quedó registrada correctamente.');
             }
         }
 
@@ -174,66 +166,6 @@ class Orders extends BaseController
             'implant_chimney'   => trim((string) $this->request->getPost('implant_chimney')) ?: 'none',
             'observations'      => trim((string) $this->request->getPost('observations')),
         ];
-    }
-
-    private function fieldRules(): array
-    {
-        return [
-            'required_date'  => 'required|valid_date[Y-m-d]',
-            'client_id'      => 'required|integer|greater_than[0]',
-            'patient_id'     => 'required|integer|greater_than[0]',
-            'shade'          => 'permit_empty|max_length[50]',
-            'observations'   => 'permit_empty|max_length[2000]',
-        ];
-    }
-
-    private function customValidationErrors(array $formData, ?array $order = null, ?array $catalogs = null): array
-    {
-        $errors = [];
-        $catalogs ??= $this->loadCatalogs();
-
-        if ($formData['work_types'] === []) {
-            $errors['work_types'] = 'Seleccione al menos un trabajo.';
-        }
-
-        if ($formData['selected_teeth'] === []) {
-            $errors['selected_teeth'] = 'Seleccione al menos un diente.';
-        }
-
-        $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
-        $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
-
-        if ($client === null) {
-            $errors['client_id'] = 'Seleccione un cliente válido.';
-        }
-
-        if ($patient === null) {
-            $errors['patient_id'] = 'Seleccione un paciente válido.';
-        } elseif ((int) ($patient['client_id'] ?? 0) !== (int) $formData['client_id']) {
-            $errors['patient_id'] = 'El paciente no pertenece al cliente seleccionado.';
-        }
-
-        $referenceDate = $order !== null && ! empty($order['created_at'])
-            ? date('Y-m-d', strtotime((string) $order['created_at']))
-            : date('Y-m-d');
-
-        if ($formData['required_date'] !== '' && $formData['required_date'] < $referenceDate) {
-            $errors['required_date'] = 'La fecha requerida no puede ser anterior a la fecha de recepción.';
-        }
-
-        if (! array_key_exists($formData['implant_chimney'], pot_implant_chimney_options())) {
-            $errors['implant_chimney'] = 'Seleccione una opción de implante válida.';
-        }
-
-        if (! $formData['implant_case'] && $formData['implant_chimney'] !== 'none') {
-            $errors['implant_chimney'] = 'La chimenea solo aplica en prótesis sobre implante.';
-        }
-
-        if ($formData['implant_case'] && $formData['implant_chimney'] === 'none') {
-            $errors['implant_chimney'] = 'Seleccione si el caso sobre implante es con o sin chimenea.';
-        }
-
-        return $errors;
     }
 
     private function filterAllowedArray(array $values, array $allowed): array
