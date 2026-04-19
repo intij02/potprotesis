@@ -50,7 +50,7 @@
                     </select>
                 </div>
 
-                <label class="inline-check form-check">
+                <label class="inline-check form-check col-2">
                     <?php $isActive = old('is_active', isset($user) ? ((bool) $user['is_active'] ? '1' : '') : '1'); ?>
                     <input type="checkbox" class="form-check-input" name="is_active" value="1" <?= $isActive === '1' ? 'checked' : '' ?>>
                     <span>Usuario activo</span>

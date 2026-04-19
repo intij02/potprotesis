@@ -21,7 +21,6 @@
                     <?php if (admin_is_logged_in()): ?>
                         <div class="muted-text small">
                             <?= esc(admin_auth_user()['full_name'] ?? admin_auth_user()['username'] ?? 'Usuario') ?>
-                            · <?= esc(admin_user_role() ?? 'sin rol') ?>
                         </div>
                     <?php endif; ?>
                 </div>

@@ -6,9 +6,8 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-5">
                 <div class="admin-card">
-                    <span class="eyebrow">Acceso Restringido</span>
+                    <span class="eyebrow">Acceso al Panel</span>
                     <h1>Admin POT</h1>
-                    <p>Inicia sesión para consultar, editar y eliminar órdenes del laboratorio.</p>
                     <?php if (session()->getFlashdata('error')): ?>
                         <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
                     <?php endif; ?>
@@ -19,13 +18,17 @@
                         <?= csrf_field() ?>
                         <div>
                             <label for="username" class="form-label">Usuario</label>
-                            <input id="username" name="username" class="form-control" type="text" value="<?= old('username') ?>" placeholder="Usuario">
+                            <input id="username" name="username" class="form-control" type="text" value="<?= old('username') ?>" placeholder="Usuario" autofocus required>
                         </div>
                         <div>
                             <label for="password" class="form-label">Contraseña</label>
-                            <input id="password" name="password" class="form-control" type="password" placeholder="Contraseña">
+                            <input id="password" name="password" class="form-control" type="password" placeholder="Contraseña" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                        <div class="row justify-content-end">
+                            <div class="col-3 d-grid">
+                                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -7,10 +7,9 @@
             <div class="col-12 col-lg">
                 <span class="eyebrow">Panel Admin</span>
                 <h1>Usuarios</h1>
-                <p>Solo los administradores pueden dar de alta, editar y eliminar usuarios.</p>
             </div>
             <div class="col-12 col-lg-auto">
-                <a href="<?= base_url('admin/usuarios/nuevo') ?>" class="btn btn-primary">Nuevo usuario</a>
+                <a href="<?= base_url('admin/usuarios/nuevo') ?>" class="btn btn-primary btn-small">Nuevo usuario</a>
             </div>
         </div>
 
@@ -52,7 +51,7 @@
                             <td colspan="6">No hay usuarios registrados.</td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($users as $user): ?>
+                        <?php foreach ($users as $user): if($user[id] != 1){ ?>
                             <tr>
                                 <td><?= esc($user['username']) ?></td>
                                 <td><?= esc($user['full_name']) ?></td>
@@ -69,7 +68,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>

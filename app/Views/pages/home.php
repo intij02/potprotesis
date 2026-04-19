@@ -12,7 +12,6 @@
         <p>Elaboramos coronas, puentes y prótesis con precisión técnica y materiales de primera calidad. Servicio profesional para dentistas en Guadalajara.</p>
         <div class="hero-actions">
             <a class="btn btn-primary" href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">Solicitar Información</a>
-            <a class="btn btn-outline light" href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
         <div class="stats">
             <div><strong>15+</strong><span>Años de Experiencia</span></div>

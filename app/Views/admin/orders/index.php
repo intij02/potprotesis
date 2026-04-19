@@ -5,15 +5,9 @@
     <div class="container">
         <div class="row align-items-end g-3 mb-4">
             <div class="col-12 col-lg">
-                <span class="eyebrow">Panel Admin</span>
+                <span class="eyebrow" style="background: aquamarine;">Panel - Ordenes</span>
                 <h1>Administración de órdenes</h1>
-                <p>Panel administrativo con lectura protegida y edición limitada por permisos.</p>
             </div>
-            <?php if (admin_can_manage_users()): ?>
-                <div class="col-12 col-lg-auto">
-                    <a href="<?= base_url('admin/usuarios') ?>" class="btn btn-outline">Ver usuarios</a>
-                </div>
-            <?php endif; ?>
         </div>
 
         <?php if (session()->getFlashdata('success')): ?>
