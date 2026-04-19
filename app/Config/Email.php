@@ -137,6 +137,30 @@ class Email extends BaseConfig
         $this->SMTPPass   = (string) env('email.SMTPPass', env('email.smtpPass', ''));
         $this->SMTPPort   = (int) env('email.SMTPPort', env('email.smtpPort', 587));
         $this->SMTPCrypto = (string) env('email.SMTPCrypto', env('email.smtpCrypto', 'tls'));
+        $this->SMTPKeepAlive = $this->envBool('email.SMTPKeepAlive', env('email.smtpKeepAlive', $this->protocol === 'smtp'));
         $this->mailType   = (string) env('email.mailType', 'html');
+    }
+
+    private function envBool(string $key, $default): bool
+    {
+        $value = env($key, $default);
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            $normalized = strtolower(trim($value));
+
+            if (in_array($normalized, ['1', 'true', 'yes', 'on'], true)) {
+                return true;
+            }
+
+            if (in_array($normalized, ['0', 'false', 'no', 'off'], true)) {
+                return false;
+            }
+        }
+
+        return (bool) $value;
     }
 }
