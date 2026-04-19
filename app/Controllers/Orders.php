@@ -11,11 +11,12 @@ class Orders extends BaseController
     public function create()
     {
         $validation = service('validation');
-        $formData   = $this->defaultFormData();
-        $catalogs   = $this->loadCatalogs();
+        $clientUser = client_auth_user();
+        $formData   = $this->defaultFormData($clientUser);
+        $catalogs   = $this->loadCatalogs($clientUser);
 
         if ($this->request->getMethod() === 'post') {
-            $formData   = $this->requestFormData();
+            $formData   = $this->requestFormData($clientUser);
             $fieldRules = $this->fieldRules();
 
             if ($validation->setRules($fieldRules)->run($formData)) {
@@ -63,6 +64,7 @@ class Orders extends BaseController
             'formData'        => $formData,
             'clients'         => $catalogs['clients'],
             'patients'        => $catalogs['patients'],
+            'clientUser'      => $clientUser,
             'workTypes'       => pot_work_types(),
             'restorationTypes'=> pot_restoration_types(),
             'upperTeeth'      => pot_upper_teeth(),
@@ -71,11 +73,65 @@ class Orders extends BaseController
         ]);
     }
 
-    private function defaultFormData(): array
+    public function storePatient()
+    {
+        $clientUser = client_auth_user();
+
+        if (! is_array($clientUser) || ! isset($clientUser['id'])) {
+            return $this->response->setStatusCode(403)->setJSON([
+                'message' => 'Debes iniciar sesión como cliente para agregar pacientes.',
+                'csrf' => csrf_hash(),
+            ]);
+        }
+
+        $data = [
+            'client_id' => (int) $clientUser['id'],
+            'name' => trim((string) $this->request->getPost('name')),
+            'notes' => trim((string) $this->request->getPost('notes')) ?: null,
+            'is_active' => 1,
+        ];
+
+        $rules = [
+            'name' => 'required|min_length[3]|max_length[160]',
+            'notes' => 'permit_empty|max_length[2000]',
+        ];
+
+        if (! $this->validateData($data, $rules)) {
+            return $this->response->setStatusCode(422)->setJSON([
+                'message' => 'Revise los datos capturados.',
+                'errors' => $this->validator?->getErrors() ?? [],
+                'csrf' => csrf_hash(),
+            ]);
+        }
+
+        $model = new PatientModel();
+        $model->insert($data);
+        $patientId = (int) $model->getInsertID();
+        $patient = $model->find($patientId);
+
+        if (! is_array($patient)) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'message' => 'No fue posible crear el paciente.',
+                'csrf' => csrf_hash(),
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'message' => 'Paciente creado correctamente.',
+            'patient' => [
+                'id' => (int) $patient['id'],
+                'name' => (string) $patient['name'],
+                'client_id' => (int) $patient['client_id'],
+            ],
+            'csrf' => csrf_hash(),
+        ]);
+    }
+
+    private function defaultFormData(?array $clientUser = null): array
     {
         return [
             'required_date'     => '',
-            'client_id'         => '',
+            'client_id'         => isset($clientUser['id']) ? (int) $clientUser['id'] : '',
             'patient_id'        => '',
             'shade'             => '',
             'work_types'        => [],
@@ -87,13 +143,14 @@ class Orders extends BaseController
         ];
     }
 
-    private function requestFormData(): array
+    private function requestFormData(?array $clientUser = null): array
     {
         $implantCase = $this->request->getPost('implant_case') === '1';
+        $clientId = isset($clientUser['id']) ? (int) $clientUser['id'] : (int) $this->request->getPost('client_id');
 
         return [
             'required_date'     => trim((string) $this->request->getPost('required_date')),
-            'client_id'         => (int) $this->request->getPost('client_id'),
+            'client_id'         => $clientId,
             'patient_id'        => (int) $this->request->getPost('patient_id'),
             'shade'             => trim((string) $this->request->getPost('shade')),
             'work_types'        => $this->filterAllowedArray((array) $this->request->getPost('work_types'), pot_work_types()),
@@ -172,17 +229,34 @@ class Orders extends BaseController
         return array_values(array_unique(array_map('strval', $filtered)));
     }
 
-    private function loadCatalogs(): array
+    private function loadCatalogs(?array $clientUser = null): array
     {
-        $clients = (new ClientModel())
-            ->where('is_active', 1)
-            ->orderBy('name', 'ASC')
-            ->findAll();
+        $clientModel = new ClientModel();
+        $patientModel = new PatientModel();
 
-        $patients = (new PatientModel())
-            ->where('is_active', 1)
-            ->orderBy('name', 'ASC')
-            ->findAll();
+        if (is_array($clientUser) && isset($clientUser['id'])) {
+            $clients = $clientModel
+                ->where('is_active', 1)
+                ->where('id', (int) $clientUser['id'])
+                ->orderBy('name', 'ASC')
+                ->findAll();
+
+            $patients = $patientModel
+                ->where('is_active', 1)
+                ->where('client_id', (int) $clientUser['id'])
+                ->orderBy('name', 'ASC')
+                ->findAll();
+        } else {
+            $clients = $clientModel
+                ->where('is_active', 1)
+                ->orderBy('name', 'ASC')
+                ->findAll();
+
+            $patients = $patientModel
+                ->where('is_active', 1)
+                ->orderBy('name', 'ASC')
+                ->findAll();
+        }
 
         return [
             'clients' => $clients,

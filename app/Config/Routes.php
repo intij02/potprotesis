@@ -10,6 +10,7 @@ $routes->get('/servicios', 'Pages::servicios');
 $routes->get('/galeria', 'Pages::galeria');
 $routes->match(['get', 'post'], '/contacto', 'Pages::contacto');
 $routes->match(['get', 'post'], '/orden-laboratorio', 'Orders::create');
+$routes->post('/orden-laboratorio/paciente', 'Orders::storePatient');
 $routes->get('/cliente/login', 'Client\Auth::login');
 $routes->post('/cliente/login', 'Client\Auth::attempt');
 $routes->get('/cliente/registro', 'Client\Auth::register');

@@ -894,6 +894,22 @@ img {
     grid-column: 1 / -1;
 }
 
+.order-inline-field {
+    display: flex;
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.order-inline-field .form-select {
+    flex: 1;
+}
+
+.order-plus-button {
+    min-width: 3rem;
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+}
+
 .field-error {
     margin: 0;
     color: #b91c1c;
@@ -1120,6 +1136,10 @@ img {
     .radio-grid,
     .teeth-grid {
         grid-template-columns: 1fr;
+    }
+
+    .order-inline-field {
+        flex-direction: column;
     }
 
     .order-submit-card {

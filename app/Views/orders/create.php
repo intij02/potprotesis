@@ -19,8 +19,10 @@
             <div class="alert alert-danger">Revise los campos marcados antes de guardar la orden.</div>
         <?php endif; ?>
 
-        <?php if ($clients === [] || $patients === []): ?>
+        <?php if ($clients === [] || ($clientUser === null && $patients === [])): ?>
             <div class="alert alert-danger">No hay clientes o pacientes activos disponibles. Capture esos catálogos desde el panel administrativo antes de registrar una orden.</div>
+        <?php elseif ($clientUser !== null && $patients === []): ?>
+            <div class="alert alert-danger">Todavía no tienes pacientes registrados. Agrega uno desde el botón "+" para continuar.</div>
         <?php endif; ?>
 
         <form method="post" action="<?= site_url('/orden-laboratorio') ?>" class="order-form">
@@ -41,31 +43,44 @@
                         <?php endif; ?>
                     </div>
 
-                    <div class="field">
-                        <label for="client_id" class="form-label">Cliente / Dentista</label>
-                        <select id="client_id" name="client_id" class="form-select" <?= $clients === [] ? 'disabled' : '' ?>>
-                            <option value="">Seleccione un cliente</option>
-                            <?php foreach ($clients as $client): ?>
-                                <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $formData['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
-                                    <?= esc($client['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if ($validation->hasError('client_id')): ?>
-                            <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
-                        <?php endif; ?>
-                    </div>
+                    <?php if ($clientUser === null): ?>
+                        <div class="field">
+                            <label for="client_id" class="form-label">Cliente / Dentista</label>
+                            <select id="client_id" name="client_id" class="form-select" <?= $clients === [] ? 'disabled' : '' ?>>
+                                <option value="">Seleccione un cliente</option>
+                                <?php foreach ($clients as $client): ?>
+                                    <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $formData['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
+                                        <?= esc($client['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($validation->hasError('client_id')): ?>
+                                <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <input type="hidden" id="client_id" name="client_id" value="<?= esc((string) $formData['client_id']) ?>" data-phone="<?= esc($clients[0]['contact_phone'] ?? '') ?>">
+                        <div class="field">
+                            <label class="form-label">Cliente / Dentista</label>
+                            <input class="form-control" type="text" value="<?= esc($clientUser['name'] ?? '') ?>" readonly>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="field">
                         <label for="patient_id" class="form-label">Paciente</label>
-                        <select id="patient_id" name="patient_id" class="form-select" <?= $patients === [] ? 'disabled' : '' ?>>
-                            <option value="">Seleccione un paciente</option>
-                            <?php foreach ($patients as $patient): ?>
-                                <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $formData['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
-                                    <?= esc($patient['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <div class="order-inline-field">
+                            <select id="patient_id" name="patient_id" class="form-select" <?= $patients === [] ? 'disabled' : '' ?>>
+                                <option value="">Seleccione un paciente</option>
+                                <?php foreach ($patients as $patient): ?>
+                                    <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $formData['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
+                                        <?= esc($patient['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($clientUser !== null): ?>
+                                <button type="button" class="btn btn-outline btn-small order-plus-button" data-bs-toggle="modal" data-bs-target="#patientModal" aria-label="Agregar paciente">+</button>
+                            <?php endif; ?>
+                        </div>
                         <?php if ($validation->hasError('patient_id')): ?>
                             <p class="field-error"><?= esc($validation->getError('patient_id')) ?></p>
                         <?php endif; ?>
@@ -73,7 +88,7 @@
 
                     <div class="field">
                         <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
-                        <input id="client_phone_display" class="form-control" type="text" value="" readonly>
+                        <input id="client_phone_display" class="form-control" type="text" value="<?= esc($clients[0]['contact_phone'] ?? '') ?>" readonly>
                     </div>
 
                     <div class="field field-wide">
@@ -215,20 +230,56 @@
         </form>
     </div>
 </section>
+<?php if ($clientUser !== null): ?>
+<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="patientModalLabel">Agregar paciente</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form id="quick-patient-form" method="post" action="<?= site_url('/orden-laboratorio/paciente') ?>" class="stack-form">
+                <div class="modal-body">
+                    <?= csrf_field() ?>
+                    <div class="field">
+                        <label for="quick_patient_name" class="form-label">Nombre del paciente</label>
+                        <input id="quick_patient_name" name="name" class="form-control" type="text" required>
+                    </div>
+                    <div class="field">
+                        <label for="quick_patient_notes" class="form-label">Notas</label>
+                        <textarea id="quick_patient_notes" name="notes" class="form-control" rows="4"></textarea>
+                    </div>
+                    <p class="field-error" id="quick-patient-error" hidden></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const clientSelect = document.getElementById('client_id');
     const patientSelect = document.getElementById('patient_id');
     const phoneDisplay = document.getElementById('client_phone_display');
+    const quickPatientForm = document.getElementById('quick-patient-form');
+    const quickPatientError = document.getElementById('quick-patient-error');
+    const patientModalElement = document.getElementById('patientModal');
+    const patientModal = patientModalElement ? bootstrap.Modal.getOrCreateInstance(patientModalElement) : null;
 
     if (!clientSelect || !patientSelect || !phoneDisplay) {
         return;
     }
 
-    const filterPatients = function () {
-        const selectedClientId = clientSelect.value;
-        const currentPatientId = patientSelect.value;
-        let currentStillVisible = false;
+        const hasClientSelect = clientSelect.tagName === 'SELECT';
+
+        const filterPatients = function () {
+            const selectedClientId = clientSelect.value;
+            const currentPatientId = patientSelect.value;
+            let currentStillVisible = false;
 
         Array.from(patientSelect.options).forEach(function (option, index) {
             if (index === 0) {
@@ -251,15 +302,72 @@ document.addEventListener('DOMContentLoaded', function () {
         patientSelect.disabled = selectedClientId === '';
     };
 
-    const syncPhone = function () {
-        const option = clientSelect.options[clientSelect.selectedIndex];
-        phoneDisplay.value = option ? option.dataset.phone || '' : '';
-    };
+        const syncPhone = function () {
+            if (hasClientSelect) {
+                const option = clientSelect.options[clientSelect.selectedIndex];
+                phoneDisplay.value = option ? option.dataset.phone || '' : '';
+                return;
+            }
 
-    clientSelect.addEventListener('change', function () {
-        filterPatients();
-        syncPhone();
-    });
+            phoneDisplay.value = clientSelect.dataset.phone || '';
+        };
+
+    if (hasClientSelect) {
+        clientSelect.addEventListener('change', function () {
+            filterPatients();
+            syncPhone();
+        });
+    }
+
+    if (quickPatientForm && quickPatientError) {
+        quickPatientForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            quickPatientError.hidden = true;
+            quickPatientError.textContent = '';
+
+            const formData = new FormData(quickPatientForm);
+
+            try {
+                const response = await fetch(quickPatientForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                });
+                const payload = await response.json();
+
+                quickPatientForm.querySelectorAll('input[name="<?= csrf_token() ?>"]').forEach(function (input) {
+                    input.value = payload.csrf || input.value;
+                });
+                document.querySelectorAll('input[name="<?= csrf_token() ?>"]').forEach(function (input) {
+                    input.value = payload.csrf || input.value;
+                });
+
+                if (!response.ok || !payload.patient) {
+                    quickPatientError.textContent = payload.message || 'No fue posible crear el paciente.';
+                    quickPatientError.hidden = false;
+                    return;
+                }
+
+                const option = document.createElement('option');
+                option.value = String(payload.patient.id);
+                option.dataset.clientId = String(payload.patient.client_id);
+                option.textContent = payload.patient.name;
+                option.selected = true;
+                patientSelect.appendChild(option);
+                patientSelect.disabled = false;
+                patientSelect.value = String(payload.patient.id);
+
+                filterPatients();
+                quickPatientForm.reset();
+                patientModal?.hide();
+            } catch (error) {
+                quickPatientError.textContent = 'No fue posible crear el paciente.';
+                quickPatientError.hidden = false;
+            }
+        });
+    }
 
     filterPatients();
     syncPhone();
