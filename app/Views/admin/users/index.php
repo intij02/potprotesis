@@ -51,7 +51,10 @@
                             <td colspan="6">No hay usuarios registrados.</td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($users as $user): if($user[id] != 1){ ?>
+                        <?php foreach ($users as $user): ?>
+                            <?php if ((int) ($user['id'] ?? 0) === 1) {
+                                continue;
+                            } ?>
                             <tr>
                                 <td><?= esc($user['username']) ?></td>
                                 <td><?= esc($user['full_name']) ?></td>
@@ -68,7 +71,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        <?php } endforeach; ?>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
