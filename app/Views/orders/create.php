@@ -99,13 +99,6 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-xl-4">
-                        <div class="field">
-                            <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
-                            <input id="client_phone_display" class="form-control" type="text" value="<?= esc($clients[0]['contact_phone'] ?? '') ?>" readonly>
-                        </div>
-                    </div>
-
                     <div class="col-12">
                         <div class="field">
                             <label for="shade" class="form-label">Color</label>
@@ -321,14 +314,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     const clientSelect = document.getElementById('client_id');
     const patientSelect = document.getElementById('patient_id');
-    const phoneDisplay = document.getElementById('client_phone_display');
     const selectedTeethCount = document.querySelector('[data-selected-teeth-count]');
     const quickPatientForm = document.getElementById('quick-patient-form');
     const quickPatientError = document.getElementById('quick-patient-error');
     const patientModalElement = document.getElementById('patientModal');
     const patientModal = patientModalElement ? bootstrap.Modal.getOrCreateInstance(patientModalElement) : null;
 
-    if (!clientSelect || !patientSelect || !phoneDisplay) {
+    if (!clientSelect || !patientSelect) {
         return;
     }
 
@@ -360,20 +352,9 @@ document.addEventListener('DOMContentLoaded', function () {
         patientSelect.disabled = selectedClientId === '';
     };
 
-        const syncPhone = function () {
-            if (hasClientSelect) {
-                const option = clientSelect.options[clientSelect.selectedIndex];
-                phoneDisplay.value = option ? option.dataset.phone || '' : '';
-                return;
-            }
-
-            phoneDisplay.value = clientSelect.dataset.phone || '';
-        };
-
     if (hasClientSelect) {
         clientSelect.addEventListener('change', function () {
             filterPatients();
-            syncPhone();
         });
     }
 
@@ -438,7 +419,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     filterPatients();
-    syncPhone();
 });
 </script>
 <?= $this->endSection() ?>
