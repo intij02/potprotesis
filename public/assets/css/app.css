@@ -1009,6 +1009,10 @@ img {
     padding: 0.85rem 0.95rem;
 }
 
+.teeth-quadrant-left {
+    padding-right: 1.2rem;
+}
+
 .teeth-quadrant-right {
     padding-left: 1.2rem;
 }
@@ -1207,6 +1211,10 @@ img {
         gap: 0.35rem;
         padding: 0.7rem 0.5rem;
         grid-template-columns: repeat(8, minmax(1.75rem, 1fr));
+    }
+
+    .teeth-quadrant-left {
+        padding-right: 0.7rem;
     }
 
     .teeth-quadrant-right {

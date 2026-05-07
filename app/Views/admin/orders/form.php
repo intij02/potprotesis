@@ -189,7 +189,7 @@
 
                     <div class="teeth-chart-wrap">
                         <div class="teeth-chart" role="group" aria-label="Selección de dientes FDI">
-                            <div class="teeth-quadrant">
+                            <div class="teeth-quadrant teeth-quadrant-left">
                                 <?php foreach ($upperLeft as $tooth): ?>
                                     <label class="tooth-box">
                                         <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $order['selected_teeth'], true) ? 'checked' : '' ?>>
@@ -209,7 +209,7 @@
                                 <?php endforeach; ?>
                             </div>
 
-                            <div class="teeth-quadrant teeth-quadrant-lower">
+                            <div class="teeth-quadrant teeth-quadrant-left teeth-quadrant-lower">
                                 <?php foreach ($lowerLeft as $tooth): ?>
                                     <label class="tooth-box tooth-box-lower">
                                         <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $order['selected_teeth'], true) ? 'checked' : '' ?>>
