@@ -824,6 +824,7 @@ img {
     border-radius: 24px;
     padding: 1.75rem;
     box-shadow: var(--shadow);
+    overflow: hidden;
 }
 
 .order-panel-primary {
@@ -1172,6 +1173,16 @@ img {
     .order-panel {
         padding: 1.15rem;
         border-radius: 20px;
+    }
+
+    .order-form .row {
+        --bs-gutter-x: 0.85rem;
+    }
+
+    .order-form .row > * {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 auto;
     }
 
     .check-tile {
