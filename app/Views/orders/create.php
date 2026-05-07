@@ -48,95 +48,112 @@
                     <p>La orden toma el folio automático del sistema y la fecha de recepción desde el registro.</p>
                 </div>
 
-                    <div class="row g-3 order-grid order-grid-general">
-                    <div class="field">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
                         <label for="required_date" class="form-label">Fecha requerida</label>
                         <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($formData['required_date']) ?>">
                         <?php if ($validation->hasError('required_date')): ?>
                             <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
                         <?php endif; ?>
+                        </div>
                     </div>
 
                     <?php if ($clientUser === null): ?>
-                        <div class="field">
-                            <label for="client_id" class="form-label">Cliente / Dentista</label>
-                            <select id="client_id" name="client_id" class="form-select" <?= $clients === [] ? 'disabled' : '' ?>>
-                                <option value="">Seleccione un cliente</option>
-                                <?php foreach ($clients as $client): ?>
-                                    <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $formData['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
-                                        <?= esc($client['name']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php if ($validation->hasError('client_id')): ?>
-                                <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
-                            <?php endif; ?>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="field">
+                                <label for="client_id" class="form-label">Cliente / Dentista</label>
+                                <select id="client_id" name="client_id" class="form-select" <?= $clients === [] ? 'disabled' : '' ?>>
+                                    <option value="">Seleccione un cliente</option>
+                                    <?php foreach ($clients as $client): ?>
+                                        <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $formData['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
+                                            <?= esc($client['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if ($validation->hasError('client_id')): ?>
+                                    <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     <?php else: ?>
                         <input type="hidden" id="client_id" name="client_id" value="<?= esc((string) $formData['client_id']) ?>" data-phone="<?= esc($clients[0]['contact_phone'] ?? '') ?>">
-                        <div class="field">
-                            <label class="form-label">Cliente / Dentista</label>
-                            <input class="form-control" type="text" value="<?= esc($clientUser['name'] ?? '') ?>" readonly>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="field">
+                                <label class="form-label">Cliente / Dentista</label>
+                                <input class="form-control" type="text" value="<?= esc($clientUser['name'] ?? '') ?>" readonly>
+                            </div>
                         </div>
                     <?php endif; ?>
 
-                    <div class="field">
-                        <label for="patient_id" class="form-label">Paciente</label>
-                        <div class="order-inline-field">
-                            <select id="patient_id" name="patient_id" class="form-select" <?= $patients === [] ? 'disabled' : '' ?>>
-                                <option value="">Seleccione un paciente</option>
-                                <?php foreach ($patients as $patient): ?>
-                                    <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $formData['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
-                                        <?= esc($patient['name']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php if ($clientUser !== null): ?>
-                                <button type="button" class="btn btn-outline btn-small order-plus-button" data-bs-toggle="modal" data-bs-target="#patientModal" aria-label="Agregar paciente">+</button>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="patient_id" class="form-label">Paciente</label>
+                            <div class="order-inline-field">
+                                <select id="patient_id" name="patient_id" class="form-select" <?= $patients === [] ? 'disabled' : '' ?>>
+                                    <option value="">Seleccione un paciente</option>
+                                    <?php foreach ($patients as $patient): ?>
+                                        <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $formData['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
+                                            <?= esc($patient['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if ($clientUser !== null): ?>
+                                    <button type="button" class="btn btn-outline btn-small order-plus-button" data-bs-toggle="modal" data-bs-target="#patientModal" aria-label="Agregar paciente">+</button>
+                                <?php endif; ?>
+                            </div>
+                            <?php if ($validation->hasError('patient_id')): ?>
+                                <p class="field-error"><?= esc($validation->getError('patient_id')) ?></p>
                             <?php endif; ?>
                         </div>
-                        <?php if ($validation->hasError('patient_id')): ?>
-                            <p class="field-error"><?= esc($validation->getError('patient_id')) ?></p>
-                        <?php endif; ?>
                     </div>
 
-                    <div class="field">
-                        <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
-                        <input id="client_phone_display" class="form-control" type="text" value="<?= esc($clients[0]['contact_phone'] ?? '') ?>" readonly>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
+                            <input id="client_phone_display" class="form-control" type="text" value="<?= esc($clients[0]['contact_phone'] ?? '') ?>" readonly>
+                        </div>
                     </div>
 
-                    <div class="field field-wide">
-                        <label for="shade" class="form-label">Color</label>
-                        <input id="shade" name="shade" class="form-control" type="text" value="<?= esc($formData['shade']) ?>" placeholder="Ej. A2, B1, Bleach">
-                        <?php if ($validation->hasError('shade')): ?>
-                            <p class="field-error"><?= esc($validation->getError('shade')) ?></p>
-                        <?php endif; ?>
+                    <div class="col-12">
+                        <div class="field">
+                            <label for="shade" class="form-label">Color</label>
+                            <input id="shade" name="shade" class="form-control" type="text" value="<?= esc($formData['shade']) ?>" placeholder="Ej. A2, B1, Bleach">
+                            <?php if ($validation->hasError('shade')): ?>
+                                <p class="field-error"><?= esc($validation->getError('shade')) ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="order-split">
-                <div class="order-panel">
+            <div class="row g-4">
+                <div class="col-12 col-xl-6 d-flex">
+                    <div class="order-panel w-100 h-100">
                     <div class="order-panel-head">
                         <h2>Trabajo a realizar</h2>
                         <p>Seleccione uno o más trabajos del formato original.</p>
                     </div>
 
-                    <div class="check-grid">
+                    <div class="row g-3">
                         <?php foreach ($workTypes as $workType): ?>
-                            <label class="check-tile">
-                                <input type="checkbox" name="work_types[]" value="<?= esc($workType) ?>" <?= in_array($workType, $formData['work_types'], true) ? 'checked' : '' ?>>
-                                <span><?= esc($workType) ?></span>
-                            </label>
+                            <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="<?= esc($workType) ?>" <?= in_array($workType, $formData['work_types'], true) ? 'checked' : '' ?>>
+                                    <span><?= esc($workType) ?></span>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
                     </div>
 
                     <?php if ($validation->hasError('work_types')): ?>
                         <p class="field-error"><?= esc($validation->getError('work_types')) ?></p>
                     <?php endif; ?>
+                    </div>
                 </div>
 
-                <div class="order-panel">
+                <div class="col-12 col-xl-6 d-flex">
+                    <div class="order-panel w-100 h-100">
                     <div class="order-panel-head">
                         <h2>Restauración e implante</h2>
                         <p>Tipo de restauración y configuración de prótesis sobre implante.</p>
@@ -144,12 +161,14 @@
 
                     <div class="stack-block">
                         <p class="block-label">Restauración</p>
-                        <div class="check-grid compact">
+                        <div class="row g-3">
                             <?php foreach ($restorationTypes as $restorationType): ?>
-                                <label class="check-tile">
-                                    <input type="checkbox" name="restoration_types[]" value="<?= esc($restorationType) ?>" <?= in_array($restorationType, $formData['restoration_types'], true) ? 'checked' : '' ?>>
-                                    <span><?= esc($restorationType) ?></span>
-                                </label>
+                                <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="checkbox" name="restoration_types[]" value="<?= esc($restorationType) ?>" <?= in_array($restorationType, $formData['restoration_types'], true) ? 'checked' : '' ?>>
+                                        <span><?= esc($restorationType) ?></span>
+                                    </label>
+                                </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -160,18 +179,21 @@
                             <span>Prótesis sobre implante</span>
                         </label>
 
-                        <div class="radio-grid">
+                        <div class="row g-3">
                             <?php foreach ($implantOptions as $implantValue => $implantLabel): ?>
-                                <label class="check-tile">
-                                    <input type="radio" name="implant_chimney" value="<?= esc($implantValue) ?>" <?= $formData['implant_chimney'] === $implantValue ? 'checked' : '' ?>>
-                                    <span><?= esc($implantLabel) ?></span>
-                                </label>
+                                <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="radio" name="implant_chimney" value="<?= esc($implantValue) ?>" <?= $formData['implant_chimney'] === $implantValue ? 'checked' : '' ?>>
+                                        <span><?= esc($implantLabel) ?></span>
+                                    </label>
+                                </div>
                             <?php endforeach; ?>
                         </div>
 
                         <?php if ($validation->hasError('implant_chimney')): ?>
                             <p class="field-error"><?= esc($validation->getError('implant_chimney')) ?></p>
                         <?php endif; ?>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -244,8 +266,9 @@
                 <?php endif; ?>
             </div>
 
-            <div class="order-split order-split-bottom">
-                <div class="order-panel">
+            <div class="row g-4 align-items-start">
+                <div class="col-12 col-xl-8">
+                    <div class="order-panel">
                     <div class="order-panel-head">
                         <h2>Observaciones</h2>
                         <p>Indicaciones clínicas, notas de material y detalles adicionales del caso.</p>
@@ -258,13 +281,16 @@
                             <p class="field-error"><?= esc($validation->getError('observations')) ?></p>
                         <?php endif; ?>
                     </div>
+                    </div>
                 </div>
 
-                <aside class="order-submit-card">
+                <aside class="col-12 col-xl-4">
+                    <div class="order-submit-card">
                     <h3>Guardar orden</h3>
                     <p>El formulario se valida en servidor y queda listo para persistirse en MySQL desde `CI4`.</p>
                     <button type="submit" class="btn btn-secondary order-submit">Guardar orden</button>
                     <a href="<?= site_url('/orden-laboratorio') ?>" class="btn btn-outline order-submit">Limpiar formulario</a>
+                    </div>
                 </aside>
             </div>
         </form>

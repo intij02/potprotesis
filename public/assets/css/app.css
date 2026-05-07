@@ -844,15 +844,6 @@ img {
     margin-bottom: 0.45rem;
 }
 
-.order-grid {
-    display: grid;
-    gap: 1rem;
-}
-
-.order-grid-general {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .field {
     display: grid;
     gap: 0.5rem;
@@ -890,10 +881,6 @@ img {
     resize: vertical;
 }
 
-.field-wide {
-    grid-column: 1 / -1;
-}
-
 .order-inline-field {
     display: flex;
     gap: 0.75rem;
@@ -917,25 +904,8 @@ img {
     font-weight: 600;
 }
 
-.order-split {
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 2rem;
-}
-
-.order-split-bottom {
-    align-items: start;
-}
-
-.check-grid,
-.radio-grid {
-    display: grid;
-    gap: 0.85rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.check-grid.compact {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.check-option {
+    display: flex;
 }
 
 .check-tile {
@@ -948,6 +918,8 @@ img {
     background: rgba(245, 245, 245, 0.55);
     cursor: pointer;
     transition: border-color 0.2s ease, background 0.2s ease;
+    min-height: 100%;
+    width: 100%;
 }
 
 .check-tile:hover,
@@ -987,6 +959,7 @@ img {
     border-radius: 24px;
     padding: 1.25rem;
     background: white;
+    overflow: hidden;
 }
 
 .teeth-meta {
@@ -1011,8 +984,11 @@ img {
 }
 
 .teeth-chart-wrap {
+    max-width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 0.35rem;
+    -webkit-overflow-scrolling: touch;
 }
 
 .teeth-chart {
@@ -1092,8 +1068,6 @@ img {
 }
 
 .order-submit-card {
-    position: sticky;
-    top: 110px;
     display: grid;
     gap: 1rem;
     padding: 1.75rem;
@@ -1110,6 +1084,13 @@ img {
 
 .order-submit {
     width: 100%;
+}
+
+@media (min-width: 1200px) {
+    .order-submit-card {
+        position: sticky;
+        top: 110px;
+    }
 }
 
 @media (max-width: 980px) {
@@ -1178,13 +1159,6 @@ img {
         border-bottom: 1px solid rgba(212, 212, 216, 0.6);
     }
 
-    .order-grid-general,
-    .order-split,
-    .check-grid,
-    .radio-grid {
-        grid-template-columns: 1fr;
-    }
-
     .order-inline-field {
         flex-direction: column;
     }
@@ -1195,8 +1169,17 @@ img {
 }
 
 @media (max-width: 640px) {
+    .order-panel {
+        padding: 1.15rem;
+        border-radius: 20px;
+    }
+
+    .check-tile {
+        padding: 0.85rem 0.9rem;
+    }
+
     .teeth-card {
-        padding: 1rem;
+        padding: 0.9rem;
     }
 
     .teeth-meta {
@@ -1206,28 +1189,29 @@ img {
     }
 
     .teeth-chart {
-        min-width: 31rem;
+        min-width: 29rem;
     }
 
     .teeth-quadrant {
-        gap: 0.45rem;
-        padding: 0.75rem 0.7rem;
+        gap: 0.35rem;
+        padding: 0.7rem 0.5rem;
+        grid-template-columns: repeat(8, minmax(1.75rem, 1fr));
     }
 
     .teeth-quadrant-right {
-        padding-left: 1rem;
+        padding-left: 0.7rem;
     }
 
     .teeth-quadrant-lower {
-        padding-top: 1rem;
+        padding-top: 0.7rem;
     }
 
     .tooth-number {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
 
     .tooth-square {
-        width: 1.45rem;
-        height: 1.45rem;
+        width: 1.2rem;
+        height: 1.2rem;
     }
 }

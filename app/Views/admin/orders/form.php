@@ -31,96 +31,115 @@
                     <p>Orden #<?= esc($order['order_number'] !== '' ? $order['order_number'] : $order['id']) ?> registrada el <?= esc(site_datetime($order['created_at'] ?? null)) ?></p>
                 </div>
 
-                    <div class="order-grid order-grid-general">
-                    <div class="field">
-                        <label for="required_date" class="form-label">Fecha requerida</label>
-                        <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($order['required_date']) ?>">
-                        <?php if ($validation->hasError('required_date')): ?>
-                            <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
-                        <?php endif; ?>
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="required_date" class="form-label">Fecha requerida</label>
+                            <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($order['required_date']) ?>">
+                            <?php if ($validation->hasError('required_date')): ?>
+                                <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label for="client_id" class="form-label">Cliente / Dentista</label>
-                        <select id="client_id" name="client_id" class="form-select">
-                            <option value="">Seleccione un cliente</option>
-                            <?php foreach ($clients as $client): ?>
-                                <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $order['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
-                                    <?= esc($client['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if ($validation->hasError('client_id')): ?>
-                            <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
-                        <?php endif; ?>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="client_id" class="form-label">Cliente / Dentista</label>
+                            <select id="client_id" name="client_id" class="form-select">
+                                <option value="">Seleccione un cliente</option>
+                                <?php foreach ($clients as $client): ?>
+                                    <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $order['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
+                                        <?= esc($client['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($validation->hasError('client_id')): ?>
+                                <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label for="patient_id" class="form-label">Paciente</label>
-                        <select id="patient_id" name="patient_id" class="form-select">
-                            <option value="">Seleccione un paciente</option>
-                            <?php foreach ($patients as $patient): ?>
-                                <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $order['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
-                                    <?= esc($patient['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if ($validation->hasError('patient_id')): ?>
-                            <p class="field-error"><?= esc($validation->getError('patient_id')) ?></p>
-                        <?php endif; ?>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="patient_id" class="form-label">Paciente</label>
+                            <select id="patient_id" name="patient_id" class="form-select">
+                                <option value="">Seleccione un paciente</option>
+                                <?php foreach ($patients as $patient): ?>
+                                    <option value="<?= esc((string) $patient['id']) ?>" data-client-id="<?= esc((string) $patient['client_id']) ?>" <?= (string) $order['patient_id'] === (string) $patient['id'] ? 'selected' : '' ?>>
+                                        <?= esc($patient['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($validation->hasError('patient_id')): ?>
+                                <p class="field-error"><?= esc($validation->getError('patient_id')) ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
-                        <input id="client_phone_display" class="form-control" type="text" value="<?= esc($order['contact_phone']) ?>" readonly>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="client_phone_display" class="form-label">Teléfono de contacto</label>
+                            <input id="client_phone_display" class="form-control" type="text" value="<?= esc($order['contact_phone']) ?>" readonly>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label for="status" class="form-label">Estatus</label>
-                        <select id="status" name="status" class="form-select">
-                            <?php foreach (pot_order_status_options() as $statusValue => $statusLabel): ?>
-                                <option value="<?= esc($statusValue) ?>" <?= ($order['status'] ?? 'recibida') === $statusValue ? 'selected' : '' ?>>
-                                    <?= esc($statusLabel) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if ($validation->hasError('status')): ?>
-                            <p class="field-error"><?= esc($validation->getError('status')) ?></p>
-                        <?php endif; ?>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="status" class="form-label">Estatus</label>
+                            <select id="status" name="status" class="form-select">
+                                <?php foreach (pot_order_status_options() as $statusValue => $statusLabel): ?>
+                                    <option value="<?= esc($statusValue) ?>" <?= ($order['status'] ?? 'recibida') === $statusValue ? 'selected' : '' ?>>
+                                        <?= esc($statusLabel) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($validation->hasError('status')): ?>
+                                <p class="field-error"><?= esc($validation->getError('status')) ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="field field-wide">
-                        <label for="shade" class="form-label">Color</label>
-                        <input id="shade" name="shade" class="form-control" type="text" value="<?= esc($order['shade']) ?>">
+                    <div class="col-12">
+                        <div class="field">
+                            <label for="shade" class="form-label">Color</label>
+                            <input id="shade" name="shade" class="form-control" type="text" value="<?= esc($order['shade']) ?>">
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="order-split">
-                <div class="order-panel">
+            <div class="row g-4">
+                <div class="col-12 col-xl-6 d-flex">
+                    <div class="order-panel w-100 h-100">
                     <div class="order-panel-head">
                         <h2>Trabajo a realizar</h2>
                     </div>
-                    <div class="check-grid">
+                    <div class="row g-3">
                         <?php foreach ($workTypes as $workType): ?>
-                            <label class="check-tile">
-                                <input type="checkbox" name="work_types[]" value="<?= esc($workType) ?>" <?= in_array($workType, $order['work_types'], true) ? 'checked' : '' ?>>
-                                <span><?= esc($workType) ?></span>
-                            </label>
+                            <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="<?= esc($workType) ?>" <?= in_array($workType, $order['work_types'], true) ? 'checked' : '' ?>>
+                                    <span><?= esc($workType) ?></span>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                     <?php if ($validation->hasError('work_types')): ?>
                         <p class="field-error"><?= esc($validation->getError('work_types')) ?></p>
                     <?php endif; ?>
+                    </div>
                 </div>
 
-                <div class="order-panel">
+                <div class="col-12 col-xl-6 d-flex">
+                    <div class="order-panel w-100 h-100">
                     <div class="order-panel-head">
                         <h2>Restauración e implante</h2>
                     </div>
                     <div class="stack-block">
                         <p class="block-label">Restauración</p>
-                        <div class="check-grid compact">
+                        <div class="row g-3">
                             <?php foreach ($restorationTypes as $restorationType): ?>
-                                <label class="check-tile">
-                                    <input type="checkbox" name="restoration_types[]" value="<?= esc($restorationType) ?>" <?= in_array($restorationType, $order['restoration_types'], true) ? 'checked' : '' ?>>
-                                    <span><?= esc($restorationType) ?></span>
-                                </label>
+                                <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="checkbox" name="restoration_types[]" value="<?= esc($restorationType) ?>" <?= in_array($restorationType, $order['restoration_types'], true) ? 'checked' : '' ?>>
+                                        <span><?= esc($restorationType) ?></span>
+                                    </label>
+                                </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -131,18 +150,21 @@
                             <span>Prótesis sobre implante</span>
                         </label>
 
-                        <div class="radio-grid">
+                        <div class="row g-3">
                             <?php foreach ($implantOptions as $implantValue => $implantLabel): ?>
-                                <label class="check-tile">
-                                    <input type="radio" name="implant_chimney" value="<?= esc($implantValue) ?>" <?= $order['implant_chimney'] === $implantValue ? 'checked' : '' ?>>
-                                    <span><?= esc($implantLabel) ?></span>
-                                </label>
+                                <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="radio" name="implant_chimney" value="<?= esc($implantValue) ?>" <?= $order['implant_chimney'] === $implantValue ? 'checked' : '' ?>>
+                                        <span><?= esc($implantLabel) ?></span>
+                                    </label>
+                                </div>
                             <?php endforeach; ?>
                         </div>
 
                         <?php if ($validation->hasError('implant_chimney')): ?>
                             <p class="field-error"><?= esc($validation->getError('implant_chimney')) ?></p>
                         <?php endif; ?>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -215,18 +237,22 @@
                 <?php endif; ?>
             </div>
 
-            <div class="order-split order-split-bottom">
-                <div class="order-panel">
+            <div class="row g-4 align-items-start">
+                <div class="col-12 col-xl-8">
+                    <div class="order-panel">
                     <div class="field">
                         <label for="observations" class="form-label">Observaciones</label>
                         <textarea id="observations" name="observations" class="form-control" rows="7"><?= esc($order['observations']) ?></textarea>
                     </div>
+                    </div>
                 </div>
 
-                <aside class="order-submit-card">
+                <aside class="col-12 col-xl-4">
+                    <div class="order-submit-card">
                     <h3>Guardar cambios</h3>
                     <p>Los cambios se aplicarán directamente sobre la orden registrada.</p>
                     <button type="submit" class="btn btn-secondary order-submit">Actualizar orden</button>
+                    </div>
                 </aside>
             </div>
         </form>
