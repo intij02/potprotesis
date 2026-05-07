@@ -65,3 +65,12 @@ if (! function_exists('client_is_logged_in')) {
         return client_auth_user() !== null;
     }
 }
+
+if (! function_exists('client_is_active')) {
+    function client_is_active(): bool
+    {
+        $user = client_auth_user();
+
+        return is_array($user) && (bool) ($user['is_active'] ?? false);
+    }
+}

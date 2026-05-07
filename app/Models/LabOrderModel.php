@@ -34,6 +34,7 @@ class LabOrderModel extends Model
         'restoration_types',
         'implant_case',
         'implant_chimney',
+        'attachments',
         'observations',
         'signature_name',
     ];
@@ -44,6 +45,7 @@ class LabOrderModel extends Model
         'work_types'         => 'json-array',
         'selected_teeth'     => 'json-array',
         'restoration_types'  => 'json-array',
+        'attachments'        => 'json-array',
         'implant_case'       => 'boolean',
     ];
 }

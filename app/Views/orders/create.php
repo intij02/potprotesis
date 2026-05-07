@@ -9,7 +9,7 @@
     </div>
 </section>
 
-<section class="section" style="padding: 2rem 0 0 0;">
+<section class="section" style="padding: 2rem 0 2rem 0;">
     <div class="container">
         <?php if (session('success')): ?>
             <div class="alert alert-success"><?= esc(session('success')) ?></div>
@@ -39,8 +39,24 @@
             <div class="alert alert-danger">Todavía no tienes pacientes registrados. Agrega uno desde el botón "+" para continuar.</div>
         <?php endif; ?>
 
-        <form method="post" action="<?= site_url('/orden-laboratorio') ?>" class="order-form">
+        <form method="post" action="<?= site_url('/orden-laboratorio') ?>" class="order-form" enctype="multipart/form-data">
             <?= csrf_field() ?>
+
+            <div class="order-panel">
+                <div class="order-panel-head">
+                    <h2>Archivos del caso</h2>
+                    <p>Opcional. Adjunte hasta 5 archivos en formato STL, OTL o PDF.</p>
+                </div>
+
+                <div class="field">
+                    <label for="attachments" class="form-label">Archivos adjuntos</label>
+                    <input id="attachments" name="attachments[]" class="form-control" type="file" accept=".stl,.otl,.pdf,application/pdf" multiple>
+                    <p class="field-help">Máximo 5 archivos por orden.</p>
+                    <?php if ($validation->hasError('attachments')): ?>
+                        <p class="field-error"><?= esc($validation->getError('attachments')) ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
 
             <div class="order-panel order-panel-primary">
                 <div class="order-panel-head">
@@ -51,40 +67,15 @@
                 <div class="row g-3">
                     <div class="col-12 col-md-6 col-xl-4">
                         <div class="field">
-                        <label for="required_date" class="form-label">Fecha requerida</label>
-                        <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($formData['required_date']) ?>">
-                        <?php if ($validation->hasError('required_date')): ?>
-                            <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
-                        <?php endif; ?>
+                            <label for="required_date" class="form-label">Fecha requerida</label>
+                            <input id="required_date" name="required_date" class="form-control" type="date" min="<?= esc($minRequiredDate) ?>" value="<?= esc($formData['required_date']) ?>">
+                            <?php if ($validation->hasError('required_date')): ?>
+                                <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
 
-                    <?php if ($clientUser === null): ?>
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="field">
-                                <label for="client_id" class="form-label">Cliente / Dentista</label>
-                                <select id="client_id" name="client_id" class="form-select" <?= $clients === [] ? 'disabled' : '' ?>>
-                                    <option value="">Seleccione un cliente</option>
-                                    <?php foreach ($clients as $client): ?>
-                                        <option value="<?= esc((string) $client['id']) ?>" data-phone="<?= esc($client['contact_phone'] ?? '') ?>" <?= (string) $formData['client_id'] === (string) $client['id'] ? 'selected' : '' ?>>
-                                            <?= esc($client['name']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <?php if ($validation->hasError('client_id')): ?>
-                                    <p class="field-error"><?= esc($validation->getError('client_id')) ?></p>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <input type="hidden" id="client_id" name="client_id" value="<?= esc((string) $formData['client_id']) ?>" data-phone="<?= esc($clients[0]['contact_phone'] ?? '') ?>">
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="field">
-                                <label class="form-label">Cliente / Dentista</label>
-                                <input class="form-control" type="text" value="<?= esc($clientUser['name'] ?? '') ?>" readonly>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                    <input type="hidden" id="client_id" name="client_id" value="<?= esc((string) $formData['client_id']) ?>" data-phone="<?= esc($clients[0]['contact_phone'] ?? '') ?>">
 
                     <div class="col-12 col-md-6 col-xl-4">
                         <div class="field">

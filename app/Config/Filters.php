@@ -166,6 +166,8 @@ class Filters extends BaseFilters
         ],
         'clientauth' => [
             'before' => [
+                'orden-laboratorio',
+                'orden-laboratorio/*',
                 'cliente/panel',
                 'cliente/panel/*',
                 'cliente/pacientes',

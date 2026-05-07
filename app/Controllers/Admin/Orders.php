@@ -7,6 +7,7 @@ use App\Models\ClientModel;
 use App\Models\LabOrderModel;
 use App\Models\PatientModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\HTTP\Files\UploadedFile;
 
 class Orders extends BaseController
 {
@@ -63,6 +64,16 @@ class Orders extends BaseController
             return $this->renderForm(array_merge($order, $formData), $validation);
         }
 
+        $existingAttachments = is_array($order['attachments'] ?? null) ? $order['attachments'] : [];
+        $attachments = $existingAttachments;
+        $attachmentError = $this->handleAttachmentsUpload($attachments, count($existingAttachments));
+
+        if ($attachmentError !== null) {
+            $validation->setError('attachments', $attachmentError);
+
+            return $this->renderForm(array_merge($order, $formData, ['attachments' => $attachments]), $validation);
+        }
+
         $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
         $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
 
@@ -80,6 +91,7 @@ class Orders extends BaseController
             'restoration_types' => json_encode($formData['restoration_types'], JSON_UNESCAPED_UNICODE),
             'implant_case'      => $formData['implant_case'] ? 1 : 0,
             'implant_chimney'   => $formData['implant_chimney'],
+            'attachments'       => $attachments === [] ? null : json_encode($attachments, JSON_UNESCAPED_UNICODE),
             'observations'      => $formData['observations'] !== '' ? $formData['observations'] : null,
             'signature_name'    => null,
         ]);
@@ -90,11 +102,12 @@ class Orders extends BaseController
     private function renderForm(array $order, $validation): string
     {
         $catalogs = $this->loadCatalogs();
+        $mappedOrder = $this->mapOrderToFormData($order);
 
         return view('admin/orders/form', [
             'pageTitle'        => 'Editar Orden - POT Prótesis Dental',
             'metaDescription'  => 'Edición administrativa de órdenes.',
-            'order'            => $this->mapOrderToFormData($order),
+            'order'            => $mappedOrder,
             'validation'       => $validation,
             'clients'          => $catalogs['clients'],
             'patients'         => $catalogs['patients'],
@@ -103,6 +116,7 @@ class Orders extends BaseController
             'upperTeeth'       => pot_upper_teeth(),
             'lowerTeeth'       => pot_lower_teeth(),
             'implantOptions'   => pot_implant_chimney_options(),
+            'minRequiredDate'  => pot_min_required_date($mappedOrder['created_at'] ?? ''),
         ]);
     }
 
@@ -136,6 +150,7 @@ class Orders extends BaseController
             'restoration_types' => is_array($order['restoration_types'] ?? null) ? $order['restoration_types'] : [],
             'implant_case'      => (bool) ($order['implant_case'] ?? false),
             'implant_chimney'   => (string) ($order['implant_chimney'] ?? 'none'),
+            'attachments'       => is_array($order['attachments'] ?? null) ? $order['attachments'] : [],
             'observations'      => (string) ($order['observations'] ?? ''),
             'created_at'        => (string) ($order['created_at'] ?? ''),
         ];
@@ -198,12 +213,10 @@ class Orders extends BaseController
             $errors['patient_id'] = 'El paciente no pertenece al cliente seleccionado.';
         }
 
-        $referenceDate = $order !== null && ! empty($order['created_at'])
-            ? date('Y-m-d', strtotime((string) $order['created_at']))
-            : date('Y-m-d');
+        $minRequiredDate = pot_min_required_date($order['created_at'] ?? null);
 
-        if ($formData['required_date'] !== '' && $formData['required_date'] < $referenceDate) {
-            $errors['required_date'] = 'La fecha requerida no puede ser anterior a la fecha de recepción.';
+        if ($formData['required_date'] !== '' && $formData['required_date'] < $minRequiredDate) {
+            $errors['required_date'] = 'La fecha requerida debe ser al menos 7 días después de la fecha de creación.';
         }
 
         if (! array_key_exists($formData['implant_chimney'], pot_implant_chimney_options())) {
@@ -226,6 +239,64 @@ class Orders extends BaseController
         $filtered = array_values(array_intersect($values, $allowed));
 
         return array_values(array_unique(array_map('strval', $filtered)));
+    }
+
+    private function handleAttachmentsUpload(array &$attachments, int $existingCount = 0): ?string
+    {
+        $files = $this->request->getFileMultiple('attachments');
+
+        if (! is_array($files) || $files === []) {
+            return null;
+        }
+
+        $validFiles = [];
+
+        foreach ($files as $file) {
+            if (! $file instanceof UploadedFile || $file->getError() === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+
+            $validFiles[] = $file;
+        }
+
+        if ($validFiles === []) {
+            return null;
+        }
+
+        if ($existingCount + count($validFiles) > 5) {
+            return 'Solo se pueden adjuntar hasta 5 archivos por orden.';
+        }
+
+        $targetPath = WRITEPATH . 'uploads/orders';
+
+        if (! is_dir($targetPath)) {
+            mkdir($targetPath, 0775, true);
+        }
+
+        foreach ($validFiles as $file) {
+            if (! $file->isValid()) {
+                return 'No fue posible cargar uno de los archivos seleccionados.';
+            }
+
+            $extension = strtolower($file->getExtension());
+
+            if (! in_array($extension, ['stl', 'otl', 'pdf'], true)) {
+                return 'Los archivos permitidos son STL, OTL y PDF.';
+            }
+
+            $newName = $file->getRandomName();
+            $file->move($targetPath, $newName, true);
+
+            $attachments[] = [
+                'original_name' => $file->getClientName(),
+                'stored_name' => $newName,
+                'path' => 'uploads/orders/' . $newName,
+                'extension' => $extension,
+                'size' => $file->getSize(),
+            ];
+        }
+
+        return null;
     }
 
     private function loadCatalogs(): array

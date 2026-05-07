@@ -61,3 +61,18 @@ if (! function_exists('pot_implant_chimney_options')) {
         ];
     }
 }
+
+if (! function_exists('pot_min_required_date')) {
+    function pot_min_required_date(?string $referenceDate = null): string
+    {
+        $baseTimestamp = $referenceDate !== null && $referenceDate !== ''
+            ? strtotime($referenceDate)
+            : time();
+
+        if ($baseTimestamp === false) {
+            $baseTimestamp = time();
+        }
+
+        return date('Y-m-d', strtotime('+7 days', $baseTimestamp));
+    }
+}

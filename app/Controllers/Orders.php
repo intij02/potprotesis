@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ClientModel;
 use App\Models\LabOrderModel;
 use App\Models\PatientModel;
+use CodeIgniter\HTTP\Files\UploadedFile;
 
 class Orders extends BaseController
 {
@@ -17,6 +18,73 @@ class Orders extends BaseController
 
         if ($this->request->getMethod() === 'post') {
             $formData = $this->requestFormData($clientUser);
+            $minRequiredDate = pot_min_required_date();
+
+            if (! $validation->setRules($this->fieldRules())->run($formData)) {
+                return view('orders/create', [
+                    'pageTitle'       => 'Orden de Laboratorio - POT Prótesis Dental',
+                    'metaDescription' => 'Formulario digital para registrar órdenes de trabajo de prótesis dental.',
+                    'validation'      => $validation,
+                    'formData'        => $formData,
+                    'clients'         => $catalogs['clients'],
+                    'patients'        => $catalogs['patients'],
+                    'clientUser'      => $clientUser,
+                    'workTypes'       => pot_work_types(),
+                    'restorationTypes'=> pot_restoration_types(),
+                    'upperTeeth'      => pot_upper_teeth(),
+                    'lowerTeeth'      => pot_lower_teeth(),
+                    'implantOptions'  => pot_implant_chimney_options(),
+                    'minRequiredDate' => $minRequiredDate,
+                ]);
+            }
+
+            $customErrors = $this->customValidationErrors($formData, $catalogs, $minRequiredDate);
+
+            if ($customErrors !== []) {
+                foreach ($customErrors as $field => $message) {
+                    $validation->setError($field, $message);
+                }
+
+                return view('orders/create', [
+                    'pageTitle'       => 'Orden de Laboratorio - POT Prótesis Dental',
+                    'metaDescription' => 'Formulario digital para registrar órdenes de trabajo de prótesis dental.',
+                    'validation'      => $validation,
+                    'formData'        => $formData,
+                    'clients'         => $catalogs['clients'],
+                    'patients'        => $catalogs['patients'],
+                    'clientUser'      => $clientUser,
+                    'workTypes'       => pot_work_types(),
+                    'restorationTypes'=> pot_restoration_types(),
+                    'upperTeeth'      => pot_upper_teeth(),
+                    'lowerTeeth'      => pot_lower_teeth(),
+                    'implantOptions'  => pot_implant_chimney_options(),
+                    'minRequiredDate' => $minRequiredDate,
+                ]);
+            }
+
+            $attachments = [];
+            $attachmentError = $this->handleAttachmentsUpload($attachments);
+
+            if ($attachmentError !== null) {
+                $validation->setError('attachments', $attachmentError);
+
+                return view('orders/create', [
+                    'pageTitle'       => 'Orden de Laboratorio - POT Prótesis Dental',
+                    'metaDescription' => 'Formulario digital para registrar órdenes de trabajo de prótesis dental.',
+                    'validation'      => $validation,
+                    'formData'        => $formData,
+                    'clients'         => $catalogs['clients'],
+                    'patients'        => $catalogs['patients'],
+                    'clientUser'      => $clientUser,
+                    'workTypes'       => pot_work_types(),
+                    'restorationTypes'=> pot_restoration_types(),
+                    'upperTeeth'      => pot_upper_teeth(),
+                    'lowerTeeth'      => pot_lower_teeth(),
+                    'implantOptions'  => pot_implant_chimney_options(),
+                    'minRequiredDate' => $minRequiredDate,
+                ]);
+            }
+
             $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
             $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
             $model = new LabOrderModel();
@@ -36,6 +104,7 @@ class Orders extends BaseController
                 'restoration_types' => json_encode($formData['restoration_types'], JSON_UNESCAPED_UNICODE),
                 'implant_case'      => $formData['implant_case'] ? 1 : 0,
                 'implant_chimney'   => $formData['implant_chimney'],
+                'attachments'       => $attachments === [] ? null : json_encode($attachments, JSON_UNESCAPED_UNICODE),
                 'observations'      => $formData['observations'] !== '' ? $formData['observations'] : null,
                 'signature_name'    => null,
             ];
@@ -67,6 +136,7 @@ class Orders extends BaseController
             'upperTeeth'      => pot_upper_teeth(),
             'lowerTeeth'      => pot_lower_teeth(),
             'implantOptions'  => pot_implant_chimney_options(),
+            'minRequiredDate' => pot_min_required_date(),
         ]);
     }
 
@@ -145,6 +215,7 @@ class Orders extends BaseController
             'restoration_types' => [],
             'implant_case'      => false,
             'implant_chimney'   => 'none',
+            'attachments'       => [],
             'observations'      => '',
         ];
     }
@@ -166,6 +237,118 @@ class Orders extends BaseController
             'implant_chimney'   => trim((string) $this->request->getPost('implant_chimney')) ?: 'none',
             'observations'      => trim((string) $this->request->getPost('observations')),
         ];
+    }
+
+    private function fieldRules(): array
+    {
+        return [
+            'required_date'  => 'required|valid_date[Y-m-d]',
+            'client_id'      => 'required|integer|greater_than[0]',
+            'patient_id'     => 'required|integer|greater_than[0]',
+            'shade'          => 'permit_empty|max_length[50]',
+            'observations'   => 'permit_empty|max_length[2000]',
+        ];
+    }
+
+    private function customValidationErrors(array $formData, array $catalogs, string $minRequiredDate): array
+    {
+        $errors = [];
+        $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
+        $patient = $this->findPatientById($formData['patient_id'], $catalogs['patients']);
+
+        if ($formData['work_types'] === []) {
+            $errors['work_types'] = 'Seleccione al menos un trabajo.';
+        }
+
+        if ($formData['selected_teeth'] === []) {
+            $errors['selected_teeth'] = 'Seleccione al menos un diente.';
+        }
+
+        if ($client === null) {
+            $errors['client_id'] = 'Seleccione un cliente válido.';
+        }
+
+        if ($patient === null) {
+            $errors['patient_id'] = 'Seleccione un paciente válido.';
+        } elseif ((int) ($patient['client_id'] ?? 0) !== (int) $formData['client_id']) {
+            $errors['patient_id'] = 'El paciente no pertenece al cliente seleccionado.';
+        }
+
+        if ($formData['required_date'] !== '' && $formData['required_date'] < $minRequiredDate) {
+            $errors['required_date'] = 'La fecha requerida debe ser al menos 7 días después de la fecha de creación.';
+        }
+
+        if (! array_key_exists($formData['implant_chimney'], pot_implant_chimney_options())) {
+            $errors['implant_chimney'] = 'Seleccione una opción de implante válida.';
+        }
+
+        if (! $formData['implant_case'] && $formData['implant_chimney'] !== 'none') {
+            $errors['implant_chimney'] = 'La chimenea solo aplica en prótesis sobre implante.';
+        }
+
+        if ($formData['implant_case'] && $formData['implant_chimney'] === 'none') {
+            $errors['implant_chimney'] = 'Seleccione si el caso sobre implante es con o sin chimenea.';
+        }
+
+        return $errors;
+    }
+
+    private function handleAttachmentsUpload(array &$attachments): ?string
+    {
+        $files = $this->request->getFileMultiple('attachments');
+
+        if (! is_array($files) || $files === []) {
+            return null;
+        }
+
+        $validFiles = [];
+
+        foreach ($files as $file) {
+            if (! $file instanceof UploadedFile || $file->getError() === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+
+            $validFiles[] = $file;
+        }
+
+        if ($validFiles === []) {
+            return null;
+        }
+
+        if (count($validFiles) > 5) {
+            return 'Solo se pueden adjuntar hasta 5 archivos por orden.';
+        }
+
+        $targetPath = WRITEPATH . 'uploads/orders';
+
+        if (! is_dir($targetPath)) {
+            mkdir($targetPath, 0775, true);
+        }
+
+        foreach ($validFiles as $file) {
+            if (! $file->isValid()) {
+                return 'No fue posible cargar uno de los archivos seleccionados.';
+            }
+
+            $extension = strtolower($file->getExtension());
+
+            if (! in_array($extension, ['stl', 'otl', 'pdf'], true)) {
+                return 'Los archivos permitidos son STL, OTL y PDF.';
+            }
+
+            $newName = $file->getRandomName();
+            $file->move($targetPath, $newName, true);
+
+            $attachments[] = [
+                'original_name' => $file->getClientName(),
+                'stored_name' => $newName,
+                'path' => 'uploads/orders/' . $newName,
+                'extension' => $extension,
+                'size' => $file->getSize(),
+            ];
+        }
+
+        return null;
     }
 
     private function filterAllowedArray(array $values, array $allowed): array

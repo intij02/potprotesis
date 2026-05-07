@@ -917,6 +917,22 @@ img {
     font-weight: 600;
 }
 
+.field-help {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.88rem;
+}
+
+.file-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--muted-foreground);
+}
+
+.file-list li + li {
+    margin-top: 0.25rem;
+}
+
 .check-option {
     display: flex;
 }

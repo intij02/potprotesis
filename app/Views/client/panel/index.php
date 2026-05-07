@@ -7,8 +7,10 @@
         <h1><?= esc($client['name'] ?? 'Cliente') ?></h1>
         <p>Consulta el estado actual de tus órdenes registradas en POT.</p>
         <div class="hero-actions">
-            <a href="<?= base_url('orden-laboratorio') ?>" class="btn btn-secondary btn-small">Crear orden</a>
-            <a href="<?= base_url('cliente/pacientes') ?>" class="btn btn-primary btn-small">Administrar pacientes</a>
+            <?php if (client_is_active()): ?>
+                <a href="<?= base_url('orden-laboratorio') ?>" class="btn btn-secondary btn-small">Crear orden</a>
+                <a href="<?= base_url('cliente/pacientes') ?>" class="btn btn-primary btn-small">Administrar pacientes</a>
+            <?php endif; ?>
             <a href="<?= base_url('cliente/logout') ?>" class="btn btn-outline btn-small">Cerrar sesión</a>
         </div>
     </div>
@@ -24,13 +26,17 @@
                 <span class="eyebrow">Pacientes</span>
                 <h2><?= esc((string) $patientCount) ?></h2>
                 <p>Pacientes registrados en tu cuenta para asociarlos a nuevas órdenes.</p>
-                <a href="<?= base_url('cliente/pacientes/nuevo') ?>" class="btn btn-outline btn-small">Nuevo paciente</a>
+                <?php if (client_is_active()): ?>
+                    <a href="<?= base_url('cliente/pacientes/nuevo') ?>" class="btn btn-outline btn-small">Nuevo paciente</a>
+                <?php endif; ?>
             </article>
             <article class="mini-card">
                 <span class="eyebrow">Órdenes</span>
                 <h2><?= esc((string) count($orders)) ?></h2>
                 <p>Órdenes visibles actualmente dentro de tu panel de cliente.</p>
-                <a href="<?= base_url('orden-laboratorio') ?>" class="btn btn-outline btn-small">Capturar orden</a>
+                <?php if (client_is_active()): ?>
+                    <a href="<?= base_url('orden-laboratorio') ?>" class="btn btn-outline btn-small">Capturar orden</a>
+                <?php endif; ?>
             </article>
         </div>
 

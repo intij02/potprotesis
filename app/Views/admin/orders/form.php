@@ -22,8 +22,35 @@
             <div class="alert alert-danger">Faltan clientes o pacientes activos en catálogo. Complete esos datos antes de actualizar la orden.</div>
         <?php endif; ?>
 
-        <form method="post" action="<?= base_url('admin/ordenes/actualizar/' . $order['id']) ?>" class="order-form">
+        <form method="post" action="<?= base_url('admin/ordenes/actualizar/' . $order['id']) ?>" class="order-form" enctype="multipart/form-data">
             <?= csrf_field() ?>
+
+            <div class="order-panel">
+                <div class="order-panel-head">
+                    <h2>Archivos del caso</h2>
+                    <p>Opcional. Adjunte hasta 5 archivos en formato STL, OTL o PDF.</p>
+                </div>
+
+                <div class="field">
+                    <label for="attachments" class="form-label">Archivos adjuntos</label>
+                    <input id="attachments" name="attachments[]" class="form-control" type="file" accept=".stl,.otl,.pdf,application/pdf" multiple>
+                    <p class="field-help">Máximo 5 archivos por orden. Los nuevos se agregan a los ya existentes.</p>
+                    <?php if ($validation->hasError('attachments')): ?>
+                        <p class="field-error"><?= esc($validation->getError('attachments')) ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <?php if (($order['attachments'] ?? []) !== []): ?>
+                    <div class="field mt-3">
+                        <label class="form-label">Archivos actuales</label>
+                        <ul class="file-list">
+                            <?php foreach ($order['attachments'] as $attachment): ?>
+                                <li><?= esc($attachment['original_name'] ?? $attachment['stored_name'] ?? 'Archivo') ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+            </div>
 
             <div class="order-panel order-panel-teeth">
                 <div class="order-panel-head">
@@ -35,7 +62,7 @@
                     <div class="col-12 col-md-6 col-xl-4">
                         <div class="field">
                             <label for="required_date" class="form-label">Fecha requerida</label>
-                            <input id="required_date" name="required_date" class="form-control" type="date" value="<?= esc($order['required_date']) ?>">
+                            <input id="required_date" name="required_date" class="form-control" type="date" min="<?= esc($minRequiredDate) ?>" value="<?= esc($order['required_date']) ?>">
                             <?php if ($validation->hasError('required_date')): ?>
                                 <p class="field-error"><?= esc($validation->getError('required_date')) ?></p>
                             <?php endif; ?>

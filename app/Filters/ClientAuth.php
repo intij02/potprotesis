@@ -32,6 +32,7 @@ class ClientAuth implements FilterInterface
             'id' => $client['id'],
             'name' => $client['name'],
             'email' => $client['email'],
+            'is_active' => (bool) ($client['is_active'] ?? false),
         ]);
 
         return null;

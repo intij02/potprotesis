@@ -77,6 +77,7 @@ class Auth extends BaseController
             'id' => $client['id'],
             'name' => $client['name'],
             'email' => $client['email'],
+            'is_active' => (bool) ($client['is_active'] ?? false),
         ]);
 
         return redirect()->to('/cliente/panel')->with('success', 'Sesión iniciada correctamente.');
