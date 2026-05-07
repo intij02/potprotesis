@@ -179,36 +179,62 @@
             <div class="order-panel">
                 <div class="order-panel-head">
                     <h2>Selección de dientes</h2>
-                    <p>Capture las piezas dentales del caso usando la nomenclatura FDI.</p>
+                    <p>Capture las piezas dentales del caso usando el esquema FDI estándar de laboratorio.</p>
                 </div>
 
+                <?php
+                    $upperLeft = array_slice($upperTeeth, 0, 8);
+                    $upperRight = array_slice($upperTeeth, 8);
+                    $lowerLeft = array_slice($lowerTeeth, 0, 8);
+                    $lowerRight = array_slice($lowerTeeth, 8);
+                ?>
                 <div class="teeth-card">
                     <div class="teeth-meta">
                         <span class="teeth-badge">FDI</span>
-                        <span><?= count($formData['selected_teeth']) ?> diente(s) seleccionado(s)</span>
+                        <span><strong data-selected-teeth-count><?= count($formData['selected_teeth']) ?></strong> diente(s) seleccionado(s)</span>
                     </div>
 
-                    <div class="teeth-group">
-                        <p class="block-label">Arcada superior</p>
-                        <div class="teeth-grid">
-                            <?php foreach ($upperTeeth as $tooth): ?>
-                                <label class="tooth-tile">
-                                    <span><?= esc($tooth) ?></span>
-                                    <input type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $formData['selected_teeth'], true) ? 'checked' : '' ?>>
-                                </label>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
+                    <div class="teeth-chart-wrap">
+                        <div class="teeth-chart" role="group" aria-label="Selección de dientes FDI">
+                            <div class="teeth-quadrant">
+                                <?php foreach ($upperLeft as $tooth): ?>
+                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $formData['selected_teeth'], true) ? 'checked' : '' ?>>
+                                        <span class="tooth-number"><?= esc($tooth) ?></span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
 
-                    <div class="teeth-group">
-                        <p class="block-label">Arcada inferior</p>
-                        <div class="teeth-grid">
-                            <?php foreach ($lowerTeeth as $tooth): ?>
-                                <label class="tooth-tile">
-                                    <span><?= esc($tooth) ?></span>
-                                    <input type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $formData['selected_teeth'], true) ? 'checked' : '' ?>>
-                                </label>
-                            <?php endforeach; ?>
+                            <div class="teeth-quadrant teeth-quadrant-right">
+                                <?php foreach ($upperRight as $tooth): ?>
+                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $formData['selected_teeth'], true) ? 'checked' : '' ?>>
+                                        <span class="tooth-number"><?= esc($tooth) ?></span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="teeth-quadrant teeth-quadrant-lower">
+                                <?php foreach ($lowerLeft as $tooth): ?>
+                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $formData['selected_teeth'], true) ? 'checked' : '' ?>>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number"><?= esc($tooth) ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="teeth-quadrant teeth-quadrant-right teeth-quadrant-lower">
+                                <?php foreach ($lowerRight as $tooth): ?>
+                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="<?= esc($tooth) ?>" <?= in_array($tooth, $formData['selected_teeth'], true) ? 'checked' : '' ?>>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number"><?= esc($tooth) ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -279,6 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const clientSelect = document.getElementById('client_id');
     const patientSelect = document.getElementById('patient_id');
     const phoneDisplay = document.getElementById('client_phone_display');
+    const selectedTeethCount = document.querySelector('[data-selected-teeth-count]');
     const quickPatientForm = document.getElementById('quick-patient-form');
     const quickPatientError = document.getElementById('quick-patient-error');
     const patientModalElement = document.getElementById('patientModal');
@@ -332,6 +359,16 @@ document.addEventListener('DOMContentLoaded', function () {
             syncPhone();
         });
     }
+
+    document.querySelectorAll('.tooth-checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (!selectedTeethCount) {
+                return;
+            }
+
+            selectedTeethCount.textContent = String(document.querySelectorAll('.tooth-checkbox:checked').length);
+        });
+    });
 
     if (quickPatientForm && quickPatientError) {
         quickPatientForm.addEventListener('submit', async function (event) {

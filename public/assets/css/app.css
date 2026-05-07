@@ -951,7 +951,7 @@ img {
 }
 
 .check-tile:hover,
-.tooth-tile:hover {
+.tooth-box:hover .tooth-square {
     border-color: rgba(58, 65, 84, 0.34);
     background: rgba(58, 65, 84, 0.05);
 }
@@ -1010,37 +1010,85 @@ img {
     color: var(--primary);
 }
 
-.teeth-group {
+.teeth-chart-wrap {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+}
+
+.teeth-chart {
+    position: relative;
     display: grid;
-    gap: 0.9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: 34rem;
+    background:
+        linear-gradient(to right, transparent calc(50% - 2px), rgba(63, 63, 70, 0.95) calc(50% - 2px), rgba(63, 63, 70, 0.95) calc(50% + 2px), transparent calc(50% + 2px)),
+        linear-gradient(to bottom, transparent calc(50% - 2px), rgba(63, 63, 70, 0.95) calc(50% - 2px), rgba(63, 63, 70, 0.95) calc(50% + 2px), transparent calc(50% + 2px));
 }
 
-.teeth-group + .teeth-group {
-    margin-top: 1.5rem;
-}
-
-.teeth-grid {
+.teeth-quadrant {
     display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(8, minmax(2.25rem, 1fr));
+    gap: 0.6rem;
+    padding: 0.85rem 0.95rem;
 }
 
-.tooth-tile {
+.teeth-quadrant-right {
+    padding-left: 1.2rem;
+}
+
+.teeth-quadrant-lower {
+    padding-top: 1.2rem;
+}
+
+.tooth-box {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 90px;
-    gap: 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: rgba(248, 250, 252, 1);
+    gap: 0.5rem;
     cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    user-select: none;
 }
 
-.tooth-tile span {
+.tooth-box-lower {
+    flex-direction: column;
+}
+
+.tooth-number {
     font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--foreground);
+}
+
+.tooth-checkbox {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    margin: 0;
+}
+
+.tooth-square {
+    width: 1.7rem;
+    height: 1.7rem;
+    border: 2px solid rgba(113, 113, 122, 0.85);
+    border-radius: 0.2rem;
+    background: white;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tooth-checkbox:checked + .tooth-number + .tooth-square,
+.tooth-box-lower .tooth-checkbox:checked + .tooth-square {
+    border-color: var(--primary);
+    background: rgba(7, 89, 133, 0.12);
+    box-shadow: inset 0 0 0 0.3rem rgba(7, 89, 133, 0.18);
+}
+
+.tooth-checkbox:focus-visible + .tooth-number + .tooth-square,
+.tooth-box-lower .tooth-checkbox:focus-visible + .tooth-square {
+    outline: 3px solid rgba(14, 165, 233, 0.28);
+    outline-offset: 2px;
 }
 
 .order-submit-card {
@@ -1133,8 +1181,7 @@ img {
     .order-grid-general,
     .order-split,
     .check-grid,
-    .radio-grid,
-    .teeth-grid {
+    .radio-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1144,5 +1191,43 @@ img {
 
     .order-submit-card {
         position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .teeth-card {
+        padding: 1rem;
+    }
+
+    .teeth-meta {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+
+    .teeth-chart {
+        min-width: 31rem;
+    }
+
+    .teeth-quadrant {
+        gap: 0.45rem;
+        padding: 0.75rem 0.7rem;
+    }
+
+    .teeth-quadrant-right {
+        padding-left: 1rem;
+    }
+
+    .teeth-quadrant-lower {
+        padding-top: 1rem;
+    }
+
+    .tooth-number {
+        font-size: 0.95rem;
+    }
+
+    .tooth-square {
+        width: 1.45rem;
+        height: 1.45rem;
     }
 }
