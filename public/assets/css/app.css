@@ -1244,6 +1244,10 @@ img {
         padding-top: 0.45rem;
     }
 
+    .tooth-box {
+        gap: 0.2rem;
+    }
+
     .tooth-number {
         font-size: 0.8rem;
     }
