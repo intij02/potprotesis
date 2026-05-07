@@ -5,6 +5,7 @@ namespace App\Controllers\Client;
 use App\Controllers\BaseController;
 use App\Models\ClientModel;
 use CodeIgniter\Email\Email;
+use Config\Services;
 
 class Auth extends BaseController
 {
@@ -24,6 +25,13 @@ class Auth extends BaseController
     {
         if (client_is_logged_in()) {
             return redirect()->to('/cliente/panel');
+        }
+
+        $formStartedAt = session('client_register_form_started_at');
+
+        if (! is_int($formStartedAt) || (time() - $formStartedAt) > 7200) {
+            $formStartedAt = time();
+            $this->session->set('client_register_form_started_at', $formStartedAt);
         }
 
         return view('client/auth/register', [
@@ -80,20 +88,41 @@ class Auth extends BaseController
             return redirect()->to('/cliente/panel');
         }
 
+        $this->purgeExpiredPendingClients();
+
+        $validation = service('validation');
+        $formStartedAt = session('client_register_form_started_at');
+        $formData = [
+            'name' => $this->sanitizeSingleLine((string) $this->request->getPost('name')),
+            'contact_phone' => $this->sanitizeSingleLine((string) $this->request->getPost('contact_phone')),
+            'email' => $this->sanitizeSingleLine((string) $this->request->getPost('email')),
+            'website' => trim((string) $this->request->getPost('website')),
+        ];
+
         $rules = [
-            'name' => 'required|min_length[3]|max_length[160]',
+            'name' => 'required|min_length[3]|max_length[160]|regex_match[/^[\p{L}\p{N}\s\.\-\'"&]+$/u]',
             'contact_phone' => 'permit_empty|max_length[30]|regex_match[/^[0-9\+\-\(\)\s]+$/]',
             'email' => 'required|valid_email|max_length[190]',
             'password' => 'required|min_length[8]|max_length[255]',
             'password_confirm' => 'required|matches[password]',
         ];
 
-        if (! $this->validate($rules)) {
+        if (! $validation->setRules($rules)->run($this->request->getPost())) {
             return redirect()->back()->withInput()->with('error', 'Revise los datos capturados.');
         }
 
+        $securityErrors = $this->registrationSecurityErrors($formData, is_int($formStartedAt) ? $formStartedAt : 0);
+
+        if ($securityErrors !== []) {
+            foreach ($securityErrors as $field => $message) {
+                $validation->setError($field, $message);
+            }
+
+            return redirect()->back()->withInput()->with('error', reset($securityErrors) ?: 'No fue posible procesar el registro.');
+        }
+
         $clientModel = new ClientModel();
-        $email = trim((string) $this->request->getPost('email'));
+        $email = $formData['email'];
         $existingClient = $clientModel->findByEmail($email);
 
         if ($existingClient && (bool) ($existingClient['is_active'] ?? false)) {
@@ -103,8 +132,8 @@ class Auth extends BaseController
         $token = bin2hex(random_bytes(32));
         $now = date('Y-m-d H:i:s');
         $clientData = [
-            'name' => trim((string) $this->request->getPost('name')),
-            'contact_phone' => $this->nullableString((string) $this->request->getPost('contact_phone')),
+            'name' => $formData['name'],
+            'contact_phone' => $this->nullableString($formData['contact_phone']),
             'email' => $email,
             'password_hash' => password_hash((string) $this->request->getPost('password'), PASSWORD_DEFAULT),
             'email_verification_token' => $token,
@@ -133,6 +162,9 @@ class Auth extends BaseController
 
             return redirect()->back()->withInput()->with('error', 'No fue posible enviar el correo de activación. Verifica la configuración de email e intenta nuevamente.');
         }
+
+        $this->recordRegistrationSubmission();
+        $this->session->set('client_register_form_started_at', time());
 
         return redirect()->to('/cliente/login')->with('success', 'Tu registro fue creado. Revisa tu correo para activar la cuenta.');
     }
@@ -250,5 +282,166 @@ HTML;
         $value = trim($value);
 
         return $value !== '' ? $value : null;
+    }
+
+    private function sanitizeSingleLine(string $value): string
+    {
+        $value = strip_tags($value);
+        $value = str_replace(["\r", "\n"], ' ', $value);
+
+        return trim(preg_replace('/\s+/', ' ', $value) ?? '');
+    }
+
+    private function registrationSecurityErrors(array $formData, int $formStartedAt): array
+    {
+        $errors = [];
+
+        if ($formData['website'] !== '') {
+            $errors['name'] = 'No fue posible procesar el registro.';
+        }
+
+        if ($formStartedAt <= 0) {
+            $errors['name'] = 'La sesión del formulario expiró. Recarga la página e intenta nuevamente.';
+        } else {
+            $elapsed = time() - $formStartedAt;
+
+            if ($elapsed < 4) {
+                $errors['name'] = 'Envío demasiado rápido. Intenta nuevamente.';
+            }
+
+            if ($elapsed > 7200) {
+                $errors['name'] = 'La sesión del formulario expiró. Recarga la página e intenta nuevamente.';
+            }
+        }
+
+        if ($this->looksLikeSpamRegistration($formData)) {
+            $errors['name'] = 'No fue posible procesar el registro.';
+        }
+
+        if ($this->isRegistrationRateLimited()) {
+            $errors['email'] = 'Se alcanzó el límite temporal de registros desde esta red. Intenta más tarde.';
+        }
+
+        return $errors;
+    }
+
+    private function looksLikeSpamRegistration(array $formData): bool
+    {
+        $name = $formData['name'];
+        $email = $formData['email'];
+
+        if ($name === '' || $email === '') {
+            return true;
+        }
+
+        if (preg_match('/https?:\/\/|www\.|<|>|\[url|\[link/i', $name) === 1) {
+            return true;
+        }
+
+        if (preg_match('/(.)\1{5,}/u', $name) === 1) {
+            return true;
+        }
+
+        $digitsInName = preg_match_all('/\d/', $name);
+
+        if ($digitsInName !== false && $digitsInName >= 6) {
+            return true;
+        }
+
+        $localPart = strstr($email, '@', true);
+
+        if ($localPart === false) {
+            return true;
+        }
+
+        if (strlen($localPart) >= 18 && preg_match('/\d{5,}/', $localPart) === 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isRegistrationRateLimited(): bool
+    {
+        $cache = Services::cache();
+        $ip = $this->request->getIPAddress() ?: 'unknown';
+        $key = 'client_register_rate_' . sha1($ip);
+        $state = $cache->get($key);
+
+        if (! is_array($state) || ! isset($state['count'], $state['first_at'])) {
+            return false;
+        }
+
+        if ((time() - (int) $state['first_at']) > 3600) {
+            return false;
+        }
+
+        return (int) $state['count'] >= 3;
+    }
+
+    private function recordRegistrationSubmission(): void
+    {
+        $cache = Services::cache();
+        $ip = $this->request->getIPAddress() ?: 'unknown';
+        $key = 'client_register_rate_' . sha1($ip);
+        $state = $cache->get($key);
+        $now = time();
+
+        if (! is_array($state) || ! isset($state['count'], $state['first_at']) || (($now - (int) $state['first_at']) > 3600)) {
+            $state = [
+                'count' => 1,
+                'first_at' => $now,
+            ];
+        } else {
+            $state['count'] = (int) $state['count'] + 1;
+        }
+
+        $cache->save($key, $state, 3600);
+    }
+
+    private function purgeExpiredPendingClients(): void
+    {
+        $threshold = date('Y-m-d H:i:s', time() - 172800);
+
+        $builder = (new ClientModel())
+            ->withDeleted()
+            ->where('is_active', 0)
+            ->where('email_verified_at', null)
+            ->where('email_verification_token IS NOT NULL', null, false)
+            ->groupStart()
+                ->where('email_verification_sent_at <', $threshold)
+                ->orWhere('created_at <', $threshold)
+            ->groupEnd();
+
+        $rows = $builder->findAll();
+
+        if ($rows === []) {
+            return;
+        }
+
+        foreach ($rows as $row) {
+            $clientId = (int) ($row['id'] ?? 0);
+
+            if ($clientId <= 0 || $this->clientHasRelations($clientId)) {
+                continue;
+            }
+
+            (new ClientModel())->delete($clientId, true);
+        }
+    }
+
+    private function clientHasRelations(int $clientId): bool
+    {
+        if ($clientId <= 0) {
+            return false;
+        }
+
+        $patientCount = (int) model('PatientModel')->withDeleted()->where('client_id', $clientId)->countAllResults();
+
+        if ($patientCount > 0) {
+            return true;
+        }
+
+        return (int) model('LabOrderModel')->withDeleted()->where('client_id', $clientId)->countAllResults() > 0;
     }
 }
