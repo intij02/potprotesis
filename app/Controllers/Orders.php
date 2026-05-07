@@ -16,7 +16,7 @@ class Orders extends BaseController
         $formData   = $this->defaultFormData($clientUser);
         $catalogs   = $this->loadCatalogs($clientUser);
 
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->is('post')) {
             $formData = $this->requestFormData($clientUser);
             $minRequiredDate = pot_min_required_date();
 
@@ -99,12 +99,12 @@ class Orders extends BaseController
                 'contact_phone'     => (string) ($client['contact_phone'] ?? ''),
                 'status'            => 'recibida',
                 'shade'             => $formData['shade'] !== '' ? $formData['shade'] : null,
-                'work_types'        => json_encode($formData['work_types'], JSON_UNESCAPED_UNICODE),
-                'selected_teeth'    => json_encode($formData['selected_teeth'], JSON_UNESCAPED_UNICODE),
-                'restoration_types' => json_encode($formData['restoration_types'], JSON_UNESCAPED_UNICODE),
+                'work_types'        => $formData['work_types'],
+                'selected_teeth'    => $formData['selected_teeth'],
+                'restoration_types' => $formData['restoration_types'],
                 'implant_case'      => $formData['implant_case'] ? 1 : 0,
                 'implant_chimney'   => $formData['implant_chimney'],
-                'attachments'       => $attachments === [] ? null : json_encode($attachments, JSON_UNESCAPED_UNICODE),
+                'attachments'       => $attachments,
                 'observations'      => $formData['observations'] !== '' ? $formData['observations'] : null,
                 'signature_name'    => null,
             ];

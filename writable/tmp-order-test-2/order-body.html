@@ -1,0 +1,700 @@
+<!-- DEBUG-VIEW START 4 APPPATH/Views/orders/create.php -->
+<!-- DEBUG-VIEW START 3 APPPATH/Views/layouts/main.php -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script  id="debugbar_loader" data-time="1778194086.265516" src="http://localhost:8080/?debugbar"></script><script  id="debugbar_dynamic_script"></script><style  id="debugbar_dynamic_style"></style><script class="kint-rich-script">"use strict";(()=>{function m(n){if(!(n instanceof Element))throw new Error("Invalid argument to dedupeElement()");let t=n.ownerDocument,e=E(n);for(let s of t.querySelectorAll(e))n!==s&&s.parentNode.removeChild(s)}function d(n){return n instanceof Element?n.ownerDocument.contains(n):!1}function E(n){if(!(n instanceof Element))throw new Error("Invalid argument to buildClassSelector()");return[n.nodeName,...n.classList].join(".")}function f(n){if(!(n instanceof Element))throw new Error("Invalid argument to selectText()");let t=n.ownerDocument,e=t.getSelection(),s=t.createRange();s.selectNodeContents(n),e.removeAllRanges(),e.addRange(s)}function I(n,t){let e;return function(...s){clearTimeout(e),e=setTimeout(function(){n(...s)},t)}}function x(n){if(!(n instanceof Element))throw new Error("Invalid argument to offsetTop()");return n.offsetTop+(n.offsetParent?x(n.offsetParent):0)}var u=class n{static#e=new Set;static toggleSearchBox(t,e){let s=t.querySelector(".kint-search"),i=t.parentNode;if(s)if(s.classList.toggle("kint-show",e)){if(s.focus(),s.select(),!n.#e.has(s)){let r=i.querySelectorAll("dl").length,o=200;r>1e4&&(o=700),s.addEventListener("keyup",I(n.#t.bind(null,s),o)),n.#e.add(s)}n.#t(s)}else i.classList.remove("kint-search-root")}static#t(t){let e=t.closest(".kint-parent")?.parentNode;if(e)if(t.classList.contains("kint-show")&&t.value.length){let s=e.dataset.lastSearch;if(e.classList.add("kint-search-root"),s!==t.value){e.dataset.lastSearch=t.value,e.classList.remove("kint-search-match");for(let i of e.querySelectorAll(".kint-search-match"))i.classList.remove("kint-search-match");n.#s(e,t.value.toUpperCase())}}else e.classList.remove("kint-search-root")}static#s(t,e){let s=t.cloneNode(!0);for(let c of s.querySelectorAll(".access-path"))c.remove();if(!s.textContent.toUpperCase().includes(e))return;t.classList.add("kint-search-match");let i=t.firstElementChild;for(;i&&i.tagName!=="DT";)i=i.nextElementSibling;if(!i)return;let r=a.getChildContainer(i);if(!r)return;let o,l;for(let c of r.children)c.tagName==="DL"?n.#s(c,e):c.tagName==="UL"&&(c.classList.contains("kint-tabs")?o=c.children:c.classList.contains("kint-tab-contents")&&(l=c.children));if(!(!o||o.length!==l?.length))for(let c=o.length;c--;){let k=!1,F=!1;o[c].textContent.toUpperCase().includes(e)&&(k=!0);let O=l[c].cloneNode(!0);for(let v of O.querySelectorAll(".access-path"))v.remove();if(O.textContent.toUpperCase().includes(e)&&(k=!0,F=!0),k&&o[c].classList.add("kint-search-match"),F)for(let v of l[c].children)v.tagName==="DL"&&n.#s(v,e)}}};var g=class{static sort(t,e){let s=t.dataset.kintTableSort,i=parseInt(s)===e?-1:1,r=t.tBodies[0];[...r.rows].sort(function(o,l){o=o.cells[e].textContent.trim().toLocaleLowerCase(),l=l.cells[e].textContent.trim().toLocaleLowerCase();let c=0;return!isNaN(o)&&!isNaN(l)?(o=parseFloat(o),l=parseFloat(l),c=o-l):isNaN(o)&&!isNaN(l)?c=1:isNaN(l)&&!isNaN(o)?c=-1:c=(""+o).localeCompare(""+l),c*i}).forEach(o=>r.appendChild(o)),i<0?t.dataset.kintTableSort=null:t.dataset.kintTableSort=e}};var a=class n{#e;#t;#s;constructor(t){if(!(t instanceof h))throw new Error("Invalid argument to Rich.constructor()");this.#e=t,this.#e.runOnInit(this.#i.bind(this));let e=new q(this,t);new b(this,t.window,e)}#i(){let t=this.#e.window.document;if(d(this.#t)||(this.#t=t.querySelector("style.kint-rich-style")),this.#t&&m(this.#t),t.querySelector(".kint-rich.kint-file")){this.setupFolder(t);let e=this.#s.querySelector("dd.kint-foldout"),s=Array.from(t.querySelectorAll(".kint-rich.kint-file"));for(let i of s)i.parentNode!==e&&e.appendChild(i);this.#s.classList.add("kint-show")}}addToFolder(t){let e=t.closest(".kint-rich");if(!e)throw new Error("Bad addToFolder");let s=this.#e.window.document;if(this.setupFolder(s),this.folder.contains(t))throw new Error("Bad addToFolder");let i=this.#s.querySelector("dd.kint-foldout"),r=t.closest(".kint-parent, .kint-rich"),o=Array.from(e.querySelectorAll(".kint-folder-trigger"));if(e===r||e.querySelectorAll(".kint-rich > dl").length===1){for(let l of o)l.remove();e.classList.add("kint-file"),i.insertBefore(e,i.firstChild)}else{let l=s.createElement("div");l.classList.add("kint-rich"),l.classList.add("kint-file"),l.appendChild(r.closest(".kint-rich > dl"));let c=e.lastElementChild;c.matches(".kint-rich > footer")&&l.appendChild(c.cloneNode(!0));for(let k of o)k.remove();i.insertBefore(l,i.firstChild)}n.toggle(this.#s.querySelector(".kint-parent"),!0)}setupFolder(t){if(this.#s)d(this.#s)||(this.#s=t.querySelector(".kint-rich.kint-folder"));else{let e=t.createElement("template");e.innerHTML='<div class="kint-rich kint-folder"><dl><dt class="kint-parent"><nav></nav>Kint</dt><dd class="kint-foldout"></dd></dl></div>',this.#s=e.content.firstChild,t.body.appendChild(this.#s)}}get folder(){return d(this.#s)||(this.#s=this.#e.window.document.querySelector(".kint-rich.kint-folder")),this.#s&&m(this.#s),this.#s}isFolderOpen(){let t=this.#s?.querySelector("dd.kint-foldout");if(t)return t.previousSibling.classList.contains("kint-show")}static getChildContainer(t){let e=t.nextElementSibling;for(;e&&!e.matches("dd");)e=e.nextElementSibling;return e}static toggle(t,e){let s=n.getChildContainer(t);s&&(e=t.classList.toggle("kint-show",e),n.#n(s,e))}static switchTab(t){t.parentNode.getElementsByClassName("kint-active-tab")[0].classList.remove("kint-active-tab"),t.classList.add("kint-active-tab");let e=t,s=0;for(;e=e.previousElementSibling;)s++;let i=t.parentNode.nextSibling.children;for(let r=i.length;r--;)r===s?(i[r].classList.add("kint-show"),n.#n(i[r],!0)):i[r].classList.remove("kint-show")}static toggleChildren(t,e){let s=n.getChildContainer(t);if(!s)return;e===void 0&&(e=t.classList.contains("kint-show"));let i=Array.from(s.getElementsByClassName("kint-parent"));for(let r of i)r.classList.toggle("kint-show",e)}static toggleAccessPath(t,e){let s=t.querySelector(".access-path");s?.classList.toggle("kint-show",e)&&f(s)}static#n(t,e){if(t.children.length===2&&t.lastElementChild.matches("ul.kint-tab-contents"))for(let s of t.lastElementChild.children)s.matches("li.kint-show")&&(t=s);if(t.children.length===1&&t.firstElementChild.matches("dl")){let s=t.firstElementChild.firstElementChild;s?.classList?.contains("kint-parent")&&n.toggle(s,e)}}},b=class{#e;#t;#s;#i=null;#n=null;#o=0;constructor(t,e,s){this.#e=t,this.#t=s,this.#s=e,this.#s.addEventListener("click",this.#a.bind(this),!0)}#r(){clearTimeout(this.#i),this.#i=setTimeout(this.#l.bind(this),250)}#l(){clearTimeout(this.#i),this.#i=null,this.#n=null,this.#o=0}#c(){let t=this.#n;if(!t.matches(".kint-parent > nav"))return;let e=t.parentNode;if(this.#o===1)a.toggleChildren(e),this.#t.onTreeChanged(),this.#r(),this.#o=2;else if(this.#o===2){this.#l();let s=e.classList.contains("kint-show"),i=this.#e.folder?.querySelector(".kint-parent"),r=Array.from(this.#s.document.getElementsByClassName("kint-parent"));for(let o of r)o!==i&&o.classList.toggle("kint-show",s);this.#t.onTreeChanged(),this.#t.scrollToFocus()}}#a(t){if(this.#o){this.#c();return}let e=t.target;if(!e.closest(".kint-rich"))return;if(e.tagName==="DFN"&&f(e),e.tagName==="TH"){t.ctrlKey||g.sort(e.closest("table"),e.cellIndex);return}if(e.tagName==="LI"&&e.parentNode.className==="kint-tabs"){if(e.className!=="kint-active-tab"){let i=e.closest("dl")?.querySelector(".kint-parent > nav")??e;a.switchTab(e),this.#t.onTreeChanged(),this.#t.setCursor(i)}return}let s=e.closest("dt");if(e.tagName==="NAV")e.parentNode.tagName==="FOOTER"?(this.#t.setCursor(e),e.parentNode.classList.toggle("kint-show")):s?.classList.contains("kint-parent")&&(a.toggle(s),this.#t.onTreeChanged(),this.#t.setCursor(e),this.#r(),this.#o=1,this.#n=e);else if(e.classList.contains("kint-access-path-trigger"))s&&a.toggleAccessPath(s);else if(e.classList.contains("kint-search-trigger"))s?.matches(".kint-rich > dl > dt.kint-parent")&&u.toggleSearchBox(s);else if(e.classList.contains("kint-folder-trigger")){if(s?.matches(".kint-rich > dl > dt.kint-parent"))this.#e.addToFolder(e),this.#t.onTreeChanged(),this.#t.setCursor(s.querySelector("nav")),this.#t.scrollToFocus();else if(e.parentNode.tagName==="FOOTER"){let i=e.closest(".kint-rich").querySelector(".kint-parent > nav, .kint-rich > footer > nav");this.#e.addToFolder(e),this.#t.onTreeChanged(),this.#t.setCursor(i),this.#t.scrollToFocus()}}else e.classList.contains("kint-search")||(e.tagName==="PRE"&&t.detail===3?f(e):e.closest(".kint-source")&&t.detail===3?f(e.closest(".kint-source")):e.classList.contains("access-path")?f(e):e.tagName!=="A"&&s?.classList.contains("kint-parent")&&(a.toggle(s),this.#t.onTreeChanged(),this.#t.setCursor(s.querySelector("nav"))))}},j=65,G=68,A=70,S=72,K=74,D=75,p=76,V=83,P=9,T=13,B=27,L=32,N=37,R=38,C=39,H=40,M=".kint-rich .kint-parent > nav, .kint-rich > footer > nav, .kint-rich .kint-tabs > li:not(.kint-active-tab)",q=class{#e=[];#t=0;#s=!1;#i;#n;constructor(t,e){this.#i=t,this.#n=e.window,this.#n.addEventListener("keydown",this.#c.bind(this),!0),e.runOnInit(this.onTreeChanged.bind(this))}scrollToFocus(){let t=this.#e[this.#t];if(!t)return;let e=this.#i.folder;if(t===e?.querySelector(".kint-parent > nav"))return;let s=x(t);if(this.#i.isFolderOpen()){let i=e.querySelector("dd.kint-foldout");i.scrollTo(0,s-i.clientHeight/2)}else this.#n.scrollTo(0,s-this.#n.innerHeight/2)}onTreeChanged(){let t=this.#e[this.#t];this.#e=[];let e=this.#i.folder,s=e?.querySelector(".kint-parent > nav"),i=this.#n.document;this.#i.isFolderOpen()&&(i=e,this.#e.push(s));let r=Array.from(i.querySelectorAll(M));for(let o of r)o.offsetParent!==null&&o!==s&&this.#e.push(o);if(s&&!this.#i.isFolderOpen()&&this.#e.push(s),this.#e.length===0){this.#s=!1,this.#r();return}t&&this.#e.indexOf(t)!==-1?this.#t=this.#e.indexOf(t):this.#r()}setCursor(t){if(this.#i.isFolderOpen()&&!this.#i.folder.contains(t)||!t.matches(M))return!1;let e=this.#e.indexOf(t);if(e===-1&&(this.onTreeChanged(),e=this.#e.indexOf(t)),e!==-1){if(e!==this.#t)return this.#t=e,this.#r(),!0;this.#e[e]?.classList.remove("kint-weak-focus")}else console.error("setCursor failed to find target in list",t),console.info("Please report this as a bug in Kint at https://github.com/kint-php/kint");return!1}#o(t){if(this.#e.length===0)return this.#t=0,null;for(this.#t+=t;this.#t<0;)this.#t+=this.#e.length;for(;this.#t>=this.#e.length;)this.#t-=this.#e.length;return this.#r(),this.#t}#r(){let t=this.#n.document.querySelector(".kint-focused");t&&(t.classList.remove("kint-focused"),t.classList.remove("kint-weak-focus")),this.#s&&this.#e[this.#t]?.classList.add("kint-focused")}#l(t){let e=t.closest(".kint-rich .kint-parent ~ dd")?.parentNode.querySelector(".kint-parent > nav");e&&(this.setCursor(e),this.scrollToFocus())}#c(t){if(t.keyCode===B&&t.target.matches(".kint-search")){t.target.blur(),this.#s&&this.#r();return}if(t.target!==this.#n.document.body||t.altKey||t.ctrlKey)return;if(t.keyCode===G){if(this.#s)this.#s=!1;else{if(this.#s=!0,this.onTreeChanged(),this.#e.length===0){this.#s=!1;return}this.scrollToFocus()}this.#r(),t.preventDefault();return}else if(t.keyCode===B){this.#s&&(this.#s=!1,this.#r(),t.preventDefault());return}else if(!this.#s)return;t.preventDefault(),d(this.#e[this.#t])||this.onTreeChanged();let e=this.#e[this.#t];if([P,R,D,H,K].includes(t.keyCode)){t.keyCode===P?this.#o(t.shiftKey?-1:1):t.keyCode===R||t.keyCode===D?this.#o(-1):(t.keyCode===H||t.keyCode===K)&&this.#o(1),this.scrollToFocus();return}if(e.tagName==="LI"&&[L,T,C,p,N,S].includes(t.keyCode)){t.keyCode===L||t.keyCode===T?(a.switchTab(e),this.onTreeChanged()):t.keyCode===C||t.keyCode===p?this.#o(1):(t.keyCode===N||t.keyCode===S)&&this.#o(-1),this.scrollToFocus();return}if(e.parentNode.tagName==="FOOTER"&&e.closest(".kint-rich")){if(t.keyCode===L||t.keyCode===T)e.parentNode.classList.toggle("kint-show");else if(t.keyCode===N||t.keyCode===S)if(e.parentNode.classList.contains("kint-show"))e.parentNode.classList.remove("kint-show");else{this.#l(e.closest(".kint-rich"));return}else if(t.keyCode===C||t.keyCode===p)e.parentNode.classList.add("kint-show");else if(t.keyCode===A&&!this.#i.isFolderOpen()&&e.matches(".kint-rich > footer > nav")){let i=e.closest(".kint-rich").querySelector(".kint-parent > nav, .kint-rich > footer > nav");this.#i.addToFolder(e),this.onTreeChanged(),this.setCursor(i),this.scrollToFocus()}return}let s=e.closest(".kint-parent");if(s){if(t.keyCode===j){a.toggleAccessPath(s);return}if(t.keyCode===A){!this.#i.isFolderOpen()&&s.matches(".kint-rich:not(.kint-folder) > dl > .kint-parent")&&(this.#i.addToFolder(e),this.onTreeChanged(),this.setCursor(e),this.scrollToFocus());return}if(t.keyCode===V){let i=s.closest(".kint-rich > dl")?.querySelector(".kint-search")?.closest(".kint-parent");if(i){e.classList.add("kint-weak-focus"),u.toggleSearchBox(i,!0);return}}if(t.keyCode===L||t.keyCode===T){a.toggle(s),this.onTreeChanged();return}if([C,p,N,S].includes(t.keyCode)){let i=s.classList.contains("kint-show");if(t.keyCode===C||t.keyCode===p){i&&a.toggleChildren(s,!0),a.toggle(s,!0),this.onTreeChanged();return}else if(i){a.toggleChildren(s,!1),a.toggle(s,!1),this.onTreeChanged();return}else{this.#l(s);return}}}}};var y=class{#e;#t;constructor(t){if(!(t instanceof h))throw new Error("Invalid argument to Plain.constructor()");this.#e=t.window,t.runOnInit(this.#s.bind(this))}#s(){d(this.#t)||(this.#t=this.#e.document.querySelector("style.kint-plain-style")),this.#t&&m(this.#t)}};var w=class{#e;constructor(t){if(!(t instanceof h))throw new Error("Invalid argument to Microtime.constructor()");this.#e=t.window,t.runOnInit(this.#t.bind(this))}#t(){let t={},e=this.#e.document.querySelectorAll("[data-kint-microtime-group]");for(let s of e){let i=s.querySelector(".kint-microtime-lap");if(!i)continue;let r=s.dataset.kintMicrotimeGroup,o=parseFloat(i.textContent),l=parseFloat(s.querySelector(".kint-microtime-avg").textContent);t[r]??={min:o,max:o,avg:l},t[r].min>o&&(t[r].min=o),t[r].max<o&&(t[r].max=o),t[r].avg=l}for(let s of e){let i=s.querySelector(".kint-microtime-lap");if(!i)continue;let r=parseFloat(i.textContent),o=t[s.dataset.kintMicrotimeGroup];if(s.querySelector(".kint-microtime-avg").textContent=o.avg,!(r===o.min&&r===o.max))if(s.classList.add("kint-microtime-js"),r>o.avg){let l=(r-o.avg)/(o.max-o.avg);i.style.background="hsl("+(40-40*l)+", 100%, 65%)"}else{let l=0;o.avg!==o.min&&(l=(o.avg-r)/(o.avg-o.min)),i.style.background="hsl("+(40+80*l)+", 100%, 65%)"}}}};var U=Symbol(),h=class n{static#e=null;#t;#s=[];#i=new Set;static init(t){return n.#e??=new n(t,U),n.#e.#n(),n.#e.runOnLoad(n.#r),n.#e}get window(){return this.#t}constructor(t,e){if(U!==e)throw new Error("Kint constructor is private. Use Kint.init()");if(!(t instanceof Window))throw new Error("Invalid argument to Kint.init()");this.#t=t,this.runOnInit(this.#o.bind(this)),new y(this),new a(this),new w(this)}runOnLoad(t){if(this.#t.document.readyState==="complete")try{t()}catch{}else this.#t.addEventListener("load",t)}runOnInit(t){this.#s.push(t)}#n(){this.#t.document.currentScript&&(this.#i.add(E(window.document.currentScript)),window.document.currentScript.remove())}#o(){for(let t of this.#i.keys())for(let e of this.#t.document.querySelectorAll(t))e.remove()}static#r(){for(let t of n.#e.#s)t()}};window.Kint||(window.Kint=h);window.Kint.init(window);})();
+</script><style class="kint-rich-style">.kint-rich{--spacing: 4px;--nav-size: 15px;--backdrop-color: rgba(255, 255, 255, 0.9);--main-background: #e0eaef;--secondary-background: #c1d4df;--text-color: #1d1e1e;--variable-name-color: #1d1e1e;--variable-type-color: #0092db;--variable-type-color-hover: #5cb730;--border-color: #b6cedb;--border-color-hover: #0092db;--border: 1px solid var(--border-color);--foldout-max-size: calc(100vh - 100px);--foldout-zindex: 999999;--caret-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 150'><g stroke-width='2' fill='%23FFF'><path d='M1 1h28v28H1zm5 14h18m-9 9V6M1 61h28v28H1zm5 14h18' stroke='%23379'/><path d='M1 31h28v28H1zm5 14h18m-9 9V36M1 91h28v28H1zm5 14h18' stroke='%235A3'/><path d='M1 121h28v28H1zm5 5l18 18m-18 0l18-18' stroke='%23CCC'/></g></svg>");--ap-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g stroke='%23000' fill='transparent'><path d='M2 8h3m3 3v3M8 2v3m3 3h3M3 8' stroke-width='2' stroke-linecap='round'/><circle stroke-width='1.5' r='4.5' cx='8' cy='8'/></g></svg>");--folder-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M2 2h4l2 2h6v9H2V2h2' stroke-width='2' stroke='%23000' fill='transparent' stroke-linejoin='round'/></svg>");--search-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g stroke='%23000' fill='transparent'><path d='M2 14l3-3' stroke-linecap='round' stroke-width='3'/><circle stroke-width='2' r='5' cx='9' cy='7'/></g></svg>");font-size:13px;overflow-x:auto;white-space:nowrap;background:var(--backdrop-color);direction:ltr;contain:content}.kint-rich.kint-folder{position:fixed;bottom:0;left:0;right:0;z-index:var(--foldout-zindex);width:100%;margin:0;display:block}.kint-rich.kint-folder dd.kint-foldout{max-height:var(--foldout-max-size);padding-right:calc(var(--spacing)*2);overflow-y:scroll;display:none}.kint-rich.kint-folder dd.kint-foldout.kint-show{display:block}.kint-rich::selection{background:var(--border-color-hover);color:var(--text-color)}.kint-rich .kint-focused{box-shadow:0 0 3px 3px var(--variable-type-color-hover)}.kint-rich .kint-focused.kint-weak-focus{box-shadow:0 0 3px 1px color-mix(in srgb, var(--variable-type-color-hover) 50%, transparent)}.kint-rich,.kint-rich::before,.kint-rich::after,.kint-rich *,.kint-rich *::before,.kint-rich *::after{box-sizing:border-box;border-radius:0;color:var(--text-color);float:none !important;font-family:Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;line-height:15px;margin:0;padding:0;text-align:left}.kint-rich{margin:calc(var(--spacing)*2) 0}.kint-rich dt,.kint-rich dl{width:auto}.kint-rich dt,.kint-rich div.access-path{background:var(--main-background);border:var(--border);color:var(--text-color);display:block;font-weight:bold;list-style:none outside none;overflow:auto;padding:var(--spacing)}.kint-rich dt:hover,.kint-rich div.access-path:hover{border-color:var(--border-color-hover)}.kint-rich>dl dl{padding:0 0 0 calc(var(--spacing)*3)}.kint-rich dt.kint-parent>nav,.kint-rich>footer>nav{background:var(--caret-image) no-repeat scroll 0 0/var(--nav-size) 75px rgba(0,0,0,0);cursor:pointer;display:inline-block;height:var(--nav-size);width:var(--nav-size);margin-right:3px;vertical-align:middle}.kint-rich dt.kint-parent:hover>nav,.kint-rich>footer>nav:hover{background-position:0 25%}.kint-rich dt.kint-parent.kint-show>nav,.kint-rich>footer.kint-show>nav{background-position:0 50%}.kint-rich dt.kint-parent.kint-show:hover>nav,.kint-rich>footer.kint-show>nav:hover{background-position:0 75%}.kint-rich dt.kint-parent.kint-locked>nav{background-position:0 100%}.kint-rich dt.kint-parent+dd{display:none;border-left:1px dashed var(--border-color);contain:strict}.kint-rich dt.kint-parent.kint-show+dd{display:block;contain:content}.kint-rich var,.kint-rich var a{color:var(--variable-type-color);font-style:normal}.kint-rich dt:hover var,.kint-rich dt:hover var a{color:var(--variable-type-color-hover)}.kint-rich dfn{font-style:normal;font-family:monospace;color:var(--variable-name-color)}.kint-rich pre{color:var(--text-color);margin:0 0 0 calc(var(--spacing)*3);padding:5px;overflow-y:hidden;border-top:0;border:var(--border);background:var(--main-background);display:block;word-break:normal}.kint-rich .kint-access-path-trigger,.kint-rich .kint-folder-trigger,.kint-rich .kint-search-trigger{background:color-mix(in srgb, var(--text-color) 80%, transparent);border-radius:3px;padding:2px;height:var(--nav-size);width:var(--nav-size);font-size:var(--nav-size);margin-left:5px;font-weight:bold;text-align:center;line-height:1;float:right !important;cursor:pointer;position:relative;overflow:hidden}.kint-rich .kint-access-path-trigger::before,.kint-rich .kint-folder-trigger::before,.kint-rich .kint-search-trigger::before{display:block;content:"";width:100%;height:100%;background:var(--main-background);mask:center/contain no-repeat alpha}.kint-rich .kint-access-path-trigger:hover,.kint-rich .kint-folder-trigger:hover,.kint-rich .kint-search-trigger:hover{background:var(--main-background)}.kint-rich .kint-access-path-trigger:hover::before,.kint-rich .kint-folder-trigger:hover::before,.kint-rich .kint-search-trigger:hover::before{background:var(--text-color)}.kint-rich .kint-access-path-trigger::before{mask-image:var(--ap-image)}.kint-rich .kint-folder-trigger::before{mask-image:var(--folder-image)}.kint-rich .kint-search-trigger::before{mask-image:var(--search-image)}.kint-rich input.kint-search{display:none;border:var(--border);border-top-width:0;border-bottom-width:0;padding:var(--spacing);float:right !important;margin:calc(var(--spacing)*-1) 0;color:var(--variable-name-color);background:var(--secondary-background);height:calc(var(--nav-size) + var(--spacing)*2);width:calc(var(--nav-size)*10);position:relative;z-index:100}.kint-rich input.kint-search.kint-show{display:block}.kint-rich .kint-search-root ul.kint-tabs>li:not(.kint-search-match){background:var(--secondary-background);filter:saturate(0);opacity:.5}.kint-rich .kint-search-root dl:not(.kint-search-match){opacity:.5}.kint-rich .kint-search-root dl:not(.kint-search-match)>dt{background:var(--main-background);filter:saturate(0)}.kint-rich .kint-search-root dl:not(.kint-search-match) dl,.kint-rich .kint-search-root dl:not(.kint-search-match) ul.kint-tabs>li:not(.kint-search-match){opacity:1}.kint-rich div.access-path{background:var(--secondary-background);display:none;margin-top:5px;padding:4px;white-space:pre}.kint-rich div.access-path.kint-show{display:block}.kint-rich footer{padding:0 3px 3px;font-size:9px;background:rgba(0,0,0,0)}.kint-rich footer>.kint-folder-trigger{background:rgba(0,0,0,0)}.kint-rich footer>.kint-folder-trigger::before{background:var(--text-color)}.kint-rich footer nav{height:10px;width:10px;background-size:10px 50px}.kint-rich footer>ol{display:none;margin-left:32px}.kint-rich footer.kint-show>ol{display:block}.kint-rich a{color:var(--text-color);text-shadow:none;text-decoration:underline}.kint-rich a:hover{color:var(--variable-name-color);border-bottom:1px dotted var(--variable-name-color)}.kint-rich ul{list-style:none;padding-left:calc(var(--spacing)*3)}.kint-rich ul:not(.kint-tabs) li{border-left:1px dashed var(--border-color)}.kint-rich ul:not(.kint-tabs) li>dl{border-left:none}.kint-rich ul.kint-tabs{margin:0 0 0 calc(var(--spacing)*3);padding-left:0;background:var(--main-background);border:var(--border);border-top:0}.kint-rich ul.kint-tabs>li{background:var(--secondary-background);border:var(--border);cursor:pointer;display:inline-block;height:calc(var(--spacing)*6);margin:calc(var(--spacing)/2);padding:0 calc(2px + var(--spacing)*2.5);vertical-align:top}.kint-rich ul.kint-tabs>li:hover,.kint-rich ul.kint-tabs>li.kint-active-tab:hover{border-color:var(--border-color-hover);color:var(--variable-type-color-hover)}.kint-rich ul.kint-tabs>li.kint-active-tab{background:var(--main-background);border-top:0;margin-top:-1px;height:27px;line-height:24px}.kint-rich ul.kint-tabs>li:not(.kint-active-tab){line-height:calc(var(--spacing)*5)}.kint-rich ul.kint-tabs li+li{margin-left:0}.kint-rich ul.kint-tab-contents>li{display:none;contain:strict}.kint-rich ul.kint-tab-contents>li.kint-show{display:block;contain:content}.kint-rich dt:hover+dd>ul>li.kint-active-tab{border-color:var(--border-color-hover);color:var(--variable-type-color-hover)}.kint-rich dt>.kint-color-preview{width:var(--nav-size);height:var(--nav-size);display:inline-block;vertical-align:middle;margin-left:10px;border:var(--border);background-color:#ccc;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="%23FFF" d="M0 0h1v2h1V1H0z"/></svg>');background-size:min(20px,100%)}.kint-rich dt>.kint-color-preview:hover{border-color:var(--border-color-hover)}.kint-rich dt>.kint-color-preview>div{width:100%;height:100%}.kint-rich table{border-collapse:collapse;empty-cells:show;border-spacing:0}.kint-rich table *{font-size:12px}.kint-rich table dt{background:none;padding:calc(var(--spacing)/2)}.kint-rich table dt .kint-parent{min-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.kint-rich table td,.kint-rich table th{border:var(--border);padding:calc(var(--spacing)/2);vertical-align:center}.kint-rich table th{cursor:alias}.kint-rich table td:first-child,.kint-rich table th{font-weight:bold;background:var(--secondary-background);color:var(--variable-name-color)}.kint-rich table td{background:var(--main-background);white-space:pre}.kint-rich table td>dl{padding:0}.kint-rich table pre{border-top:0;border-right:0}.kint-rich table thead th:first-child{background:none;border:0}.kint-rich table tr:hover>td{box-shadow:0 0 1px 0 var(--border-color-hover) inset}.kint-rich table tr:hover var{color:var(--variable-type-color-hover)}.kint-rich table ul.kint-tabs li.kint-active-tab{height:20px;line-height:17px}.kint-rich pre.kint-source{margin-left:-1px}.kint-rich pre.kint-source[data-kint-filename]:before{display:block;content:attr(data-kint-filename);margin-bottom:var(--spacing);padding-bottom:var(--spacing);border-bottom:1px solid var(--secondary-background)}.kint-rich pre.kint-source>div:before{display:inline-block;content:counter(kint-l);counter-increment:kint-l;border-right:1px solid var(--border-color-hover);padding-right:calc(var(--spacing)*2);margin-right:calc(var(--spacing)*2)}.kint-rich pre.kint-source>div.kint-highlight{background:var(--secondary-background)}.kint-rich .kint-microtime-js .kint-microtime-lap{text-shadow:-1px 0 var(--border-color-hover),0 1px var(--border-color-hover),1px 0 var(--border-color-hover),0 -1px var(--border-color-hover);color:var(--main-background);font-weight:bold}.kint-rich{--main-background: #f8f8f8;--secondary-background: #f8f8f8;--variable-type-color: #06f;--variable-type-color-hover: #f00;--border-color: #d7d7d7;--border-color-hover: #aaa;--alternative-background: #fff;--highlight-color: #cfc;--caret-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 150'><path d='M6 7h18l-9 15zm0 30h18l-9 15zm0 45h18l-9-15zm0 30h18l-9-15zm0 12l18 18m-18 0l18-18' fill='%23555'/><path d='M6 126l18 18m-18 0l18-18' stroke-width='2' stroke='%23555'/></svg>")}.kint-rich .kint-focused{box-shadow:0 0 3px 2px var(--variable-type-color-hover)}.kint-rich dt{font-weight:normal}.kint-rich dt.kint-parent{margin-top:4px}.kint-rich dl dl{margin-top:4px;padding-left:25px;border-left:none}.kint-rich>dl>dt{background:var(--secondary-background)}.kint-rich ul{margin:0;padding-left:0}.kint-rich ul:not(.kint-tabs)>li{border-left:0}.kint-rich ul.kint-tabs{background:var(--secondary-background);border:var(--border);border-width:0 1px 1px 1px;padding:4px 0 0 12px;margin-left:-1px;margin-top:-1px}.kint-rich ul.kint-tabs li,.kint-rich ul.kint-tabs li+li{margin:0 0 0 4px}.kint-rich ul.kint-tabs li{border-bottom-width:0;height:calc(var(--spacing)*6 + 1px)}.kint-rich ul.kint-tabs li:first-child{margin-left:0}.kint-rich ul.kint-tabs li.kint-active-tab{border-top:var(--border);background:var(--alternative-background);font-weight:bold;padding-top:0;border-bottom:1px solid var(--alternative-background) !important;margin-bottom:-1px}.kint-rich ul.kint-tabs li.kint-active-tab:hover{border-bottom:1px solid var(--alternative-background)}.kint-rich ul>li>pre{border:var(--border)}.kint-rich dt:hover+dd>ul{border-color:var(--border-color-hover)}.kint-rich pre{background:var(--alternative-background);margin-top:4px;margin-left:25px}.kint-rich .kint-source{margin-left:-1px}.kint-rich .kint-source .kint-highlight{background:var(--highlight-color)}.kint-rich .kint-parent.kint-show>.kint-search{border-bottom-width:1px}.kint-rich table td{background:var(--alternative-background)}.kint-rich table td>dl{padding:0;margin:0}.kint-rich table td>dl>dt.kint-parent{margin:0}.kint-rich table td:first-child,.kint-rich table td,.kint-rich table th{padding:2px 4px}.kint-rich table dd,.kint-rich table dt{background:var(--alternative-background)}.kint-rich table tr:hover>td{box-shadow:none;background:var(--highlight-color)}
+</style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden de Laboratorio - POT Prótesis Dental</title>
+    <meta name="description" content="Formulario digital para registrar órdenes de trabajo de prótesis dental.">
+    <link rel="icon" type="image/x-icon" href="http://localhost:8080/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://localhost:8080/assets/css/app.css">
+</head>
+<body>
+    <!-- DEBUG-VIEW START 1 APPPATH/Views/layouts/partials/header.php -->
+<header class="site-header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light site-navbar px-0">
+            <a class="navbar-brand brand" href="http://localhost:8080/">
+                <img src="http://localhost:8080/assets/media/logo-pot.png" alt="POT Prótesis Dental">
+            </a>
+            <button class="navbar-toggler site-navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation" aria-controls="siteNavigation" aria-expanded="false" aria-label="Abrir menú de navegación">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-lg-end main-nav-wrap" id="siteNavigation">
+                <div class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                                                                    <a href="http://localhost:8080/" class="nav-link main-nav-link ">
+                            Inicio                        </a>
+                                                                    <a href="http://localhost:8080/servicios" class="nav-link main-nav-link ">
+                            Servicios                        </a>
+                                                                    <a href="http://localhost:8080/galeria" class="nav-link main-nav-link ">
+                            Galería                        </a>
+                                                                    <a href="http://localhost:8080/cliente/login" class="nav-link main-nav-link ">
+                            Clientes                        </a>
+                                                                    <a href="http://localhost:8080/contacto" class="nav-link main-nav-link ">
+                            Contacto                        </a>
+                                        <a class="btn btn-primary btn-small main-nav-cta" href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">
+                        Contactar
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- DEBUG-VIEW ENDED 1 APPPATH/Views/layouts/partials/header.php -->
+    <main>
+        <section class="page-hero" style="padding: 2rem 0 0 0;">
+    <div class="container center narrow">
+        <span class="eyebrow">Captura Digital</span>
+        <h1>Orden de laboratorio POT</h1>
+        <p>Versión digital del formato físico para recibir trabajos, dientes, restauraciones, implantes y observaciones.</p>
+    </div>
+</section>
+
+<section class="section" style="padding: 2rem 0 2rem 0;">
+    <div class="container">
+        
+        
+        
+        <form method="post" action="http://localhost:8080/orden-laboratorio" class="order-form" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_test_name" value="3f1a2919945b79f107cd4dcf9f9d9201">
+            <div class="order-panel">
+                <div class="order-panel-head">
+                    <h2>Archivos del caso</h2>
+                    <p>Opcional. Adjunte hasta 5 archivos en formato STL, OTL o PDF.</p>
+                </div>
+
+                <div class="field">
+                    <label for="attachments" class="form-label">Archivos adjuntos</label>
+                    <input id="attachments" name="attachments[]" class="form-control" type="file" accept=".stl,.otl,.pdf,application/pdf" multiple>
+                    <p class="field-help">Máximo 5 archivos por orden.</p>
+                                    </div>
+            </div>
+
+            <div class="order-panel order-panel-primary">
+                <div class="order-panel-head">
+                    <h2>Datos generales</h2>
+                    <p>La orden toma el folio automático del sistema y la fecha de recepción desde el registro.</p>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="required_date" class="form-label">Fecha requerida</label>
+                            <input id="required_date" name="required_date" class="form-control" type="date" min="2026-05-14" value="">
+                                                    </div>
+                    </div>
+
+                    <input type="hidden" id="client_id" name="client_id" value="1" data-phone="3312345678">
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="field">
+                            <label for="patient_id" class="form-label">Paciente</label>
+                            <div class="order-inline-field">
+                                <select id="patient_id" name="patient_id" class="form-select" >
+                                    <option value="">Seleccione un paciente</option>
+                                                                            <option value="1" data-client-id="1" >
+                                            Paciente Pruebas                                        </option>
+                                                                    </select>
+                                                                    <button type="button" class="btn btn-outline btn-small order-plus-button" data-bs-toggle="modal" data-bs-target="#patientModal" aria-label="Agregar paciente">+</button>
+                                                            </div>
+                                                    </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="field">
+                            <label for="shade" class="form-label">Color</label>
+                            <input id="shade" name="shade" class="form-control" type="text" value="" placeholder="Ej. A2, B1, Bleach">
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-xl-6 d-flex">
+                    <div class="order-panel w-100 h-100">
+                    <div class="order-panel-head">
+                        <h2>Trabajo a realizar</h2>
+                        <p>Seleccione uno o más trabajos del formato original.</p>
+                    </div>
+
+                    <div class="row g-3">
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Encerado de diagnóstico" >
+                                    <span>Encerado de diagnóstico</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Provisional fijo acrílico" >
+                                    <span>Provisional fijo acrílico</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Composite SR Nexco" >
+                                    <span>Composite SR Nexco</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Metal / cerámica" >
+                                    <span>Metal / cerámica</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Disilicato de litio" >
+                                    <span>Disilicato de litio</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Zirconia" >
+                                    <span>Zirconia</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Prótesis parcial removible" >
+                                    <span>Prótesis parcial removible</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Placa total" >
+                                    <span>Placa total</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Guarda miconfortable" >
+                                    <span>Guarda miconfortable</span>
+                                </label>
+                            </div>
+                                                    <div class="col-12 col-md-6 check-option">
+                                <label class="check-tile">
+                                    <input type="checkbox" name="work_types[]" value="Impresión de modelo 3D" >
+                                    <span>Impresión de modelo 3D</span>
+                                </label>
+                            </div>
+                                            </div>
+
+                                        </div>
+                </div>
+
+                <div class="col-12 col-xl-6 d-flex">
+                    <div class="order-panel w-100 h-100">
+                    <div class="order-panel-head">
+                        <h2>Restauración e implante</h2>
+                        <p>Tipo de restauración y configuración de prótesis sobre implante.</p>
+                    </div>
+
+                    <div class="stack-block">
+                        <p class="block-label">Restauración</p>
+                        <div class="row g-3">
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="checkbox" name="restoration_types[]" value="Corona" >
+                                        <span>Corona</span>
+                                    </label>
+                                </div>
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="checkbox" name="restoration_types[]" value="Carilla" >
+                                        <span>Carilla</span>
+                                    </label>
+                                </div>
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="checkbox" name="restoration_types[]" value="Puente" >
+                                        <span>Puente</span>
+                                    </label>
+                                </div>
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="checkbox" name="restoration_types[]" value="Incrustación" >
+                                        <span>Incrustación</span>
+                                    </label>
+                                </div>
+                                                    </div>
+                    </div>
+
+                    <div class="implant-box">
+                        <label class="inline-check">
+                            <input type="checkbox" name="implant_case" value="1" >
+                            <span>Prótesis sobre implante</span>
+                        </label>
+
+                        <div class="row g-3">
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="radio" name="implant_chimney" value="none" checked>
+                                        <span>Sin especificar</span>
+                                    </label>
+                                </div>
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="radio" name="implant_chimney" value="with" >
+                                        <span>Con chimenea</span>
+                                    </label>
+                                </div>
+                                                            <div class="col-12 col-md-6 check-option">
+                                    <label class="check-tile">
+                                        <input type="radio" name="implant_chimney" value="without" >
+                                        <span>Sin chimenea</span>
+                                    </label>
+                                </div>
+                                                    </div>
+
+                                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-panel order-panel-teeth">
+                <div class="order-panel-head">
+                    <h2>Selección de dientes</h2>
+                    <p>Capture las piezas dentales del caso usando el esquema FDI estándar de laboratorio.</p>
+                </div>
+
+                                <div class="teeth-card">
+                    <div class="teeth-meta">
+                        <span class="teeth-badge">FDI</span>
+                        <span><strong data-selected-teeth-count>0</strong> diente(s) seleccionado(s)</span>
+                    </div>
+
+                    <div class="teeth-chart-wrap">
+                        <div class="teeth-chart" role="group" aria-label="Selección de dientes FDI">
+                            <div class="teeth-quadrant teeth-quadrant-left">
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="18" >
+                                        <span class="tooth-number">18</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="17" >
+                                        <span class="tooth-number">17</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="16" >
+                                        <span class="tooth-number">16</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="15" >
+                                        <span class="tooth-number">15</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="14" >
+                                        <span class="tooth-number">14</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="13" >
+                                        <span class="tooth-number">13</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="12" >
+                                        <span class="tooth-number">12</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="11" >
+                                        <span class="tooth-number">11</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                            </div>
+
+                            <div class="teeth-quadrant teeth-quadrant-right">
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="21" >
+                                        <span class="tooth-number">21</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="22" >
+                                        <span class="tooth-number">22</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="23" >
+                                        <span class="tooth-number">23</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="24" >
+                                        <span class="tooth-number">24</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="25" >
+                                        <span class="tooth-number">25</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="26" >
+                                        <span class="tooth-number">26</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="27" >
+                                        <span class="tooth-number">27</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                                    <label class="tooth-box">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="28" >
+                                        <span class="tooth-number">28</span>
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                    </label>
+                                                            </div>
+
+                            <div class="teeth-quadrant teeth-quadrant-left teeth-quadrant-lower">
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="48" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">48</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="47" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">47</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="46" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">46</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="45" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">45</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="44" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">44</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="43" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">43</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="42" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">42</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="41" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">41</span>
+                                    </label>
+                                                            </div>
+
+                            <div class="teeth-quadrant teeth-quadrant-right teeth-quadrant-lower">
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="31" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">31</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="32" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">32</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="33" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">33</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="34" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">34</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="35" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">35</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="36" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">36</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="37" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">37</span>
+                                    </label>
+                                                                    <label class="tooth-box tooth-box-lower">
+                                        <input class="tooth-checkbox" type="checkbox" name="selected_teeth[]" value="38" >
+                                        <span class="tooth-square" aria-hidden="true"></span>
+                                        <span class="tooth-number">38</span>
+                                    </label>
+                                                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                            </div>
+
+            <div class="row g-4 align-items-start">
+                <div class="col-12 col-xl-8">
+                    <div class="order-panel">
+                    <div class="order-panel-head">
+                        <h2>Observaciones</h2>
+                        <p>Indicaciones clínicas, notas de material y detalles adicionales del caso.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="observations" class="form-label">Observaciones de laboratorio</label>
+                        <textarea id="observations" name="observations" class="form-control" rows="7" placeholder="Instrucciones, detalles estéticos, referencias del caso, etc."></textarea>
+                                            </div>
+                    </div>
+                </div>
+
+                <aside class="col-12 col-xl-4">
+                    <div class="order-submit-card">
+                    <h3>Guardar orden</h3>
+                    <p>El formulario se valida en servidor y queda listo para persistirse en MySQL desde `CI4`.</p>
+                    <button type="submit" class="btn btn-secondary order-submit">Guardar orden</button>
+                    <a href="http://localhost:8080/orden-laboratorio" class="btn btn-outline order-submit">Limpiar formulario</a>
+                    </div>
+                </aside>
+            </div>
+        </form>
+    </div>
+</section>
+<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="patientModalLabel">Agregar paciente</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form id="quick-patient-form" method="post" action="http://localhost:8080/orden-laboratorio/paciente" class="stack-form">
+                <div class="modal-body">
+                    <input type="hidden" name="csrf_test_name" value="3f1a2919945b79f107cd4dcf9f9d9201">                    <div class="field">
+                        <label for="quick_patient_name" class="form-label">Nombre del paciente</label>
+                        <input id="quick_patient_name" name="name" class="form-control" type="text" required>
+                    </div>
+                    <div class="field">
+                        <label for="quick_patient_notes" class="form-label">Notas</label>
+                        <textarea id="quick_patient_notes" name="notes" class="form-control" rows="4"></textarea>
+                    </div>
+                    <p class="field-error" id="quick-patient-error" hidden></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const clientSelect = document.getElementById('client_id');
+    const patientSelect = document.getElementById('patient_id');
+    const selectedTeethCount = document.querySelector('[data-selected-teeth-count]');
+    const quickPatientForm = document.getElementById('quick-patient-form');
+    const quickPatientError = document.getElementById('quick-patient-error');
+    const patientModalElement = document.getElementById('patientModal');
+    const patientModal = patientModalElement ? bootstrap.Modal.getOrCreateInstance(patientModalElement) : null;
+
+    if (!clientSelect || !patientSelect) {
+        return;
+    }
+
+        const hasClientSelect = clientSelect.tagName === 'SELECT';
+
+        const filterPatients = function () {
+            const selectedClientId = clientSelect.value;
+            const currentPatientId = patientSelect.value;
+            let currentStillVisible = false;
+
+        Array.from(patientSelect.options).forEach(function (option, index) {
+            if (index === 0) {
+                option.hidden = false;
+                return;
+            }
+
+            const matchesClient = selectedClientId !== '' && option.dataset.clientId === selectedClientId;
+            option.hidden = !matchesClient;
+
+            if (matchesClient && option.value === currentPatientId) {
+                currentStillVisible = true;
+            }
+        });
+
+        if (!currentStillVisible) {
+            patientSelect.value = '';
+        }
+
+        patientSelect.disabled = selectedClientId === '';
+    };
+
+    if (hasClientSelect) {
+        clientSelect.addEventListener('change', function () {
+            filterPatients();
+        });
+    }
+
+    document.querySelectorAll('.tooth-checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (!selectedTeethCount) {
+                return;
+            }
+
+            selectedTeethCount.textContent = String(document.querySelectorAll('.tooth-checkbox:checked').length);
+        });
+    });
+
+    if (quickPatientForm && quickPatientError) {
+        quickPatientForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            quickPatientError.hidden = true;
+            quickPatientError.textContent = '';
+
+            const formData = new FormData(quickPatientForm);
+
+            try {
+                const response = await fetch(quickPatientForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                });
+                const payload = await response.json();
+
+                quickPatientForm.querySelectorAll('input[name="csrf_test_name"]').forEach(function (input) {
+                    input.value = payload.csrf || input.value;
+                });
+                document.querySelectorAll('input[name="csrf_test_name"]').forEach(function (input) {
+                    input.value = payload.csrf || input.value;
+                });
+
+                if (!response.ok || !payload.patient) {
+                    quickPatientError.textContent = payload.message || 'No fue posible crear el paciente.';
+                    quickPatientError.hidden = false;
+                    return;
+                }
+
+                const option = document.createElement('option');
+                option.value = String(payload.patient.id);
+                option.dataset.clientId = String(payload.patient.client_id);
+                option.textContent = payload.patient.name;
+                option.selected = true;
+                patientSelect.appendChild(option);
+                patientSelect.disabled = false;
+                patientSelect.value = String(payload.patient.id);
+
+                filterPatients();
+                quickPatientForm.reset();
+                patientModal?.hide();
+            } catch (error) {
+                quickPatientError.textContent = 'No fue posible crear el paciente.';
+                quickPatientError.hidden = false;
+            }
+        });
+    }
+
+    filterPatients();
+});
+</script>
+    </main>
+    <!-- DEBUG-VIEW START 2 APPPATH/Views/layouts/partials/footer.php -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div>
+            <img class="footer-logo" src="http://localhost:8080/assets/media/logo-pot.png" alt="POT Prótesis Dental">
+            <p>Laboratorio especializado en prótesis dental de alta calidad para dentistas y clínicas en Guadalajara.</p>
+        </div>
+        <div>
+            <h3>Servicios</h3>
+            <ul>
+                <li><a href="http://localhost:8080/servicios">Coronas y Puentes</a></li>
+                <li><a href="http://localhost:8080/servicios">Prótesis Removibles</a></li>
+                <li><a href="http://localhost:8080/servicios">Implantes Dentales</a></li>
+                <li><a href="http://localhost:8080/galeria">Galería de Trabajos</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3>Contacto</h3>
+            <ul>
+                <li><a href="tel:+523334735108">(33) 3473-5108</a></li>
+                <li><a href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+                <li>C. Reforma 1752, Ladrón de Guevara, Guadalajara, Jal.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        <p>© 2026 POT Prótesis Dental. Todos los derechos reservados.</p>
+        <nav>
+            <a href="http://localhost:8080/privacidad">Privacidad</a>
+            <a href="http://localhost:8080/terminos">Términos</a>
+        </nav>
+    </div>
+</footer>
+
+<!-- DEBUG-VIEW ENDED 2 APPPATH/Views/layouts/partials/footer.php -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        (() => {
+            const loadingText = 'Enviando...';
+
+            document.querySelectorAll('form').forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                    if (event.defaultPrevented) {
+                        return;
+                    }
+
+                    const submitButton = event.submitter ?? form.querySelector('button[type="submit"], input[type="submit"]');
+
+                    if (!submitButton || submitButton.dataset.loadingApplied === 'true') {
+                        return;
+                    }
+
+                    submitButton.dataset.loadingApplied = 'true';
+                    submitButton.disabled = true;
+                    submitButton.classList.add('is-loading');
+
+                    if (submitButton.tagName === 'BUTTON') {
+                        if (!submitButton.dataset.originalLabel) {
+                            submitButton.dataset.originalLabel = submitButton.innerHTML;
+                        }
+
+                        submitButton.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>' + loadingText + '</span>';
+                    } else if (submitButton instanceof HTMLInputElement) {
+                        if (!submitButton.dataset.originalValue) {
+                            submitButton.dataset.originalValue = submitButton.value;
+                        }
+
+                        submitButton.value = loadingText;
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+
+<!-- DEBUG-VIEW ENDED 3 APPPATH/Views/layouts/main.php -->
+
+<!-- DEBUG-VIEW ENDED 4 APPPATH/Views/orders/create.php -->
