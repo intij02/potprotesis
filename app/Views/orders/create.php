@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero">
+<section class="page-hero" style="padding: 2rem 0 0 0;">
     <div class="container center narrow">
         <span class="eyebrow">Captura Digital</span>
         <h1>Orden de laboratorio POT</h1>
@@ -9,7 +9,7 @@
     </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding: 2rem 0 0 0;">
     <div class="container">
         <?php if (session('success')): ?>
             <div class="alert alert-success"><?= esc(session('success')) ?></div>
