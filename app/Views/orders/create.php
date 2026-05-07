@@ -198,7 +198,7 @@
                 </div>
             </div>
 
-            <div class="order-panel">
+            <div class="order-panel order-panel-teeth">
                 <div class="order-panel-head">
                     <h2>Selección de dientes</h2>
                     <p>Capture las piezas dentales del caso usando el esquema FDI estándar de laboratorio.</p>

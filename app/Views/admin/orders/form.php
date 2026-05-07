@@ -25,7 +25,7 @@
         <form method="post" action="<?= base_url('admin/ordenes/actualizar/' . $order['id']) ?>" class="order-form">
             <?= csrf_field() ?>
 
-            <div class="order-panel">
+            <div class="order-panel order-panel-teeth">
                 <div class="order-panel-head">
                     <h2>Datos generales</h2>
                     <p>Orden #<?= esc($order['order_number'] !== '' ? $order['order_number'] : $order['id']) ?> registrada el <?= esc(site_datetime($order['created_at'] ?? null)) ?></p>

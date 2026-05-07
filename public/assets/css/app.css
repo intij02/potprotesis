@@ -815,7 +815,7 @@ img {
 
 .order-form {
     display: grid;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .order-panel {
@@ -843,6 +843,18 @@ img {
 
 .order-panel-head h2 {
     margin-bottom: 0.45rem;
+}
+
+.order-panel-teeth {
+    padding-bottom: 1rem;
+}
+
+.order-panel-teeth .order-panel-head {
+    margin-bottom: 0.9rem;
+}
+
+.order-panel-teeth .order-panel-head p {
+    margin-bottom: 0;
 }
 
 .field {
@@ -956,11 +968,9 @@ img {
 }
 
 .teeth-card {
-    border: 1px solid rgba(212, 212, 216, 0.72);
-    border-radius: 24px;
-    padding: 1.25rem;
-    background: white;
-    overflow: hidden;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
 }
 
 .teeth-meta {
@@ -968,7 +978,7 @@ img {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.85rem;
     color: var(--muted-foreground);
     font-size: 0.95rem;
 }
@@ -988,7 +998,7 @@ img {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 0.35rem;
+    padding: 0.1rem 0 0.25rem;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1175,8 +1185,20 @@ img {
 
 @media (max-width: 640px) {
     .order-panel {
-        padding: 1.15rem;
+        padding: 1rem;
         border-radius: 20px;
+    }
+
+    .order-form {
+        gap: 1rem;
+    }
+
+    .order-panel-head {
+        margin-bottom: 1rem;
+    }
+
+    .order-panel-teeth {
+        padding: 0.9rem 0.7rem;
     }
 
     .order-form .row {
@@ -1193,44 +1215,41 @@ img {
         padding: 0.85rem 0.9rem;
     }
 
-    .teeth-card {
-        padding: 0.9rem;
-    }
-
     .teeth-meta {
         align-items: flex-start;
         flex-direction: column;
-        margin-bottom: 1rem;
+        gap: 0.55rem;
+        margin-bottom: 0.7rem;
     }
 
     .teeth-chart {
-        min-width: 29rem;
+        min-width: 27rem;
     }
 
     .teeth-quadrant {
         gap: 0.35rem;
-        padding: 0.7rem 0.5rem;
-        grid-template-columns: repeat(8, minmax(1.75rem, 1fr));
+        padding: 0.55rem 0.25rem;
+        grid-template-columns: repeat(8, minmax(1.6rem, 1fr));
     }
 
     .teeth-quadrant-left {
-        padding-right: 0.7rem;
+        padding-right: 0.45rem;
     }
 
     .teeth-quadrant-right {
-        padding-left: 0.7rem;
+        padding-left: 0.45rem;
     }
 
     .teeth-quadrant-lower {
-        padding-top: 0.7rem;
+        padding-top: 0.45rem;
     }
 
     .tooth-number {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .tooth-square {
-        width: 1.2rem;
-        height: 1.2rem;
+        width: 1.05rem;
+        height: 1.05rem;
     }
 }
