@@ -47,6 +47,7 @@ php_errors.log
 /phpunit
 /results/
 /phpunit*.xml
+/app/Database/Seeds/*TestSeeder.php
 
 #-------------------------
 # IDE / local tooling
