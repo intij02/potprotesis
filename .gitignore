@@ -37,6 +37,7 @@ env.local
 
 /writable/debugbar/*
 !/writable/debugbar/index.html
+/writable/tmp-order-test*/
 
 php_errors.log
 
