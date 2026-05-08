@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ClientModel;
 use App\Models\LabOrderModel;
 use App\Models\PatientModel;
+use CodeIgniter\Email\Email;
 use CodeIgniter\HTTP\Files\UploadedFile;
 
 class Orders extends BaseController
@@ -118,6 +119,9 @@ class Orders extends BaseController
                     $validation->setError((string) $field, (string) $message);
                 }
             } else {
+                $orderId = (int) $model->getInsertID();
+                $this->sendOrderNotification($orderId, $insertData, $attachments);
+
                 return redirect()->to('/orden-laboratorio')
                     ->with('success', 'La orden quedó registrada correctamente.');
             }
@@ -422,5 +426,45 @@ class Orders extends BaseController
             'context' => $context,
             'message' => $message ?: 'unknown error',
         ]);
+    }
+
+    private function sendOrderNotification(int $orderId, array $orderData, array $attachments): void
+    {
+        try {
+            /** @var Email $email */
+            $email = service('email');
+            $fromEmail = config('Email')->fromEmail !== '' ? config('Email')->fromEmail : 'no-reply@localhost';
+            $fromName = config('Email')->fromName !== '' ? config('Email')->fromName : 'POT Prótesis Dental';
+            $attachmentsCount = count($attachments);
+            $workTypes = implode(', ', array_map('strval', $orderData['work_types'] ?? []));
+            $selectedTeeth = implode(', ', array_map('strval', $orderData['selected_teeth'] ?? []));
+            $restorationTypes = implode(', ', array_map('strval', $orderData['restoration_types'] ?? []));
+            $implantLabel = ((int) ($orderData['implant_case'] ?? 0) === 1)
+                ? ((string) ($orderData['implant_chimney'] ?? 'none') === 'with_chimney' ? 'Con chimenea' : 'Sin chimenea')
+                : 'No aplica';
+
+            $message =
+                "Se registró una nueva orden de laboratorio.\n\n"
+                . "Orden ID: {$orderId}\n"
+                . "Fecha de envío: " . (string) ($orderData['sent_date'] ?? '') . "\n"
+                . "Fecha requerida: " . (string) ($orderData['required_date'] ?? '') . "\n"
+                . "Dentista: " . (string) ($orderData['dentist_name'] ?? '') . "\n"
+                . "Paciente: " . (string) ($orderData['patient_name'] ?? '') . "\n"
+                . "Teléfono: " . (string) ($orderData['contact_phone'] ?? '') . "\n"
+                . "Color: " . ((string) ($orderData['shade'] ?? '') !== '' ? (string) $orderData['shade'] : 'No especificado') . "\n"
+                . "Trabajo(s): " . ($workTypes !== '' ? $workTypes : 'No especificado') . "\n"
+                . "Diente(s): " . ($selectedTeeth !== '' ? $selectedTeeth : 'No especificado') . "\n"
+                . "Restauración(es): " . ($restorationTypes !== '' ? $restorationTypes : 'No especificado') . "\n"
+                . "Implante: {$implantLabel}\n"
+                . "Adjuntos: {$attachmentsCount}\n"
+                . "Observaciones: " . ((string) ($orderData['observations'] ?? '') !== '' ? (string) $orderData['observations'] : 'Sin observaciones');
+
+            $email->setFrom($fromEmail, $fromName);
+            $email->setTo('admin@potprotesisdental.com');
+            $email->setSubject('Nueva orden de laboratorio #' . $orderId);
+            $email->setMessage($message);
+            $email->send(false);
+        } catch (\Throwable) {
+        }
     }
 }

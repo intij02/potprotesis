@@ -269,9 +269,8 @@
 
                 <aside class="col-12 col-xl-4">
                     <div class="order-submit-card">
-                    <h3>Guardar orden</h3>
                     <button type="submit" class="btn btn-secondary order-submit">Guardar orden</button>
-                    <a href="<?= site_url('/orden-laboratorio') ?>" class="btn btn-outline order-submit">Limpiar formulario</a>
+                    <a href="<?= site_url('/orden-laboratorio') ?>" class="btn btn-outline order-submit text-light">Limpiar formulario</a>
                     </div>
                 </aside>
             </div>
