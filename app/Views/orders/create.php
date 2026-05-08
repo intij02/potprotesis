@@ -5,7 +5,6 @@
     <div class="container center narrow">
         <span class="eyebrow">Captura Digital</span>
         <h1>Orden de laboratorio POT</h1>
-        <p>Versión digital del formato físico para recibir trabajos, dientes, restauraciones, implantes y observaciones.</p>
     </div>
 </section>
 
@@ -271,7 +270,6 @@
                 <aside class="col-12 col-xl-4">
                     <div class="order-submit-card">
                     <h3>Guardar orden</h3>
-                    <p>El formulario se valida en servidor y queda listo para persistirse en MySQL desde `CI4`.</p>
                     <button type="submit" class="btn btn-secondary order-submit">Guardar orden</button>
                     <a href="<?= site_url('/orden-laboratorio') ?>" class="btn btn-outline order-submit">Limpiar formulario</a>
                     </div>
