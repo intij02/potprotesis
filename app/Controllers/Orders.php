@@ -448,27 +448,51 @@ class Orders extends BaseController
             $implantLabel = ((int) ($orderData['implant_case'] ?? 0) === 1)
                 ? ((string) ($orderData['implant_chimney'] ?? 'none') === 'with_chimney' ? 'Con chimenea' : 'Sin chimenea')
                 : 'No aplica';
+            $shade = (string) ($orderData['shade'] ?? '') !== '' ? (string) $orderData['shade'] : 'No especificado';
+            $observations = (string) ($orderData['observations'] ?? '') !== '' ? (string) $orderData['observations'] : 'Sin observaciones';
+            $requiredDate = (string) ($orderData['required_date'] ?? '');
+            $dentistName = (string) ($orderData['dentist_name'] ?? '');
+            $patientName = (string) ($orderData['patient_name'] ?? '');
+            $contactPhone = (string) ($orderData['contact_phone'] ?? '');
+            $workTypes = $workTypes !== '' ? $workTypes : 'No especificado';
+            $selectedTeeth = $selectedTeeth !== '' ? $selectedTeeth : 'No especificado';
+            $restorationTypes = $restorationTypes !== '' ? $restorationTypes : 'No especificado';
 
-            $message =
+            $htmlMessage = view('emails/order_notification', [
+                'orderId' => $orderId,
+                'requiredDate' => $requiredDate,
+                'dentistName' => $dentistName,
+                'patientName' => $patientName,
+                'contactPhone' => $contactPhone,
+                'shade' => $shade,
+                'workTypes' => $workTypes,
+                'selectedTeeth' => $selectedTeeth,
+                'restorationTypes' => $restorationTypes,
+                'implantLabel' => $implantLabel,
+                'attachmentsCount' => $attachmentsCount,
+                'observations' => $observations,
+            ]);
+
+            $textMessage =
                 "Se registró una nueva orden de laboratorio.\n\n"
                 . "Orden ID: {$orderId}\n"
-                . "Fecha de envío: " . (string) ($orderData['sent_date'] ?? '') . "\n"
-                . "Fecha requerida: " . (string) ($orderData['required_date'] ?? '') . "\n"
-                . "Dentista: " . (string) ($orderData['dentist_name'] ?? '') . "\n"
-                . "Paciente: " . (string) ($orderData['patient_name'] ?? '') . "\n"
-                . "Teléfono: " . (string) ($orderData['contact_phone'] ?? '') . "\n"
-                . "Color: " . ((string) ($orderData['shade'] ?? '') !== '' ? (string) $orderData['shade'] : 'No especificado') . "\n"
-                . "Trabajo(s): " . ($workTypes !== '' ? $workTypes : 'No especificado') . "\n"
-                . "Diente(s): " . ($selectedTeeth !== '' ? $selectedTeeth : 'No especificado') . "\n"
-                . "Restauración(es): " . ($restorationTypes !== '' ? $restorationTypes : 'No especificado') . "\n"
+                . "Fecha requerida: {$requiredDate}\n"
+                . "Dentista: {$dentistName}\n"
+                . "Paciente: {$patientName}\n"
+                . "Teléfono: {$contactPhone}\n"
+                . "Color: {$shade}\n"
+                . "Trabajo(s): {$workTypes}\n"
+                . "Diente(s): {$selectedTeeth}\n"
+                . "Restauración(es): {$restorationTypes}\n"
                 . "Implante: {$implantLabel}\n"
                 . "Adjuntos: {$attachmentsCount}\n"
-                . "Observaciones: " . ((string) ($orderData['observations'] ?? '') !== '' ? (string) $orderData['observations'] : 'Sin observaciones');
+                . "Observaciones: {$observations}";
 
             $email->setFrom($fromEmail, $fromName);
             $email->setTo($recipient);
             $email->setSubject('Nueva orden de laboratorio #' . $orderId);
-            $email->setMessage($message);
+            $email->setMessage($htmlMessage);
+            $email->setAltMessage($textMessage);
             $email->send(false);
         } catch (\Throwable) {
         }
