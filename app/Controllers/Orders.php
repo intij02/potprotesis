@@ -122,7 +122,7 @@ class Orders extends BaseController
                 $orderId = (int) $model->getInsertID();
                 $this->sendOrderNotification($orderId, $insertData, $attachments);
 
-                return redirect()->to('/orden-laboratorio')
+                return redirect()->to('/cliente/panel')
                     ->with('success', 'La orden quedó registrada correctamente.');
             }
         }
