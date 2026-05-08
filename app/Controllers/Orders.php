@@ -435,6 +435,12 @@ class Orders extends BaseController
             $email = service('email');
             $fromEmail = config('Email')->fromEmail !== '' ? config('Email')->fromEmail : 'no-reply@localhost';
             $fromName = config('Email')->fromName !== '' ? config('Email')->fromName : 'POT Prótesis Dental';
+            $recipient = (string) env('email.orderNotificationTo', env('email.order_notification_to', 'admin@potprotesisdental.com'));
+
+            if ($recipient === '') {
+                return;
+            }
+
             $attachmentsCount = count($attachments);
             $workTypes = implode(', ', array_map('strval', $orderData['work_types'] ?? []));
             $selectedTeeth = implode(', ', array_map('strval', $orderData['selected_teeth'] ?? []));
@@ -460,7 +466,7 @@ class Orders extends BaseController
                 . "Observaciones: " . ((string) ($orderData['observations'] ?? '') !== '' ? (string) $orderData['observations'] : 'Sin observaciones');
 
             $email->setFrom($fromEmail, $fromName);
-            $email->setTo('admin@potprotesisdental.com');
+            $email->setTo($recipient);
             $email->setSubject('Nueva orden de laboratorio #' . $orderId);
             $email->setMessage($message);
             $email->send(false);
