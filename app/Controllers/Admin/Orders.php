@@ -43,6 +43,35 @@ class Orders extends BaseController
         return $this->renderForm($order, service('validation'));
     }
 
+    public function downloadAttachment(int $id, int $index)
+    {
+        $order = $this->findOrderOrFail($id);
+        $attachments = is_array($order['attachments'] ?? null) ? $order['attachments'] : [];
+        $attachment = $attachments[$index] ?? null;
+
+        if (! is_array($attachment)) {
+            throw PageNotFoundException::forPageNotFound('Archivo no encontrado.');
+        }
+
+        $relativePath = trim((string) ($attachment['path'] ?? ''));
+
+        if ($relativePath === '') {
+            throw PageNotFoundException::forPageNotFound('Archivo no encontrado.');
+        }
+
+        $filePath = WRITEPATH . ltrim($relativePath, '/\\');
+
+        if (! is_file($filePath)) {
+            throw PageNotFoundException::forPageNotFound('El archivo ya no existe en el servidor.');
+        }
+
+        $downloadName = (string) ($attachment['original_name'] ?? basename($filePath));
+
+        return $this->response
+            ->download($filePath, null)
+            ->setFileName($downloadName);
+    }
+
     public function update(int $id)
     {
         $order      = $this->findOrderOrFail($id);

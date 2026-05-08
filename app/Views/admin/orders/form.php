@@ -44,8 +44,12 @@
                     <div class="field mt-3">
                         <label class="form-label">Archivos actuales</label>
                         <ul class="file-list">
-                            <?php foreach ($order['attachments'] as $attachment): ?>
-                                <li><?= esc($attachment['original_name'] ?? $attachment['stored_name'] ?? 'Archivo') ?></li>
+                            <?php foreach ($order['attachments'] as $index => $attachment): ?>
+                                <li>
+                                    <a href="<?= base_url('admin/ordenes/archivo/' . $order['id'] . '/' . $index) ?>" target="_blank" rel="noopener noreferrer">
+                                        <?= esc($attachment['original_name'] ?? $attachment['stored_name'] ?? 'Archivo') ?>
+                                    </a>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
