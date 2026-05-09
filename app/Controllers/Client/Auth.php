@@ -97,7 +97,7 @@ class Auth extends BaseController
             'name' => $this->sanitizeSingleLine((string) $this->request->getPost('name')),
             'contact_phone' => $this->sanitizeSingleLine((string) $this->request->getPost('contact_phone')),
             'email' => $this->sanitizeSingleLine((string) $this->request->getPost('email')),
-            'website' => trim((string) $this->request->getPost('website')),
+            'website' => trim((string) $this->request->getPost('company_website')),
         ];
 
         $rules = [
@@ -115,6 +115,10 @@ class Auth extends BaseController
         $securityErrors = $this->registrationSecurityErrors($formData, is_int($formStartedAt) ? $formStartedAt : 0);
 
         if ($securityErrors !== []) {
+            log_message('warning', 'Client registration blocked by security checks: {context}', [
+                'context' => json_encode($this->registrationSecurityContext($formData, is_int($formStartedAt) ? $formStartedAt : 0), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            ]);
+
             foreach ($securityErrors as $field => $message) {
                 $validation->setError($field, $message);
             }
@@ -324,6 +328,49 @@ HTML;
         }
 
         return $errors;
+    }
+
+    private function registrationSecurityContext(array $formData, int $formStartedAt): array
+    {
+        $email = $formData['email'];
+        $localPart = strstr($email, '@', true);
+
+        return [
+            'ip' => $this->request->getIPAddress(),
+            'user_agent' => (string) $this->request->getUserAgent(),
+            'email' => $this->maskEmailForLog($email),
+            'honeypot_filled' => $formData['website'] !== '',
+            'honeypot_length' => strlen($formData['website']),
+            'form_started_at' => $formStartedAt,
+            'elapsed_seconds' => $formStartedAt > 0 ? time() - $formStartedAt : null,
+            'looks_like_spam' => $this->looksLikeSpamRegistration($formData),
+            'rate_limited' => $this->isRegistrationRateLimited(),
+            'name_has_url' => preg_match('/https?:\/\/|www\.|<|>|\[url|\[link/i', $formData['name']) === 1,
+            'name_has_repeated_chars' => preg_match('/(.)\1{5,}/u', $formData['name']) === 1,
+            'name_digit_count' => preg_match_all('/\d/', $formData['name']) ?: 0,
+            'email_local_part_suspicious' => $localPart !== false && strlen($localPart) >= 18 && preg_match('/\d{5,}/', $localPart) === 1,
+        ];
+    }
+
+    private function maskEmailForLog(string $email): string
+    {
+        $email = trim($email);
+
+        if ($email === '' || strpos($email, '@') === false) {
+            return $email;
+        }
+
+        [$localPart, $domain] = explode('@', $email, 2);
+
+        if ($localPart === '') {
+            return '*@' . $domain;
+        }
+
+        if (strlen($localPart) <= 2) {
+            return substr($localPart, 0, 1) . '*@' . $domain;
+        }
+
+        return substr($localPart, 0, 2) . str_repeat('*', max(strlen($localPart) - 2, 1)) . '@' . $domain;
     }
 
     private function looksLikeSpamRegistration(array $formData): bool

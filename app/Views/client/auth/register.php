@@ -17,8 +17,8 @@
             <form method="post" class="stack-form" action="<?= base_url('cliente/registro') ?>" id="client-register-form" novalidate>
                 <?= csrf_field() ?>
                 <div class="contact-honeypot" aria-hidden="true">
-                    <label for="website">Sitio web</label>
-                    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" value="">
+                    <label for="company_website">Dejar en blanco</label>
+                    <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="new-password" value="">
                 </div>
 
                 <div>
