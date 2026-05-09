@@ -12,6 +12,14 @@
 <section class="section">
     <div class="container narrow">
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
+        <?php $validation = session('_ci_validation'); ?>
+        <?php if ($validation && $validation->getErrors()): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($validation->getErrors() as $validationError): ?>
+                    <div><?= esc($validationError) ?></div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
         <div class="admin-card admin-form-card">
             <form method="post" class="stack-form" action="<?= base_url('cliente/registro') ?>" id="client-register-form" novalidate>

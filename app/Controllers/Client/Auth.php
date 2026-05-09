@@ -109,7 +109,7 @@ class Auth extends BaseController
         ];
 
         if (! $validation->setRules($rules)->run($this->request->getPost())) {
-            return redirect()->back()->withInput()->with('error', 'Revise los datos capturados.');
+            return redirect()->back()->withInput()->with('error', $this->buildValidationErrorMessage($validation->getErrors()));
         }
 
         $securityErrors = $this->registrationSecurityErrors($formData, is_int($formStartedAt) ? $formStartedAt : 0);
@@ -123,7 +123,7 @@ class Auth extends BaseController
                 $validation->setError($field, $message);
             }
 
-            return redirect()->back()->withInput()->with('error', reset($securityErrors) ?: 'No fue posible procesar el registro.');
+            return redirect()->back()->withInput()->with('error', $this->buildSecurityErrorMessage($securityErrors));
         }
 
         $clientModel = new ClientModel();
@@ -302,7 +302,7 @@ HTML;
         $errors = [];
 
         if ($formData['website'] !== '') {
-            $errors['name'] = 'No fue posible procesar el registro.';
+            $errors['name'] = 'Se activó el campo de seguridad del formulario. Intenta de nuevo sin autocompletado ni extensiones de llenado automático.';
         }
 
         if ($formStartedAt <= 0) {
@@ -320,7 +320,7 @@ HTML;
         }
 
         if ($this->looksLikeSpamRegistration($formData)) {
-            $errors['name'] = 'No fue posible procesar el registro.';
+            $errors['name'] = $this->spamRegistrationMessage($formData);
         }
 
         if ($this->isRegistrationRateLimited()) {
@@ -328,6 +328,28 @@ HTML;
         }
 
         return $errors;
+    }
+
+    private function buildValidationErrorMessage(array $errors): string
+    {
+        $firstError = reset($errors);
+
+        if (! is_string($firstError) || trim($firstError) === '') {
+            return 'Revise los datos capturados.';
+        }
+
+        return 'Error de validación: ' . $firstError;
+    }
+
+    private function buildSecurityErrorMessage(array $errors): string
+    {
+        $firstError = reset($errors);
+
+        if (! is_string($firstError) || trim($firstError) === '') {
+            return 'No fue posible procesar el registro.';
+        }
+
+        return 'No fue posible procesar el registro. ' . $firstError;
     }
 
     private function registrationSecurityContext(array $formData, int $formStartedAt): array
@@ -371,6 +393,41 @@ HTML;
         }
 
         return substr($localPart, 0, 2) . str_repeat('*', max(strlen($localPart) - 2, 1)) . '@' . $domain;
+    }
+
+    private function spamRegistrationMessage(array $formData): string
+    {
+        $name = $formData['name'];
+        $email = $formData['email'];
+        $localPart = strstr($email, '@', true);
+
+        if ($name === '' || $email === '') {
+            return 'Faltan datos obligatorios para completar la validación de seguridad.';
+        }
+
+        if (preg_match('/https?:\/\/|www\.|<|>|\[url|\[link/i', $name) === 1) {
+            return 'El nombre contiene una URL o texto no permitido.';
+        }
+
+        if (preg_match('/(.)\1{5,}/u', $name) === 1) {
+            return 'El nombre contiene repeticiones inusuales de caracteres.';
+        }
+
+        $digitsInName = preg_match_all('/\d/', $name);
+
+        if ($digitsInName !== false && $digitsInName >= 6) {
+            return 'El nombre contiene demasiados números y fue bloqueado por seguridad.';
+        }
+
+        if ($localPart === false) {
+            return 'El email no pudo validarse correctamente.';
+        }
+
+        if (strlen($localPart) >= 18 && preg_match('/\d{5,}/', $localPart) === 1) {
+            return 'El email fue bloqueado por el filtro de seguridad del formulario.';
+        }
+
+        return 'Los datos fueron bloqueados por las reglas de seguridad del formulario.';
     }
 
     private function looksLikeSpamRegistration(array $formData): bool
