@@ -198,6 +198,47 @@ img {
     background: transparent;
 }
 
+.password-field {
+    position: relative;
+}
+
+.password-field .form-control {
+    padding-right: 3.35rem;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.85rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+}
+
+.password-toggle:hover,
+.password-toggle:focus {
+    color: var(--primary);
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid rgba(58, 65, 84, 0.24);
+    outline-offset: 2px;
+    border-radius: 999px;
+}
+
+.password-toggle svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
 .btn-outline.light {
     border-color: rgba(255, 255, 255, 0.32);
     color: white;
