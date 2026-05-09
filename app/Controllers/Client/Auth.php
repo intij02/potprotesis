@@ -354,13 +354,10 @@ HTML;
 
     private function registrationSecurityContext(array $formData, int $formStartedAt): array
     {
-        $email = $formData['email'];
-        $localPart = strstr($email, '@', true);
-
         return [
             'ip' => $this->request->getIPAddress(),
             'user_agent' => (string) $this->request->getUserAgent(),
-            'email' => $this->maskEmailForLog($email),
+            'email' => $this->maskEmailForLog($formData['email']),
             'honeypot_filled' => $formData['website'] !== '',
             'honeypot_length' => strlen($formData['website']),
             'form_started_at' => $formStartedAt,
@@ -370,7 +367,6 @@ HTML;
             'name_has_url' => preg_match('/https?:\/\/|www\.|<|>|\[url|\[link/i', $formData['name']) === 1,
             'name_has_repeated_chars' => preg_match('/(.)\1{5,}/u', $formData['name']) === 1,
             'name_digit_count' => preg_match_all('/\d/', $formData['name']) ?: 0,
-            'email_local_part_suspicious' => $localPart !== false && strlen($localPart) >= 18 && preg_match('/\d{5,}/', $localPart) === 1,
         ];
     }
 
@@ -399,7 +395,6 @@ HTML;
     {
         $name = $formData['name'];
         $email = $formData['email'];
-        $localPart = strstr($email, '@', true);
 
         if ($name === '' || $email === '') {
             return 'Faltan datos obligatorios para completar la validación de seguridad.';
@@ -417,14 +412,6 @@ HTML;
 
         if ($digitsInName !== false && $digitsInName >= 6) {
             return 'El nombre contiene demasiados números y fue bloqueado por seguridad.';
-        }
-
-        if ($localPart === false) {
-            return 'El email no pudo validarse correctamente.';
-        }
-
-        if (strlen($localPart) >= 18 && preg_match('/\d{5,}/', $localPart) === 1) {
-            return 'El email fue bloqueado por el filtro de seguridad del formulario.';
         }
 
         return 'Los datos fueron bloqueados por las reglas de seguridad del formulario.';
@@ -450,16 +437,6 @@ HTML;
         $digitsInName = preg_match_all('/\d/', $name);
 
         if ($digitsInName !== false && $digitsInName >= 6) {
-            return true;
-        }
-
-        $localPart = strstr($email, '@', true);
-
-        if ($localPart === false) {
-            return true;
-        }
-
-        if (strlen($localPart) >= 18 && preg_match('/\d{5,}/', $localPart) === 1) {
             return true;
         }
 
