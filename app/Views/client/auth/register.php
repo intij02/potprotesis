@@ -31,7 +31,7 @@
 
                 <div>
                     <label for="name" class="form-label">Nombre o clínica</label>
-                    <input id="name" name="name" class="form-control" type="text" value="<?= esc(old('name', '')) ?>" required>
+                    <input id="name" name="name" class="form-control" type="text" value="<?= esc(old('name', '')) ?>" required autofocus>
                 </div>
 
                 <div>
