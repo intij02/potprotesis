@@ -35,12 +35,6 @@
             <div class="alert alert-danger">Faltan clientes o pacientes activos en catálogo. Complete esos datos antes de actualizar la orden.</div>
         <?php endif; ?>
 
-        <?php if ($statusOnlyMode): ?>
-            <div class="alert alert-info">
-                El formulario está en modo protegido. Solo el campo <strong>Estatus</strong> está habilitado.
-            </div>
-        <?php endif; ?>
-
         <form method="post" action="<?= base_url('admin/ordenes/actualizar/' . $order['id']) ?>" class="order-form" enctype="multipart/form-data">
             <?= csrf_field() ?>
 
@@ -303,8 +297,6 @@
                         <p>
                             <?php if ($isFullEditUnlocked): ?>
                                 Los cambios se aplicarán directamente sobre la orden registrada.
-                            <?php else: ?>
-                                Puede guardar el nuevo estatus inmediatamente. Los demás campos continúan protegidos.
                             <?php endif; ?>
                         </p>
                         <div class="d-grid gap-2">
@@ -312,7 +304,7 @@
                                 <?= $isFullEditUnlocked ? 'Actualizar orden' : 'Guardar estatus' ?>
                             </button>
                             <?php if ($canUnlockFullEdit && ! $isFullEditUnlocked): ?>
-                                <button type="button" class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#unlockOrderModal">
+                                <button type="button" class="btn btn-outline text-light" data-bs-toggle="modal" data-bs-target="#unlockOrderModal">
                                     Autorizar edición completa
                                 </button>
                             <?php endif; ?>
