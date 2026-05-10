@@ -34,6 +34,7 @@ $routes->group('admin', static function ($routes) {
     $routes->get('ordenes', 'Admin\Orders::index');
     $routes->get('ordenes/editar/(:num)', 'Admin\Orders::edit/$1');
     $routes->get('ordenes/archivo/(:num)/(:num)', 'Admin\Orders::downloadAttachment/$1/$2');
+    $routes->post('ordenes/desbloquear/(:num)', 'Admin\Orders::unlock/$1');
     $routes->post('ordenes/actualizar/(:num)', 'Admin\Orders::update/$1');
     $routes->get('usuarios', 'Admin\Users::index');
     $routes->get('usuarios/nuevo', 'Admin\Users::create');

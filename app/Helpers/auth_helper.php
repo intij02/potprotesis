@@ -1,5 +1,18 @@
 <?php
 
+if (! function_exists('normalize_admin_role')) {
+    function normalize_admin_role($role): string
+    {
+        $normalized = strtolower(trim((string) $role));
+
+        if (in_array($normalized, ['admin', 'administrador'], true)) {
+            return 'admin';
+        }
+
+        return 'staff';
+    }
+}
+
 if (! function_exists('admin_auth_user')) {
     function admin_auth_user(): ?array
     {
@@ -25,7 +38,7 @@ if (! function_exists('admin_user_role')) {
             return null;
         }
 
-        return (string) $user['role'];
+        return normalize_admin_role($user['role']);
     }
 }
 
@@ -38,6 +51,13 @@ if (! function_exists('admin_can_manage_users')) {
 
 if (! function_exists('admin_can_edit_orders')) {
     function admin_can_edit_orders(): bool
+    {
+        return admin_is_logged_in();
+    }
+}
+
+if (! function_exists('admin_can_unlock_order_edits')) {
+    function admin_can_unlock_order_edits(): bool
     {
         return admin_user_role() === 'admin';
     }

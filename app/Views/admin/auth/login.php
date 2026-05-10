@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="row justify-content-end">
-                            <div class="col-3 d-grid">
+                            <div class="col-6 d-grid">
                                 <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                             </div>
                         </div>

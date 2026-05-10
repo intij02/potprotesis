@@ -3,9 +3,12 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\AdminUserModel;
 use App\Models\ClientModel;
 use App\Models\LabOrderModel;
+use App\Models\OrderEditLogModel;
 use App\Models\PatientModel;
+use CodeIgniter\Email\Email;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Files\UploadedFile;
 
@@ -43,6 +46,59 @@ class Orders extends BaseController
         return $this->renderForm($order, service('validation'));
     }
 
+    public function unlock(int $id)
+    {
+        $order = $this->findOrderOrFail($id);
+
+        if (! admin_can_unlock_order_edits()) {
+            return redirect()->to('/admin/ordenes')
+                ->with('error', 'No tiene permisos para desbloquear la edición completa de órdenes.');
+        }
+
+        $password = (string) $this->request->getPost('unlock_password');
+        $observations = trim((string) $this->request->getPost('unlock_observations'));
+        $errors = [];
+
+        if ($password === '') {
+            $errors['unlock_password'] = 'Capture su contraseña para autorizar la edición.';
+        }
+
+        if ($observations === '') {
+            $errors['unlock_observations'] = 'Indique el motivo de la edición.';
+        } elseif ((function_exists('mb_strlen') ? mb_strlen($observations, 'UTF-8') : strlen($observations)) > 2000) {
+            $errors['unlock_observations'] = 'Las observaciones no deben exceder 2000 caracteres.';
+        }
+
+        $sessionUser = admin_auth_user();
+        $adminUser = is_array($sessionUser)
+            ? (new AdminUserModel())->find((int) ($sessionUser['id'] ?? 0))
+            : null;
+
+        if (! is_array($adminUser) || ! (bool) ($adminUser['is_active'] ?? false) || ! password_verify($password, (string) ($adminUser['password_hash'] ?? ''))) {
+            $errors['unlock_password'] = 'La contraseña no coincide con su usuario actual.';
+        }
+
+        if ($errors !== []) {
+            return redirect()->to('/admin/ordenes/editar/' . $order['id'])
+                ->with('unlock_errors', $errors)
+                ->with('unlock_old', ['unlock_observations' => $observations])
+                ->with('show_unlock_modal', true);
+        }
+
+        $logId = (int) (new OrderEditLogModel())->insert([
+            'order_id'         => $order['id'],
+            'admin_user_id'    => $adminUser['id'],
+            'admin_username'   => (string) ($adminUser['username'] ?? ''),
+            'admin_full_name'  => (string) ($adminUser['full_name'] ?? ''),
+            'observations'     => $observations,
+        ], true);
+
+        $this->grantOrderFullEditAccess($order['id'], $logId);
+
+        return redirect()->to('/admin/ordenes/editar/' . $order['id'])
+            ->with('success', 'Edición completa autorizada. Ya puede modificar la orden.');
+    }
+
     public function downloadAttachment(int $id, int $index)
     {
         $order = $this->findOrderOrFail($id);
@@ -76,11 +132,39 @@ class Orders extends BaseController
     {
         $order      = $this->findOrderOrFail($id);
         $validation = service('validation');
-        $formData   = $this->requestFormData();
-        $catalogs   = $this->loadCatalogs();
+        $statusData  = $this->requestStatusFormData();
+        $previousStatus = (string) ($order['status'] ?? 'recibida');
+        $isFullEditUnlocked = $this->isOrderFullyUnlocked($id);
+
+        if (! $isFullEditUnlocked) {
+            if (! $validation->setRules($this->statusRules())->run($statusData)) {
+                return $this->renderForm(array_merge($order, $statusData), $validation, [
+                    'isFullEditUnlocked' => false,
+                ]);
+            }
+
+            (new LabOrderModel())->update($id, [
+                'status' => $statusData['status'],
+            ]);
+
+            $updatedOrder = $this->findOrderOrFail($id);
+            $this->sendStatusChangeEmail(
+                $updatedOrder,
+                $this->findClientRecord((int) ($updatedOrder['client_id'] ?? 0)),
+                $previousStatus,
+                $statusData['status']
+            );
+
+            return redirect()->to('/admin/ordenes')->with('success', 'Estatus de la orden actualizado correctamente.');
+        }
+
+        $formData = $this->requestFormData();
+        $catalogs = $this->loadCatalogs();
 
         if (! $validation->setRules($this->fieldRules())->run($formData)) {
-            return $this->renderForm(array_merge($order, $formData), $validation);
+            return $this->renderForm(array_merge($order, $formData), $validation, [
+                'isFullEditUnlocked' => true,
+            ]);
         }
 
         $customErrors = $this->customValidationErrors($formData, $order, $catalogs);
@@ -90,7 +174,9 @@ class Orders extends BaseController
                 $validation->setError($field, $message);
             }
 
-            return $this->renderForm(array_merge($order, $formData), $validation);
+            return $this->renderForm(array_merge($order, $formData), $validation, [
+                'isFullEditUnlocked' => true,
+            ]);
         }
 
         $existingAttachments = is_array($order['attachments'] ?? null) ? $order['attachments'] : [];
@@ -100,7 +186,9 @@ class Orders extends BaseController
         if ($attachmentError !== null) {
             $validation->setError('attachments', $attachmentError);
 
-            return $this->renderForm(array_merge($order, $formData, ['attachments' => $attachments]), $validation);
+            return $this->renderForm(array_merge($order, $formData, ['attachments' => $attachments]), $validation, [
+                'isFullEditUnlocked' => true,
+            ]);
         }
 
         $client = $this->findClientById($formData['client_id'], $catalogs['clients']);
@@ -125,13 +213,24 @@ class Orders extends BaseController
             'signature_name'    => null,
         ]);
 
+        $this->clearOrderFullEditAccess($id);
+
+        $updatedOrder = $this->findOrderOrFail($id);
+        $this->sendStatusChangeEmail(
+            $updatedOrder,
+            $this->findClientRecord((int) ($updatedOrder['client_id'] ?? 0)),
+            $previousStatus,
+            $formData['status']
+        );
+
         return redirect()->to('/admin/ordenes')->with('success', 'Orden actualizada correctamente.');
     }
 
-    private function renderForm(array $order, $validation): string
+    private function renderForm(array $order, $validation, array $context = []): string
     {
         $catalogs = $this->loadCatalogs();
         $mappedOrder = $this->mapOrderToFormData($order);
+        $isFullEditUnlocked = (bool) ($context['isFullEditUnlocked'] ?? $this->isOrderFullyUnlocked((int) ($mappedOrder['id'] ?? 0)));
 
         return view('admin/orders/form', [
             'pageTitle'        => 'Editar Orden - POT Prótesis Dental',
@@ -146,6 +245,11 @@ class Orders extends BaseController
             'lowerTeeth'       => pot_lower_teeth(),
             'implantOptions'   => pot_implant_chimney_options(),
             'minRequiredDate'  => pot_min_required_date($mappedOrder['created_at'] ?? ''),
+            'isFullEditUnlocked' => $isFullEditUnlocked,
+            'canUnlockFullEdit'  => admin_can_unlock_order_edits(),
+            'unlockErrors'       => session()->getFlashdata('unlock_errors') ?? [],
+            'unlockOld'          => session()->getFlashdata('unlock_old') ?? [],
+            'showUnlockModal'    => (bool) (session()->getFlashdata('show_unlock_modal') ?? false),
         ]);
     }
 
@@ -204,6 +308,13 @@ class Orders extends BaseController
         ];
     }
 
+    private function requestStatusFormData(): array
+    {
+        return [
+            'status' => trim((string) $this->request->getPost('status')) ?: 'recibida',
+        ];
+    }
+
     private function fieldRules(): array
     {
         return [
@@ -213,6 +324,13 @@ class Orders extends BaseController
             'status'         => 'required|in_list[recibida,en_proceso,lista,entregada,cancelada]',
             'shade'          => 'permit_empty|max_length[50]',
             'observations'   => 'permit_empty|max_length[2000]',
+        ];
+    }
+
+    private function statusRules(): array
+    {
+        return [
+            'status' => 'required|in_list[recibida,en_proceso,lista,entregada,cancelada]',
         ];
     }
 
@@ -366,5 +484,114 @@ class Orders extends BaseController
         }
 
         return null;
+    }
+
+    private function findClientRecord(int $id): ?array
+    {
+        if ($id <= 0) {
+            return null;
+        }
+
+        $client = (new ClientModel())->find($id);
+
+        return is_array($client) ? $client : null;
+    }
+
+    private function isOrderFullyUnlocked(int $orderId): bool
+    {
+        if (! admin_can_unlock_order_edits()) {
+            return false;
+        }
+
+        $unlockMap = $this->session->get('admin_order_edit_unlocks');
+
+        return is_array($unlockMap) && isset($unlockMap[$orderId]);
+    }
+
+    private function grantOrderFullEditAccess(int $orderId, int $logId): void
+    {
+        $unlockMap = $this->session->get('admin_order_edit_unlocks');
+
+        if (! is_array($unlockMap)) {
+            $unlockMap = [];
+        }
+
+        $unlockMap[$orderId] = [
+            'log_id'     => $logId,
+            'granted_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $this->session->set('admin_order_edit_unlocks', $unlockMap);
+    }
+
+    private function clearOrderFullEditAccess(int $orderId): void
+    {
+        $unlockMap = $this->session->get('admin_order_edit_unlocks');
+
+        if (! is_array($unlockMap) || ! isset($unlockMap[$orderId])) {
+            return;
+        }
+
+        unset($unlockMap[$orderId]);
+
+        if ($unlockMap === []) {
+            $this->session->remove('admin_order_edit_unlocks');
+
+            return;
+        }
+
+        $this->session->set('admin_order_edit_unlocks', $unlockMap);
+    }
+
+    private function sendStatusChangeEmail(array $order, ?array $client, string $previousStatus, string $newStatus): void
+    {
+        if ($previousStatus === $newStatus || ! is_array($client)) {
+            return;
+        }
+
+        $emailAddress = trim((string) ($client['email'] ?? ''));
+
+        if ($emailAddress === '') {
+            return;
+        }
+
+        try {
+            /** @var Email $email */
+            $email = service('email');
+            $config = config('Email');
+            $fromEmail = $config->fromEmail !== '' ? $config->fromEmail : 'no-reply@localhost';
+            $fromName = $config->fromName !== '' ? $config->fromName : 'POT Prótesis Dental';
+            $orderNumber = (string) ($order['order_number'] ?: '#' . $order['id']);
+            $clientName = (string) ($client['name'] ?? $order['dentist_name'] ?? 'Cliente');
+
+            $htmlMessage = view('emails/order_status_update', [
+                'clientName'         => $clientName,
+                'orderNumber'        => $orderNumber,
+                'patientName'        => (string) ($order['patient_name'] ?? ''),
+                'previousStatus'     => pot_order_status_label($previousStatus),
+                'newStatus'          => pot_order_status_label($newStatus),
+                'contactPhone'       => site_setting('contact_phone', ''),
+                'contactEmail'       => site_setting('contact_email', $fromEmail),
+            ]);
+
+            $textMessage = "Hola {$clientName},\n\n"
+                . "La orden {$orderNumber} cambió de estatus.\n"
+                . 'Estatus anterior: ' . pot_order_status_label($previousStatus) . "\n"
+                . 'Nuevo estatus: ' . pot_order_status_label($newStatus) . "\n"
+                . 'Paciente: ' . ((string) ($order['patient_name'] ?? 'No especificado')) . "\n\n"
+                . "POT Prótesis Dental";
+
+            $email->setFrom($fromEmail, $fromName);
+            $email->setTo($emailAddress);
+            $email->setSubject('Actualización de estatus de tu orden ' . $orderNumber);
+            $email->setMessage($htmlMessage);
+            $email->setAltMessage($textMessage);
+            $email->send(false);
+        } catch (\Throwable $exception) {
+            log_message('error', 'No fue posible enviar el correo de actualización de estatus para la orden {orderId}: {message}', [
+                'orderId' => $order['id'] ?? 0,
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 }

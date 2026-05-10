@@ -12,9 +12,9 @@ class AdminEditOrders implements FilterInterface
     {
         helper('auth');
 
-        if (! admin_can_edit_orders()) {
+        if (! admin_can_unlock_order_edits()) {
             return redirect()->to('/admin/ordenes')
-                ->with('error', 'No tiene permisos para editar órdenes.');
+                ->with('error', 'No tiene permisos para desbloquear la edición de órdenes.');
         }
 
         return null;

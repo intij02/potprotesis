@@ -44,11 +44,13 @@ class Auth extends BaseController
             return redirect()->back()->withInput()->with('error', 'Usuario o contraseña inválidos.');
         }
 
+        $role = normalize_admin_role($user['role'] ?? null);
+
         $this->session->set('admin_user', [
             'id'        => $user['id'],
             'username'  => $user['username'],
             'full_name' => $user['full_name'],
-            'role'      => $user['role'] ?? 'admin',
+            'role'      => $role,
         ]);
 
         return redirect()->to('/admin/ordenes')->with('success', 'Sesión iniciada correctamente.');

@@ -33,7 +33,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <div class="row justify-content-end">
+                    <div class="col-6 d-grid">
+                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                    </div>
+                </div>
             </form>
 
             <p class="auth-alt-link">¿Cliente nuevo? <a href="<?= base_url('cliente/registro') ?>">Crea tu cuenta aquí</a>.</p>

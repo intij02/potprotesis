@@ -32,7 +32,7 @@ class AdminAuth implements FilterInterface
             'id'        => $user['id'],
             'username'  => $user['username'],
             'full_name' => $user['full_name'],
-            'role'      => $user['role'] ?? 'staff',
+            'role'      => normalize_admin_role($user['role'] ?? null),
         ]);
 
         return null;
