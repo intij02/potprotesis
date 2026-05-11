@@ -1,15 +1,14 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero">
+<section class="page-hero" style="padding: 2rem 0 2rem 0;">
     <div class="container center narrow">
-        <span class="eyebrow">Servicios Profesionales</span>
         <h1>Soluciones Completas en Prótesis Dental</h1>
         <p>Ofrecemos una amplia gama de servicios especializados con altos estándares de calidad y precisión técnica.</p>
     </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding: 2rem 0 2rem 0;">
 <?php foreach ($services as $index => $service): ?>
 <section class="section<?= $index % 2 === 1 ? ' muted' : '' ?>">
     <div class="container split<?= $index % 2 === 1 ? ' reverse' : '' ?>">
