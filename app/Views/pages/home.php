@@ -64,19 +64,25 @@
         <h2>Blog</h2>
         <p>Las últimas entradas del laboratorio para clientes y clínicas.</p>
     </div>
-    <div class="container cards-grid">
-        <?php foreach ($blogPosts as $post): ?>
-            <article class="service-card">
-                <a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="text-decoration-none">
-                    <img src="<?= base_url($post['image_path'] ?: 'assets/media/logo-pot.png') ?>" alt="<?= esc($post['title']) ?>">
-                </a>
-                <div class="card-body">
-                    <h3><a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($post['title']) ?></a></h3>
-                    <p><?= esc(mb_substr(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content']))), 0, 160)) ?><?= mb_strlen(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content'])))) > 160 ? '…' : '' ?></p>
+    <?php foreach ($blogPosts as $index => $post): ?>
+        <div class="container<?= $index > 0 ? ' mt-4' : '' ?>">
+            <article class="mini-card">
+                <div class="split<?= $index % 2 === 1 ? ' reverse' : '' ?>">
+                    <div class="media-block">
+                        <a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>">
+                            <img src="<?= base_url($post['image_path'] ?: 'assets/media/logo-pot.png') ?>" alt="<?= esc($post['title']) ?>">
+                        </a>
+                    </div>
+                    <div class="content-block">
+                        <span class="eyebrow">Blog</span>
+                        <h3><a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($post['title']) ?></a></h3>
+                        <p><?= esc(mb_substr(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content']))), 0, 180)) ?><?= mb_strlen(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content'])))) > 180 ? '…' : '' ?></p>
+                        <a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="btn btn-outline btn-small">Leer más</a>
+                    </div>
                 </div>
             </article>
-        <?php endforeach; ?>
-    </div>
+        </div>
+    <?php endforeach; ?>
 </section>
 <?php endif; ?>
 
