@@ -33,11 +33,13 @@
                             <label for="content" class="form-label">Contenido Blog</label>
                             <textarea id="content" name="content" class="form-control" rows="18" required><?= old('content', $post['content'] ?? '') ?></textarea>
                         </div>
-                        <div class="mb-3">
-                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($post) ? ((bool) $post['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
-                            <label class="form-check-label" for="is_active">Entrada activa</label>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($post) ? ((bool) $post['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="is_active">Entrada Visible</label>                                
+                            </div>
                         </div>
-                        <div class="row grid justify-end">
+                        <div class="row d-grid justify-content-end">
                             <div class="col-6">
                                 <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear entrada' ?></button>
                             </div>
