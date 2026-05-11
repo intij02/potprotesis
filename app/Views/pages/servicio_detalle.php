@@ -4,19 +4,17 @@
 <section class="page-hero" style="padding: 2rem 0 2rem 0;">
     <div class="container center narrow">
         <h1><?= esc($service['title']) ?></h1>
-        <p><?= esc($service['summary']) ?></p>
     </div>
 </section>
 
 <section class="section" style="padding: 2rem 0 2rem 0;">
     <div class="container">
-        <div class="split align-items-start">
+        <div class="split align-items-start" style="gap: 1rem">
             <div class="media-block">
                 <img src="<?= base_url($detailImages[0] ?? ($service['image_path'] ?? 'assets/media/logo-pot.png')) ?>" alt="<?= esc($service['title']) ?>">
             </div>
             <div class="content-block">
-                <span class="eyebrow">Descripción</span>
-                <div class="mini-card">
+                <div class="mini-card mb-3" style="padding: 1rem; border-radius: 10px;">
                     <?php foreach (preg_split('/\R{2,}/', trim((string) ($service['detail_content'] ?? $service['summary'] ?? ''))) as $paragraph): ?>
                         <?php if (trim($paragraph) !== ''): ?>
                             <p><?= nl2br(esc(trim($paragraph))) ?></p>

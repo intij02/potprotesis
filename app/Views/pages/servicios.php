@@ -3,6 +3,7 @@
 <?= $this->section('content') ?>
 <section class="page-hero" style="padding: 2rem 0 2rem 0;">
     <div class="container center narrow">
+        <span class="eyebrow">Servicios Profesionales</span>
         <h1>Soluciones Completas en Prótesis Dental</h1>
         <p>Ofrecemos una amplia gama de servicios especializados con altos estándares de calidad y precisión técnica.</p>
     </div>
