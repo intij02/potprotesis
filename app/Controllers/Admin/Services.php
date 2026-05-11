@@ -312,8 +312,8 @@ class Services extends BaseController
 
     private function buildUniqueSlug(string $title, ?int $excludeId = null): string
     {
-        $baseSlug = url_title($title, '-', true);
-        $slug = $baseSlug !== '' ? $baseSlug : 'servicio';
+        $baseSlug = site_slugify($title, 'servicio');
+        $slug = $baseSlug;
         $model = new ServiceModel();
         $suffix = 1;
 

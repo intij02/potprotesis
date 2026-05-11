@@ -210,8 +210,8 @@ class Blog extends BaseController
 
     private function buildUniqueSlug(string $title, ?int $excludeId = null): string
     {
-        $baseSlug = url_title($title, '-', true);
-        $slug = $baseSlug !== '' ? $baseSlug : 'entrada';
+        $baseSlug = site_slugify($title, 'entrada');
+        $slug = $baseSlug;
         $model = new BlogPostModel();
         $suffix = 1;
 

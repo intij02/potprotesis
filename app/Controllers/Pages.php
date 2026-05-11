@@ -47,12 +47,26 @@ class Pages extends BaseController
             ->first();
 
         if (! is_array($post)) {
+            $normalizedSlug = site_slugify($slug, 'entrada');
+
+            foreach (site_blog_posts() as $candidate) {
+                $candidateSlug = site_slugify((string) ($candidate['slug'] ?? ''), 'entrada');
+                $candidateTitleSlug = site_slugify((string) ($candidate['title'] ?? ''), 'entrada');
+
+                if ($normalizedSlug === $candidateSlug || $normalizedSlug === $candidateTitleSlug) {
+                    $post = $candidate;
+                    break;
+                }
+            }
+        }
+
+        if (! is_array($post)) {
             throw PageNotFoundException::forPageNotFound('Entrada no encontrada.');
         }
 
         $publishedAt = $this->toIso8601($post['created_at'] ?? null);
         $modifiedAt = $this->toIso8601($post['updated_at'] ?? ($post['created_at'] ?? null));
-        $canonicalUrl = current_url();
+        $canonicalUrl = base_url('blog/' . site_slugify((string) ($post['slug'] ?? $post['title'] ?? ''), 'entrada'));
 
         return view('pages/blog_detalle', [
             'pageTitle' => $post['title'] . ' - Blog POT Prótesis Dental',
@@ -113,11 +127,25 @@ class Pages extends BaseController
             ->first();
 
         if (! is_array($service)) {
+            $normalizedSlug = site_slugify($slug, 'servicio');
+
+            foreach (site_services() as $candidate) {
+                $candidateSlug = site_slugify((string) ($candidate['slug'] ?? ''), 'servicio');
+                $candidateTitleSlug = site_slugify((string) ($candidate['title'] ?? ''), 'servicio');
+
+                if ($normalizedSlug === $candidateSlug || $normalizedSlug === $candidateTitleSlug) {
+                    $service = $candidate;
+                    break;
+                }
+            }
+        }
+
+        if (! is_array($service)) {
             throw PageNotFoundException::forPageNotFound('Servicio no encontrado.');
         }
 
         $detailImages = $this->serviceDetailImages($service);
-        $canonicalUrl = current_url();
+        $canonicalUrl = base_url('servicios/' . site_slugify((string) ($service['slug'] ?? $service['title'] ?? ''), 'servicio'));
         $serviceDescription = $this->plainExcerpt((string) ($service['detail_content'] ?: $service['summary'] ?: ''), 155);
 
         return view('pages/servicio_detalle', [

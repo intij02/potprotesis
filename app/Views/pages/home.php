@@ -29,12 +29,13 @@
     </div>
     <div class="container cards-grid">
         <?php foreach ($services as $service): ?>
+            <?php $serviceUrl = base_url('servicios/' . site_slugify((string) ($service['slug'] ?? $service['title'] ?? ''), 'servicio')); ?>
             <article class="service-card">
-                <a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="text-decoration-none">
+                <a href="<?= $serviceUrl ?>" class="text-decoration-none">
                     <img src="<?= base_url($service['image_path'] ?: 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="<?= esc($service['title']) ?>">
                 </a>
                 <div class="card-body">
-                    <h3 class="text-center"><a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($service['title']) ?></a></h3>
+                    <h3 class="text-center"><a href="<?= $serviceUrl ?>" class="text-reset text-decoration-none"><?= esc($service['title']) ?></a></h3>
                 </div>
             </article>
         <?php endforeach; ?>
@@ -49,20 +50,21 @@
     </div>
     <div class="container">
         <?php foreach ($blogPosts as $post): ?>
+            <?php $postUrl = base_url('blog/' . site_slugify((string) ($post['slug'] ?? $post['title'] ?? ''), 'entrada')); ?>
             <article class="card mb-3 border-0 shadow-sm">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>">
+                        <a href="<?= $postUrl ?>">
                             <img src="<?= base_url($post['image_path'] ?: 'assets/media/logo-pot.png') ?>" class="img-fluid rounded-start h-100 w-100 object-fit-cover" alt="<?= esc($post['title']) ?>">
                         </a>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100 d-flex flex-column">
-                            <h3 class="card-title"><a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($post['title']) ?></a></h3>
+                            <h3 class="card-title"><a href="<?= $postUrl ?>" class="text-reset text-decoration-none"><?= esc($post['title']) ?></a></h3>
                             <p class="card-text"><?= esc(mb_substr(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content']))), 0, 180)) ?><?= mb_strlen(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content'])))) > 180 ? '…' : '' ?></p>
                             <div class="mt-auto d-flex flex-wrap gap-3 align-items-center justify-content-between">
                                 <p class="card-text mb-0"><small class="text-body-secondary"><?= esc(site_datetime($post['created_at'] ?? null, 'd/m/Y')) ?></small></p>
-                                <a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="btn btn-outline btn-small">Ver más</a>
+                                <a href="<?= $postUrl ?>" class="btn btn-outline btn-small">Ver más</a>
                             </div>
                         </div>
                     </div>

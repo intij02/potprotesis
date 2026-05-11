@@ -48,6 +48,18 @@ if (! function_exists('site_datetime')) {
     }
 }
 
+if (! function_exists('site_slugify')) {
+    function site_slugify(?string $value, string $fallback = 'item'): string
+    {
+        helper('text');
+
+        $text = trim((string) $value);
+        $slug = $text !== '' ? url_title($text, '-', true) : '';
+
+        return $slug !== '' ? $slug : $fallback;
+    }
+}
+
 if (! function_exists('site_services')) {
     function site_services(bool $activeOnly = true, ?int $limit = null): array
     {
