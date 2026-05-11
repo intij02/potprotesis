@@ -20,7 +20,7 @@
             <form method="post" enctype="multipart/form-data" class="stack-form" action="<?= $isEdit ? base_url('admin/blog/actualizar/' . $post['id']) : base_url('admin/blog/guardar') ?>">
                 <?= csrf_field() ?>
                 <div class="row g-4 align-items-start">
-                    <div class="col-12 col-lg-4">
+                    <div class="col-12">
                         <div class="admin-image-panel">
                             <h3>Imagen de portada</h3>
                             <?php if ($currentImageUrl !== null): ?>
