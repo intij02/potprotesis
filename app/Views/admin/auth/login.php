@@ -1,10 +1,10 @@
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('content') ?>
-<section class="admin-login">
+<section class="admin-login auth-shell">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-5">
+            <div class="col-12 col-md-8 col-lg-5 auth-container">
                 <div class="admin-card">
                     <span class="eyebrow eyebrow-aqua">Acceso al Panel</span>
                     <h1>Admin POT</h1>
@@ -29,11 +29,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="row justify-content-end">
-                            <div class="col-6 d-grid">
-                                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-primary w-100 auth-submit">Iniciar sesión</button>
                     </form>
                 </div>
             </div>

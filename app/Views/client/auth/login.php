@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero">
+<section class="page-hero auth-shell">
     <div class="container center narrow">
         <span class="eyebrow">Acceso Cliente</span>
         <h1>Consulta el estatus de tus órdenes</h1>
@@ -9,8 +9,8 @@
     </div>
 </section>
 
-<section class="section">
-    <div class="container narrow">
+<section class="section auth-shell">
+    <div class="container narrow auth-container">
         <?php if (session()->getFlashdata('success')): ?><div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div><?php endif; ?>
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
 
@@ -33,11 +33,7 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-end">
-                    <div class="col-6 d-grid">
-                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-                    </div>
-                </div>
+                <button type="submit" class="btn btn-primary w-100 auth-submit">Ingresar</button>
             </form>
 
             <p class="auth-alt-link">¿Cliente nuevo? <a href="<?= base_url('cliente/registro') ?>">Crea tu cuenta aquí</a>.</p>

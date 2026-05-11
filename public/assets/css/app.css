@@ -644,6 +644,10 @@ img {
     font-weight: 700;
 }
 
+.auth-submit {
+    width: 100%;
+}
+
 .stack-form .form-check {
     display: inline-flex;
     align-items: center;
@@ -1241,6 +1245,26 @@ img {
 }
 
 @media (max-width: 640px) {
+    .auth-shell .auth-container,
+    .auth-shell .container.narrow {
+        width: min(100%, calc(100% - 0.75rem));
+    }
+
+    .auth-shell .page-hero .container.narrow,
+    .page-hero.auth-shell .container.narrow {
+        width: min(100%, calc(100% - 0.75rem));
+    }
+
+    .auth-shell .admin-card {
+        padding: 1.35rem;
+        border-radius: 20px;
+    }
+
+    .auth-shell .auth-submit {
+        display: flex;
+        width: 100%;
+    }
+
     .order-panel {
         padding: 1rem;
         border-radius: 20px;

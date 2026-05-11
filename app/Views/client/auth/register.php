@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero">
+<section class="page-hero auth-shell">
     <div class="container center narrow">
         <span class="eyebrow">Nuevo Cliente</span>
         <h1>Registra tu cuenta de cliente</h1>
@@ -9,8 +9,8 @@
     </div>
 </section>
 
-<section class="section">
-    <div class="container narrow">
+<section class="section auth-shell">
+    <div class="container narrow auth-container">
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
         <?php $validation = session('_ci_validation'); ?>
         <?php if ($validation && $validation->getErrors()): ?>
@@ -65,7 +65,7 @@
                     <p class="field-error" id="password-confirm-error" hidden>Las contraseñas no coinciden.</p>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Crear cuenta</button>
+                <button type="submit" class="btn btn-primary w-100 auth-submit">Crear cuenta</button>
             </form>
 
             <p class="auth-alt-link">¿Ya tienes cuenta? <a href="<?= base_url('cliente/login') ?>">Inicia sesión aquí</a>.</p>
