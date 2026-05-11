@@ -44,6 +44,14 @@ a {
     text-decoration: none;
 }
 
+.text-brand {
+    color: #fec80a;
+}
+
+.text-secondary-brand {
+    color: var(--secondary);
+}
+
 img {
     display: block;
     max-width: 100%;

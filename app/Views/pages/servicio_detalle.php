@@ -30,7 +30,7 @@
 <?php if ($detailImages !== []): ?>
 <section class="section muted">
     <div class="container section-head center">
-        <h2>Galería del servicio</h2>
+        <h2>Algunos trabajos de <span class="text-brand">POT</span></h2>
         <p>Imágenes relacionadas con este servicio.</p>
     </div>
     <div class="container gallery-grid gallery-grid-large">

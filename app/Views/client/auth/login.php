@@ -36,7 +36,7 @@
                 <button type="submit" class="btn btn-primary w-100 auth-submit">Ingresar</button>
             </form>
 
-            <p class="auth-alt-link">¿Cliente nuevo? <a href="<?= base_url('cliente/registro') ?>" style="color: #fec80a;">Crea tu cuenta aquí</a>.</p>
+            <p class="auth-alt-link">¿Cliente nuevo? <a href="<?= base_url('cliente/registro') ?>" class="text-brand">Crea tu cuenta aquí</a>.</p>
         </div>
     </div>
 </section>
