@@ -68,7 +68,7 @@
                 <button type="submit" class="btn btn-primary w-100 auth-submit">Crear cuenta</button>
             </form>
 
-            <p class="auth-alt-link">¿Ya tienes cuenta? <a href="<?= base_url('cliente/login') ?>">Inicia sesión aquí</a>.</p>
+            <p class="auth-alt-link">¿Ya tienes cuenta? <a href="<?= base_url('cliente/login') ?>" style="color: #fec80a;">Inicia sesión aquí</a>.</p>
         </div>
     </div>
 </section>
