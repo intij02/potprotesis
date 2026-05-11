@@ -15,6 +15,14 @@
         </div>
 
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
+        <?php $validation = session('_ci_validation'); ?>
+        <?php if ($validation && $validation->getErrors()): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($validation->getErrors() as $validationError): ?>
+                    <div><?= esc($validationError) ?></div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
         <div class="admin-card admin-form-card">
             <form method="post" enctype="multipart/form-data" class="stack-form" action="<?= $isEdit ? base_url('admin/blog/actualizar/' . $post['id']) : base_url('admin/blog/guardar') ?>" id="blog-form" novalidate>

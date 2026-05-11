@@ -40,7 +40,11 @@ class Blog extends BaseController
         $data = $this->requestData();
 
         if (! $this->validate($this->rules())) {
-            return redirect()->back()->withInput()->with('error', 'Revise los datos capturados.');
+            return redirect()->back()->withInput()->with('error', $this->buildValidationErrorMessage($this->validator?->getErrors() ?? []));
+        }
+
+        if (! $this->hasMeaningfulContent($data['content'])) {
+            return redirect()->back()->withInput()->with('error', 'El contenido de la entrada no puede estar vacío.');
         }
 
         $uploadError = $this->handleImageUpload($data);
@@ -67,7 +71,11 @@ class Blog extends BaseController
         $data = $this->requestData();
 
         if (! $this->validate($this->rules())) {
-            return redirect()->back()->withInput()->with('error', 'Revise los datos capturados.');
+            return redirect()->back()->withInput()->with('error', $this->buildValidationErrorMessage($this->validator?->getErrors() ?? []));
+        }
+
+        if (! $this->hasMeaningfulContent($data['content'])) {
+            return redirect()->back()->withInput()->with('error', 'El contenido de la entrada no puede estar vacío.');
         }
 
         $uploadError = $this->handleImageUpload($data, $post);
@@ -121,7 +129,7 @@ class Blog extends BaseController
     {
         return [
             'title' => 'required|min_length[3]|max_length[180]',
-            'content' => 'required|min_length[20]',
+            'content' => 'required',
             'image_path' => 'permit_empty|max_length[255]',
         ];
     }
@@ -221,5 +229,23 @@ class Blog extends BaseController
             $suffix++;
             $slug = $baseSlug . '-' . $suffix;
         }
+    }
+
+    private function hasMeaningfulContent(string $html): bool
+    {
+        $text = trim(preg_replace('/\s+/', ' ', strip_tags($html)) ?? '');
+
+        return mb_strlen($text) >= 20;
+    }
+
+    private function buildValidationErrorMessage(array $errors): string
+    {
+        $firstError = reset($errors);
+
+        if (! is_string($firstError) || trim($firstError) === '') {
+            return 'Revise los datos capturados.';
+        }
+
+        return 'Error de validación: ' . $firstError;
     }
 }
