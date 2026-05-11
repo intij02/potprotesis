@@ -30,8 +30,8 @@ $navItems = [
                             <?= esc($label) ?>
                         </a>
                     <?php endforeach; ?>
-                    <a class="btn btn-primary btn-small main-nav-cta" href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">
-                        Contactar
+                    <a class="btn btn-primary btn-small main-nav-cta bg-brand" href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">
+                        Cotizar
                     </a>
                 </div>
             </div>
