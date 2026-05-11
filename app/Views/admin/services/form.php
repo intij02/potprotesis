@@ -36,12 +36,12 @@
                             <label for="title" class="form-label">Título</label>
                             <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $service['title'] ?? '')) ?>" required>
                         </div>
-                        <div>
+                        <div class="d-none">
                             <label for="summary" class="form-label">Descripción</label>
                             <textarea id="summary" name="summary" class="form-control" rows="6" required><?= esc(old('summary', $service['summary'] ?? '')) ?></textarea>
                         </div>
                         <div>
-                            <label for="detail_content" class="form-label">Descripción detallada</label>
+                            <label for="detail_content" class="form-label">Descripción</label>
                             <textarea id="detail_content" name="detail_content" class="form-control" rows="10"><?= esc(old('detail_content', $service['detail_content'] ?? '')) ?></textarea>
                             <p class="muted-text">Este texto se mostrará en la vista de detalle del servicio.</p>
                         </div>
@@ -73,7 +73,12 @@
                             <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($service) ? ((bool) $service['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
                             <label class="form-check-label" for="is_active">Servicio activo</label>
                         </div>
-                        <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear servicio' ?></button>
+                        <div class="row justify-content-end">
+                            <div class="col-4 d-grid">
+                                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear servicio' ?></button>
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
