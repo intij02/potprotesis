@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero auth-shell">
+<section class="page-hero auth-shell" style="padding: 2rem 0 2rem 0;">
     <div class="container center narrow">
         <span class="eyebrow">Nuevo Cliente</span>
         <h1>Registra tu cuenta de cliente</h1>
@@ -9,7 +9,7 @@
     </div>
 </section>
 
-<section class="section auth-shell">
+<section class="section auth-shell" style="padding: 2rem 0 2rem 0;">
     <div class="container narrow auth-container">
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
         <?php $validation = session('_ci_validation'); ?>

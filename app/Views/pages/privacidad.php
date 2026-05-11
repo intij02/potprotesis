@@ -2,14 +2,14 @@
 
 <?= $this->section('content') ?>
 <section class="page-hero">
-    <div class="container center narrow">
+    <div class="container center ">
         <h1>Aviso de Privacidad</h1>
         <p>Tratamiento de datos personales recabados a través del sitio, formularios de contacto, registro de clientes y órdenes de laboratorio.</p>
     </div>
 </section>
 
-<section class="section">
-    <div class="container narrow">
+<section class="section" style="padding: 2rem 0 2rem 0;">
+    <div class="container">
         <article class="mini-card">
             <p><strong>Última actualización:</strong> <?= date('d/m/Y') ?></p>
 

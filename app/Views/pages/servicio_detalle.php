@@ -1,15 +1,14 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero">
+<section class="page-hero" style="padding: 2rem 0 2rem 0;">
     <div class="container center narrow">
-        <span class="eyebrow">Servicio Especializado</span>
         <h1><?= esc($service['title']) ?></h1>
         <p><?= esc($service['summary']) ?></p>
     </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding: 2rem 0 2rem 0;">
     <div class="container">
         <div class="split align-items-start">
             <div class="media-block">
