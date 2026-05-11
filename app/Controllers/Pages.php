@@ -50,10 +50,43 @@ class Pages extends BaseController
             throw PageNotFoundException::forPageNotFound('Entrada no encontrada.');
         }
 
+        $publishedAt = $this->toIso8601($post['created_at'] ?? null);
+        $modifiedAt = $this->toIso8601($post['updated_at'] ?? ($post['created_at'] ?? null));
+        $canonicalUrl = current_url();
+
         return view('pages/blog_detalle', [
             'pageTitle' => $post['title'] . ' - Blog POT Prótesis Dental',
-            'metaDescription' => $this->plainExcerpt((string) $post['content'], 160),
+            'metaDescription' => $this->plainExcerpt((string) $post['content'], 155),
             'metaImage' => ! empty($post['image_path']) ? base_url($post['image_path']) : base_url('assets/media/logo-pot.png'),
+            'metaImageAlt' => $post['title'],
+            'canonicalUrl' => $canonicalUrl,
+            'ogType' => 'article',
+            'twitterCard' => 'summary_large_image',
+            'metaAuthor' => 'POT Prótesis Dental',
+            'articlePublishedTime' => $publishedAt,
+            'articleModifiedTime' => $modifiedAt,
+            'schemaJson' => json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'BlogPosting',
+                'headline' => (string) $post['title'],
+                'description' => $this->plainExcerpt((string) $post['content'], 155),
+                'datePublished' => $publishedAt,
+                'dateModified' => $modifiedAt,
+                'mainEntityOfPage' => $canonicalUrl,
+                'author' => [
+                    '@type' => 'Organization',
+                    'name' => 'POT Prótesis Dental',
+                ],
+                'publisher' => [
+                    '@type' => 'Organization',
+                    'name' => 'POT Prótesis Dental',
+                    'logo' => [
+                        '@type' => 'ImageObject',
+                        'url' => base_url('assets/media/logo-pot.png'),
+                    ],
+                ],
+                'image' => ! empty($post['image_path']) ? [base_url($post['image_path'])] : [base_url('assets/media/logo-pot.png')],
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'post' => $post,
         ]);
     }
@@ -84,11 +117,50 @@ class Pages extends BaseController
         }
 
         $detailImages = $this->serviceDetailImages($service);
+        $canonicalUrl = current_url();
+        $serviceDescription = $this->plainExcerpt((string) ($service['detail_content'] ?: $service['summary'] ?: ''), 155);
 
         return view('pages/servicio_detalle', [
             'pageTitle' => $service['title'] . ' - POT Prótesis Dental',
-            'metaDescription' => $service['summary'] ?: 'Detalle del servicio de POT Prótesis Dental.',
+            'metaDescription' => $serviceDescription !== '' ? $serviceDescription : 'Detalle del servicio de POT Prótesis Dental.',
             'metaImage' => isset($detailImages[0]) ? base_url($detailImages[0]) : base_url('assets/media/logo-pot.png'),
+            'metaImageAlt' => $service['title'],
+            'canonicalUrl' => $canonicalUrl,
+            'twitterCard' => 'summary_large_image',
+            'metaAuthor' => 'POT Prótesis Dental',
+            'schemaJson' => json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'Service',
+                'name' => (string) $service['title'],
+                'description' => $serviceDescription !== '' ? $serviceDescription : 'Servicio de POT Prótesis Dental.',
+                'url' => $canonicalUrl,
+                'image' => array_map(
+                    static fn (string $imagePath): string => base_url($imagePath),
+                    $detailImages !== [] ? $detailImages : ['assets/media/logo-pot.png']
+                ),
+                'provider' => [
+                    '@type' => 'Organization',
+                    'name' => 'POT Prótesis Dental',
+                    'url' => base_url('/'),
+                    'logo' => [
+                        '@type' => 'ImageObject',
+                        'url' => base_url('assets/media/logo-pot.png'),
+                    ],
+                    'telephone' => site_setting('contact_phone_href', '+523334735108'),
+                    'email' => site_setting('contact_email', 'contacto@potprotesisdental.com'),
+                    'address' => [
+                        '@type' => 'PostalAddress',
+                        'streetAddress' => site_setting('contact_address', 'C. Reforma 1752, Ladrón de Guevara, Guadalajara, Jal.'),
+                        'addressLocality' => 'Guadalajara',
+                        'addressRegion' => 'Jalisco',
+                        'addressCountry' => 'MX',
+                    ],
+                ],
+                'areaServed' => [
+                    '@type' => 'City',
+                    'name' => 'Guadalajara',
+                ],
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'service' => $service,
             'detailImages' => $detailImages,
         ]);
@@ -324,5 +396,20 @@ class Pages extends BaseController
         }
 
         return rtrim(mb_substr($text, 0, $limit - 1)) . '…';
+    }
+
+    private function toIso8601(?string $value): ?string
+    {
+        if ($value === null || trim($value) === '') {
+            return null;
+        }
+
+        $timestamp = strtotime($value);
+
+        if ($timestamp === false) {
+            return null;
+        }
+
+        return date(DATE_ATOM, $timestamp);
     }
 }

@@ -8,6 +8,12 @@
     $metaRobots = $metaRobots ?? 'index,follow';
     $ogType = $ogType ?? 'website';
     $metaImage = $metaImage ?? base_url('assets/media/logo-pot.png');
+    $metaImageAlt = $metaImageAlt ?? $pageTitle;
+    $twitterCard = $twitterCard ?? 'summary';
+    $metaAuthor = $metaAuthor ?? null;
+    $articlePublishedTime = $articlePublishedTime ?? null;
+    $articleModifiedTime = $articleModifiedTime ?? null;
+    $schemaJson = $schemaJson ?? null;
     ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,10 +28,23 @@
     <meta property="og:url" content="<?= esc($canonicalUrl) ?>">
     <meta property="og:site_name" content="POT Prótesis Dental">
     <meta property="og:image" content="<?= esc($metaImage) ?>">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image:alt" content="<?= esc($metaImageAlt) ?>">
+    <?php if (is_string($metaAuthor) && $metaAuthor !== ''): ?>
+        <meta name="author" content="<?= esc($metaAuthor) ?>">
+    <?php endif; ?>
+    <?php if ($ogType === 'article' && is_string($articlePublishedTime) && $articlePublishedTime !== ''): ?>
+        <meta property="article:published_time" content="<?= esc($articlePublishedTime) ?>">
+    <?php endif; ?>
+    <?php if ($ogType === 'article' && is_string($articleModifiedTime) && $articleModifiedTime !== ''): ?>
+        <meta property="article:modified_time" content="<?= esc($articleModifiedTime) ?>">
+    <?php endif; ?>
+    <meta name="twitter:card" content="<?= esc($twitterCard) ?>">
     <meta name="twitter:title" content="<?= esc($pageTitle) ?>">
     <meta name="twitter:description" content="<?= esc($metaDescription) ?>">
     <meta name="twitter:image" content="<?= esc($metaImage) ?>">
+    <?php if (is_string($schemaJson) && $schemaJson !== ''): ?>
+        <script type="application/ld+json"><?= $schemaJson ?></script>
+    <?php endif; ?>
     <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
