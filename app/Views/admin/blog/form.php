@@ -20,7 +20,28 @@
             <form method="post" enctype="multipart/form-data" class="stack-form" action="<?= $isEdit ? base_url('admin/blog/actualizar/' . $post['id']) : base_url('admin/blog/guardar') ?>">
                 <?= csrf_field() ?>
                 <div class="row g-4 align-items-start">
-                    <div class="col-12">
+                    <div class="col-md">
+                        <div>
+                            <label for="title" class="form-label">Título</label>
+                            <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $post['title'] ?? '')) ?>" required>
+                        </div>
+                        <div>
+                            <label for="image_file" class="form-label">Seleccionar portada</label>
+                            <input id="image_file" name="image_file" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.gif">
+                        </div>
+                        <div>
+                            <label for="content" class="form-label">Contenido Blog</label>
+                            <textarea id="content" name="content" class="form-control" rows="18" required><?= old('content', $post['content'] ?? '') ?></textarea>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($post) ? ((bool) $post['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="is_active">Entrada activa</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear entrada' ?></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         <div class="admin-image-panel">
                             <h3>Imagen de portada</h3>
                             <?php if ($currentImageUrl !== null): ?>
@@ -32,32 +53,12 @@
                             <?php endif; ?>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-8">
-                        <div>
-                            <label for="title" class="form-label">Título</label>
-                            <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $post['title'] ?? '')) ?>" required>
-                        </div>
-                        <div>
-                            <label for="image_file" class="form-label">Cambiar portada</label>
-                            <input id="image_file" name="image_file" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.gif">
-                            <p class="muted-text">Si selecciona un archivo, reemplaza la portada actual.</p>
-                        </div>
-                        <div>
-                            <label for="content" class="form-label">Contenido</label>
-                            <textarea id="content" name="content" class="form-control" rows="18" required><?= old('content', $post['content'] ?? '') ?></textarea>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($post) ? ((bool) $post['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
-                            <label class="form-check-label" for="is_active">Entrada activa</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear entrada' ?></button>
-                    </div>
                 </div>
             </form>
         </div>
     </div>
 </section>
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/lsdl48wuvync9vv6m3xgq9b0zcz6vdohq0gw6rxptdbzdkx7/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('image_file');
