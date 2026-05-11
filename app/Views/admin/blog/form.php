@@ -23,7 +23,7 @@
                     <div class="col-md">
                         <div>
                             <label for="title" class="form-label">Título</label>
-                            <input id="title" name="title" class="form-control" type="text" value="<?= esc(old('title', $post['title'] ?? '')) ?>" required>
+                            <input id="title" name="title" class="form-control" autofocus type="text" value="<?= esc(old('title', $post['title'] ?? '')) ?>" required>
                         </div>
                         <div>
                             <label for="image_file" class="form-label">Seleccionar portada</label>
@@ -33,11 +33,15 @@
                             <label for="content" class="form-label">Contenido Blog</label>
                             <textarea id="content" name="content" class="form-control" rows="18" required><?= old('content', $post['content'] ?? '') ?></textarea>
                         </div>
-                        <div class="mb-3 form-check">
+                        <div class="mb-3">
                             <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($post) ? ((bool) $post['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
                             <label class="form-check-label" for="is_active">Entrada activa</label>
                         </div>
-                        <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear entrada' ?></button>
+                        <div class="row grid justify-end">
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear entrada' ?></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
