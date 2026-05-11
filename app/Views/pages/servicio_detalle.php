@@ -24,7 +24,7 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                <p><a href="<?= base_url('contacto') ?>" class="btn btn-primary">Solicitar información</a></p>
+                <p><a href="<?= base_url('orden-laboratorio') ?>" class="btn btn-primary">Solicitar información</a></p>
             </div>
         </div>
     </div>

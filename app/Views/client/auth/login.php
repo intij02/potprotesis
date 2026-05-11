@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<section class="page-hero auth-shell">
+<section class="page-hero auth-shell" style="padding: 2rem 0 2rem 0;">
     <div class="container center narrow">
         <span class="eyebrow">Acceso Cliente</span>
         <h1>Consulta el estatus de tus órdenes</h1>
@@ -9,7 +9,7 @@
     </div>
 </section>
 
-<section class="section auth-shell">
+<section class="section auth-shell" style="padding: 2rem 0 2rem 0;">
     <div class="container narrow auth-container">
         <?php if (session()->getFlashdata('success')): ?><div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div><?php endif; ?>
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
@@ -20,7 +20,7 @@
 
                 <div>
                     <label for="email" class="form-label">Email</label>
-                    <input id="email" name="email" class="form-control" type="email" value="<?= esc(old('email', '')) ?>" required>
+                    <input id="email" name="email" class="form-control" type="email" value="<?= esc(old('email', '')) ?>" required autofocus>
                 </div>
 
                 <div>
