@@ -26,7 +26,6 @@
         <p>© <?= date('Y') ?> POT Prótesis Dental. Todos los derechos reservados.</p>
         <nav>
             <a href="<?= base_url('privacidad') ?>">Privacidad</a>
-            <a href="<?= base_url('terminos') ?>">Términos</a>
         </nav>
     </div>
 </footer>

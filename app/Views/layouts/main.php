@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <?php
+    $pageTitle = $pageTitle ?? 'POT Prótesis Dental';
+    $metaDescription = $metaDescription ?? 'POT Prótesis Dental';
+    $canonicalUrl = $canonicalUrl ?? current_url();
+    $metaRobots = $metaRobots ?? 'index,follow';
+    $ogType = $ogType ?? 'website';
+    $metaImage = $metaImage ?? base_url('assets/media/logo-pot.png');
+    ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($pageTitle ?? 'POT Prótesis Dental') ?></title>
-    <meta name="description" content="<?= esc($metaDescription ?? 'POT Prótesis Dental') ?>">
+    <title><?= esc($pageTitle) ?></title>
+    <meta name="description" content="<?= esc($metaDescription) ?>">
+    <meta name="robots" content="<?= esc($metaRobots) ?>">
+    <link rel="canonical" href="<?= esc($canonicalUrl) ?>">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:type" content="<?= esc($ogType) ?>">
+    <meta property="og:title" content="<?= esc($pageTitle) ?>">
+    <meta property="og:description" content="<?= esc($metaDescription) ?>">
+    <meta property="og:url" content="<?= esc($canonicalUrl) ?>">
+    <meta property="og:site_name" content="POT Prótesis Dental">
+    <meta property="og:image" content="<?= esc($metaImage) ?>">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<?= esc($pageTitle) ?>">
+    <meta name="twitter:description" content="<?= esc($metaDescription) ?>">
+    <meta name="twitter:image" content="<?= esc($metaImage) ?>">
     <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

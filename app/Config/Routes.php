@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/servicios', 'Pages::servicios');
+$routes->get('/servicios/(:segment)', 'Pages::servicioDetalle/$1');
 $routes->get('/galeria', 'Pages::galeria');
 $routes->match(['get', 'post'], '/contacto', 'Pages::contacto');
 $routes->match(['get', 'post'], '/orden-laboratorio', 'Orders::create');
@@ -25,7 +26,6 @@ $routes->get('/cliente/pacientes/editar/(:num)', 'Client\Patients::edit/$1');
 $routes->post('/cliente/pacientes/actualizar/(:num)', 'Client\Patients::update/$1');
 $routes->post('/cliente/pacientes/eliminar/(:num)', 'Client\Patients::delete/$1');
 $routes->get('/privacidad', 'Pages::privacidad');
-$routes->get('/terminos', 'Pages::terminos');
 
 $routes->group('admin', static function ($routes) {
     $routes->get('login', 'Admin\Auth::login');

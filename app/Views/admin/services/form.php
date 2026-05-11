@@ -41,9 +41,29 @@
                             <textarea id="summary" name="summary" class="form-control" rows="6" required><?= esc(old('summary', $service['summary'] ?? '')) ?></textarea>
                         </div>
                         <div>
-                            <label for="image_file" class="form-label">Cambiar imagen</label>
+                            <label for="detail_content" class="form-label">Descripción detallada</label>
+                            <textarea id="detail_content" name="detail_content" class="form-control" rows="10"><?= esc(old('detail_content', $service['detail_content'] ?? '')) ?></textarea>
+                            <p class="muted-text">Este texto se mostrará en la vista de detalle del servicio.</p>
+                        </div>
+                        <div>
+                            <label for="image_file" class="form-label">Imagen de portada</label>
                             <input id="image_file" name="image_file" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.gif">
-                            <p class="muted-text">Si selecciona un archivo, reemplaza la imagen actual.</p>
+                            <p class="muted-text">Si selecciona un archivo, reemplaza la portada actual.</p>
+                        </div>
+                        <div>
+                            <label for="detail_image_files" class="form-label">Imágenes del detalle</label>
+                            <input id="detail_image_files" name="detail_image_files[]" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.gif" multiple>
+                            <input type="hidden" name="detail_images_existing" value="<?= esc($service['detail_images'] ?? '') ?>">
+                            <p class="muted-text">Si carga nuevas imágenes, reemplazarán la galería actual del detalle.</p>
+                            <?php if ($detailImageUrls !== []): ?>
+                                <div class="row g-3 mt-1">
+                                    <?php foreach ($detailImageUrls as $detailImageUrl): ?>
+                                        <div class="col-6 col-lg-4">
+                                            <img src="<?= esc($detailImageUrl) ?>" alt="Imagen de detalle del servicio" class="admin-image-preview">
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div>
                             <label for="sort_order" class="form-label">Orden</label>

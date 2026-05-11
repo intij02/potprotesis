@@ -46,9 +46,11 @@
     <div class="container cards-grid">
         <?php foreach ($services as $service): ?>
             <article class="service-card">
-                <img src="<?= base_url($service['image_path'] ?: 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="<?= esc($service['title']) ?>">
+                <a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="text-decoration-none">
+                    <img src="<?= base_url($service['image_path'] ?: 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="<?= esc($service['title']) ?>">
+                </a>
                 <div class="card-body">
-                    <h3><?= esc($service['title']) ?></h3>
+                    <h3><a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($service['title']) ?></a></h3>
                     <p><?= esc($service['summary']) ?></p>
                 </div>
             </article>

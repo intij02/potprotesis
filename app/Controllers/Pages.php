@@ -3,26 +3,60 @@
 namespace App\Controllers;
 
 use App\Models\ContactMessageModel;
+use App\Models\ServiceModel;
 use CodeIgniter\Email\Email;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 
 class Pages extends BaseController
 {
     public function servicios(): string
     {
+        $services = site_services();
+
         return view('pages/servicios', [
             'pageTitle' => 'Servicios - POT Prótesis Dental',
             'metaDescription' => 'Servicios profesionales de prótesis dental: coronas, puentes, prótesis removibles e implantes.',
-            'services' => site_services(),
+            'metaImage' => isset($services[0]['image_path']) && $services[0]['image_path'] !== ''
+                ? base_url($services[0]['image_path'])
+                : base_url('assets/media/logo-pot.png'),
+            'services' => $services,
         ]);
     }
 
     public function galeria(): string
     {
+        $galleryItems = site_gallery_items();
+
         return view('pages/galeria', [
             'pageTitle' => 'Galería - POT Prótesis Dental',
             'metaDescription' => 'Galería de trabajos realizados por POT Prótesis Dental.',
-            'galleryItems' => site_gallery_items(),
+            'metaImage' => isset($galleryItems[0]['image_path']) && $galleryItems[0]['image_path'] !== ''
+                ? base_url($galleryItems[0]['image_path'])
+                : base_url('assets/media/logo-pot.png'),
+            'galleryItems' => $galleryItems,
+        ]);
+    }
+
+    public function servicioDetalle(string $slug): string
+    {
+        $service = (new ServiceModel())
+            ->where('slug', $slug)
+            ->where('is_active', 1)
+            ->first();
+
+        if (! is_array($service)) {
+            throw PageNotFoundException::forPageNotFound('Servicio no encontrado.');
+        }
+
+        $detailImages = $this->serviceDetailImages($service);
+
+        return view('pages/servicio_detalle', [
+            'pageTitle' => $service['title'] . ' - POT Prótesis Dental',
+            'metaDescription' => $service['summary'] ?: 'Detalle del servicio de POT Prótesis Dental.',
+            'metaImage' => isset($detailImages[0]) ? base_url($detailImages[0]) : base_url('assets/media/logo-pot.png'),
+            'service' => $service,
+            'detailImages' => $detailImages,
         ]);
     }
 
@@ -106,15 +140,7 @@ class Pages extends BaseController
     {
         return view('pages/privacidad', [
             'pageTitle' => 'Privacidad - POT Prótesis Dental',
-            'metaDescription' => 'Aviso de privacidad de POT Prótesis Dental.',
-        ]);
-    }
-
-    public function terminos(): string
-    {
-        return view('pages/terminos', [
-            'pageTitle' => 'Términos - POT Prótesis Dental',
-            'metaDescription' => 'Términos y condiciones de POT Prótesis Dental.',
+            'metaDescription' => 'Aviso de privacidad integral de POT Prótesis Dental conforme a la legislación mexicana aplicable.',
         ]);
     }
 
@@ -225,5 +251,29 @@ class Pages extends BaseController
         }
 
         $cache->save($key, $state, 3600);
+    }
+
+    private function serviceDetailImages(array $service): array
+    {
+        $images = [];
+        $rawImages = $service['detail_images'] ?? null;
+
+        if (is_string($rawImages) && $rawImages !== '') {
+            $decoded = json_decode($rawImages, true);
+
+            if (is_array($decoded)) {
+                foreach ($decoded as $path) {
+                    if (is_string($path) && trim($path) !== '') {
+                        $images[] = trim($path);
+                    }
+                }
+            }
+        }
+
+        if ($images === [] && ! empty($service['image_path'])) {
+            $images[] = (string) $service['image_path'];
+        }
+
+        return array_values(array_unique($images));
     }
 }

@@ -22,7 +22,9 @@ class ServiceModel extends Model
         'title',
         'slug',
         'summary',
+        'detail_content',
         'image_path',
+        'detail_images',
         'sort_order',
         'is_active',
     ];

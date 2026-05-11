@@ -14,14 +14,18 @@
 <section class="section<?= $index % 2 === 1 ? ' muted' : '' ?>">
     <div class="container split<?= $index % 2 === 1 ? ' reverse' : '' ?>">
         <div class="media-block">
-            <img src="<?= base_url($service['image_path'] ?: 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="<?= esc($service['title']) ?>">
+            <a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>">
+                <img src="<?= base_url($service['image_path'] ?: 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg') ?>" alt="<?= esc($service['title']) ?>">
+            </a>
         </div>
         <div class="content-block">
             <span class="eyebrow"><?= $index % 2 === 0 ? 'Servicio Especializado' : 'Solución Protésica' ?></span>
-            <h2><?= esc($service['title']) ?></h2>
+            <h2><a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($service['title']) ?></a></h2>
             <p><?= esc($service['summary']) ?></p>
+            <p><a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="btn btn-outline btn-small">Ver detalle</a></p>
         </div>
     </div>
 </section>
 <?php endforeach; ?>
+</section>
 <?= $this->endSection() ?>

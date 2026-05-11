@@ -327,7 +327,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
-                        <p class="mb-3">Confirme su contraseña y documente el motivo antes de desbloquear la orden.</p>
+                        <p class="mb-3">Confirme su contraseña e Indica el motivo de edición.</p>
                         <div class="field mb-3">
                             <label for="unlock_password" class="form-label">Contraseña del usuario admin</label>
                             <input id="unlock_password" name="unlock_password" class="form-control" type="password" required>
