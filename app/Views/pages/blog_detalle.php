@@ -5,7 +5,7 @@
     <div class="container center narrow">
         <span class="eyebrow">Blog</span>
         <h1><?= esc($post['title']) ?></h1>
-        <p>Publicado el <?= esc(site_datetime($post['created_at'] ?? null, 'd/m/Y - H:i')) ?></p>
+        <p>Publicado el <?= esc(site_datetime($post['created_at'] ?? null, 'd/m/Y - H:i A')) ?></p>
     </div>
 </section>
 

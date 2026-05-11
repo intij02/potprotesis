@@ -21,22 +21,6 @@
     </div>
 </section>
 
-<section class="section muted">
-    <div class="container three-cols">
-        <article class="mini-card">
-            <h3>Precisión Técnica</h3>
-            <p>Tecnología de última generación y procesos medidos para resultados consistentes.</p>
-        </article>
-        <article class="mini-card">
-            <h3>Materiales Certificados</h3>
-            <p>Trabajos elaborados con materiales premium y protocolos de calidad controlados.</p>
-        </article>
-        <article class="mini-card">
-            <h3>Entrega Rápida</h3>
-            <p>Tiempos optimizados para responder al ritmo de trabajo del consultorio.</p>
-        </article>
-    </div>
-</section>
 
 <section class="section">
     <div class="container section-head center">
@@ -51,7 +35,6 @@
                 </a>
                 <div class="card-body">
                     <h3><a href="<?= base_url('servicios/' . ($service['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($service['title']) ?></a></h3>
-                    <p><?= esc($service['summary']) ?></p>
                 </div>
             </article>
         <?php endforeach; ?>
@@ -119,6 +102,22 @@
         <h2>¿Listo para Trabajar con Nosotros?</h2>
         <p>Contáctenos hoy y descubra por qué somos el laboratorio de confianza para dentistas en Guadalajara.</p>
         <a class="btn btn-secondary" href="https://wa.me/523311300050" target="_blank" rel="noopener noreferrer">Solicitar Cotización</a>
+    </div>
+</section>
+<section class="section muted">
+    <div class="container three-cols">
+        <article class="mini-card">
+            <h3>Precisión Técnica</h3>
+            <p>Tecnología de última generación y procesos medidos para resultados consistentes.</p>
+        </article>
+        <article class="mini-card">
+            <h3>Materiales Certificados</h3>
+            <p>Trabajos elaborados con materiales premium y protocolos de calidad controlados.</p>
+        </article>
+        <article class="mini-card">
+            <h3>Entrega Rápida</h3>
+            <p>Tiempos optimizados para responder al ritmo de trabajo del consultorio.</p>
+        </article>
     </div>
 </section>
 <?= $this->endSection() ?>
