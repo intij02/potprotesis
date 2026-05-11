@@ -17,7 +17,7 @@
         <?php if (session()->getFlashdata('error')): ?><div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div><?php endif; ?>
 
         <div class="admin-card admin-form-card">
-            <form method="post" enctype="multipart/form-data" class="stack-form" action="<?= $isEdit ? base_url('admin/blog/actualizar/' . $post['id']) : base_url('admin/blog/guardar') ?>">
+            <form method="post" enctype="multipart/form-data" class="stack-form" action="<?= $isEdit ? base_url('admin/blog/actualizar/' . $post['id']) : base_url('admin/blog/guardar') ?>" id="blog-form" novalidate>
                 <?= csrf_field() ?>
                 <div class="row g-4 align-items-start">
                     <div class="col-md">
@@ -31,16 +31,16 @@
                         </div>
                         <div>
                             <label for="content" class="form-label">Contenido Blog</label>
-                            <textarea id="content" name="content" class="form-control" rows="18" required><?= old('content', $post['content'] ?? '') ?></textarea>
+                            <textarea id="content" name="content" class="form-control" rows="18"><?= old('content', $post['content'] ?? '') ?></textarea>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-3">
+                            <div class="col-2">
                                 <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= old('is_active', isset($post) ? ((bool) $post['is_active'] ? '1' : '') : '1') === '1' ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="is_active">Entrada Visible</label>                                
                             </div>
                         </div>
                         <div class="row justify-content-end">
-                            <div class="col-6 d-grid">
+                            <div class="col-4 d-grid">
                                 <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Guardar cambios' : 'Crear entrada' ?></button>
                             </div>
                         </div>
@@ -67,6 +67,7 @@
 <script src="https://cdn.tiny.cloud/1/lsdl48wuvync9vv6m3xgq9b0zcz6vdohq0gw6rxptdbzdkx7/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('blog-form');
     const input = document.getElementById('image_file');
     const preview = document.getElementById('blogImagePreview');
     const placeholder = document.getElementById('blogImagePlaceholder');
@@ -105,6 +106,27 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: 'lists link table code wordcount preview',
             toolbar: 'undo redo | blocks | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link table | removeformat code preview',
             content_style: 'body { font-family: Inter, Arial, sans-serif; font-size: 16px; line-height: 1.6; }'
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            if (window.tinymce) {
+                window.tinymce.triggerSave();
+            }
+
+            const contentField = document.getElementById('content');
+            const plainText = (contentField?.value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+            if (!plainText) {
+                event.preventDefault();
+                alert('Capture el contenido de la entrada.');
+                return;
+            }
+
+            if (!form.reportValidity()) {
+                event.preventDefault();
+            }
         });
     }
 });
