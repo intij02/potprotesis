@@ -58,6 +58,28 @@
     </div>
 </section>
 
+<?php if (! empty($blogPosts)): ?>
+<section class="section">
+    <div class="container section-head center">
+        <h2>Blog</h2>
+        <p>Las últimas entradas del laboratorio para clientes y clínicas.</p>
+    </div>
+    <div class="container cards-grid">
+        <?php foreach ($blogPosts as $post): ?>
+            <article class="service-card">
+                <a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="text-decoration-none">
+                    <img src="<?= base_url($post['image_path'] ?: 'assets/media/logo-pot.png') ?>" alt="<?= esc($post['title']) ?>">
+                </a>
+                <div class="card-body">
+                    <h3><a href="<?= base_url('blog/' . ($post['slug'] ?? '')) ?>" class="text-reset text-decoration-none"><?= esc($post['title']) ?></a></h3>
+                    <p><?= esc(mb_substr(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content']))), 0, 160)) ?><?= mb_strlen(trim(preg_replace('/\s+/', ' ', strip_tags((string) $post['content'])))) > 160 ? '…' : '' ?></p>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    </div>
+</section>
+<?php endif; ?>
+
 <section class="section muted">
     <div class="container section-head center">
         <h2>Proceso de Trabajo</h2>

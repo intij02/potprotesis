@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BlogPostModel;
 use App\Models\GalleryItemModel;
 use App\Models\ServiceModel;
 use App\Models\SiteSettingModel;
@@ -97,6 +98,31 @@ if (! function_exists('site_gallery_items')) {
     }
 }
 
+if (! function_exists('site_blog_posts')) {
+    function site_blog_posts(bool $activeOnly = true, ?int $limit = null): array
+    {
+        try {
+            $model = new BlogPostModel();
+
+            if (! $model->db->tableExists('blog_posts')) {
+                return site_default_blog_posts();
+            }
+
+            if ($activeOnly) {
+                $model->where('is_active', 1);
+            }
+
+            $model->orderBy('created_at', 'DESC')->orderBy('id', 'DESC');
+
+            $rows = $limit !== null ? $model->findAll($limit) : $model->findAll();
+
+            return $rows !== [] ? $rows : site_default_blog_posts();
+        } catch (Throwable) {
+            return site_default_blog_posts();
+        }
+    }
+}
+
 if (! function_exists('site_default_services')) {
     function site_default_services(): array
     {
@@ -188,6 +214,35 @@ if (! function_exists('site_default_gallery_items')) {
                 'image_path' => 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg',
                 'alt_text' => 'Proceso de fabricación',
                 'sort_order' => 6,
+                'is_active' => 1,
+            ],
+        ];
+    }
+}
+
+if (! function_exists('site_default_blog_posts')) {
+    function site_default_blog_posts(): array
+    {
+        return [
+            [
+                'title' => 'Cómo preparar una orden de laboratorio más clara',
+                'slug' => 'como-preparar-una-orden-de-laboratorio-mas-clara',
+                'content' => '<p>Una orden bien preparada reduce reprocesos, dudas y tiempos muertos. Incluir fecha requerida, indicaciones precisas, selección de piezas y referencias visuales mejora la comunicación entre clínica y laboratorio.</p><p>Cuando el caso incluye materiales, tonos, restauraciones o necesidades estéticas especiales, conviene dejarlo por escrito desde el inicio para facilitar un flujo de trabajo más predecible.</p>',
+                'image_path' => 'assets/media/pages-home-gallery-3-94a5fe60.jpg',
+                'is_active' => 1,
+            ],
+            [
+                'title' => 'Ventajas de documentar correctamente el color y el material',
+                'slug' => 'ventajas-de-documentar-correctamente-el-color-y-el-material',
+                'content' => '<p>Definir color, material y expectativas funcionales desde el inicio ayuda a evitar ajustes innecesarios. Una comunicación clínica más precisa se traduce en entregas más consistentes y mejores resultados estéticos.</p>',
+                'image_path' => 'assets/media/pages-home-gallery-3-e1a8d6f3.jpg',
+                'is_active' => 1,
+            ],
+            [
+                'title' => 'Buenas prácticas para enviar archivos STL al laboratorio',
+                'slug' => 'buenas-practicas-para-enviar-archivos-stl-al-laboratorio',
+                'content' => '<p>Verificar nombre del caso, integridad del archivo, tipo de restauración y observaciones clínicas antes del envío reduce incidencias. También conviene acompañar el archivo con notas claras sobre contactos, márgenes y objetivos del tratamiento.</p>',
+                'image_path' => 'assets/media/pages-home-gallery-3-94a5fe60.jpg',
                 'is_active' => 1,
             ],
         ];

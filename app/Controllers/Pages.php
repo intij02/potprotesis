@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\BlogPostModel;
 use App\Models\ContactMessageModel;
 use App\Models\ServiceModel;
 use CodeIgniter\Email\Email;
@@ -21,6 +22,39 @@ class Pages extends BaseController
                 ? base_url($services[0]['image_path'])
                 : base_url('assets/media/logo-pot.png'),
             'services' => $services,
+        ]);
+    }
+
+    public function blog(): string
+    {
+        $posts = site_blog_posts();
+
+        return view('pages/blog', [
+            'pageTitle' => 'Blog - POT Prótesis Dental',
+            'metaDescription' => 'Artículos y contenido del laboratorio POT Prótesis Dental.',
+            'metaImage' => isset($posts[0]['image_path']) && $posts[0]['image_path'] !== ''
+                ? base_url($posts[0]['image_path'])
+                : base_url('assets/media/logo-pot.png'),
+            'posts' => $posts,
+        ]);
+    }
+
+    public function blogDetalle(string $slug): string
+    {
+        $post = (new BlogPostModel())
+            ->where('slug', $slug)
+            ->where('is_active', 1)
+            ->first();
+
+        if (! is_array($post)) {
+            throw PageNotFoundException::forPageNotFound('Entrada no encontrada.');
+        }
+
+        return view('pages/blog_detalle', [
+            'pageTitle' => $post['title'] . ' - Blog POT Prótesis Dental',
+            'metaDescription' => $this->plainExcerpt((string) $post['content'], 160),
+            'metaImage' => ! empty($post['image_path']) ? base_url($post['image_path']) : base_url('assets/media/logo-pot.png'),
+            'post' => $post,
         ]);
     }
 
@@ -275,5 +309,20 @@ class Pages extends BaseController
         }
 
         return array_values(array_unique($images));
+    }
+
+    private function plainExcerpt(string $html, int $limit = 180): string
+    {
+        $text = trim(preg_replace('/\s+/', ' ', strip_tags($html)) ?? '');
+
+        if ($text === '') {
+            return 'Contenido del blog de POT Prótesis Dental.';
+        }
+
+        if (mb_strlen($text) <= $limit) {
+            return $text;
+        }
+
+        return rtrim(mb_substr($text, 0, $limit - 1)) . '…';
     }
 }

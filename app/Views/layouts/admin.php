@@ -38,6 +38,7 @@
                                 <a class="nav-link" href="<?= base_url('admin/clientes') ?>">Clientes</a>
                                 <a class="nav-link" href="<?= base_url('admin/pacientes') ?>">Pacientes</a>
                                 <a class="nav-link" href="<?= base_url('admin/servicios') ?>">Servicios</a>
+                                <a class="nav-link" href="<?= base_url('admin/blog') ?>">Blog</a>
                                 <a class="nav-link" href="<?= base_url('admin/galeria') ?>">Galería</a>
                                 <a class="nav-link" href="<?= base_url('admin/configuracion') ?>">Configuración</a>
                                 <a class="nav-link" href="<?= base_url('admin/mensajes-contacto') ?>">Mensajes</a>

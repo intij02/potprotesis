@@ -6,6 +6,8 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('/blog', 'Pages::blog');
+$routes->get('/blog/(:segment)', 'Pages::blogDetalle/$1');
 $routes->get('/servicios', 'Pages::servicios');
 $routes->get('/servicios/(:segment)', 'Pages::servicioDetalle/$1');
 $routes->get('/galeria', 'Pages::galeria');
@@ -60,6 +62,12 @@ $routes->group('admin', static function ($routes) {
     $routes->get('servicios/editar/(:num)', 'Admin\Services::edit/$1');
     $routes->post('servicios/actualizar/(:num)', 'Admin\Services::update/$1');
     $routes->post('servicios/eliminar/(:num)', 'Admin\Services::delete/$1');
+    $routes->get('blog', 'Admin\Blog::index');
+    $routes->get('blog/nuevo', 'Admin\Blog::create');
+    $routes->post('blog/guardar', 'Admin\Blog::store');
+    $routes->get('blog/editar/(:num)', 'Admin\Blog::edit/$1');
+    $routes->post('blog/actualizar/(:num)', 'Admin\Blog::update/$1');
+    $routes->post('blog/eliminar/(:num)', 'Admin\Blog::delete/$1');
     $routes->get('galeria', 'Admin\Gallery::index');
     $routes->get('galeria/nuevo', 'Admin\Gallery::create');
     $routes->post('galeria/guardar', 'Admin\Gallery::store');

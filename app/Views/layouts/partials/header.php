@@ -3,6 +3,7 @@ $currentPath = current_url(true)->getPath();
 $navItems = [
     '/' => 'Inicio',
     'servicios' => 'Servicios',
+    'blog' => 'Blog',
     'galeria' => 'Galería',
     'cliente/login' => 'Clientes',
     'contacto' => 'Contacto',
