@@ -235,7 +235,7 @@ class Blog extends BaseController
     {
         $text = trim(preg_replace('/\s+/', ' ', strip_tags($html)) ?? '');
 
-        return mb_strlen($text) >= 20;
+        return $text !== '';
     }
 
     private function buildValidationErrorMessage(array $errors): string
