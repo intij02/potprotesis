@@ -14,43 +14,113 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
 </head>
 <body class="admin-body">
-    <header class="admin-shell-header">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light admin-navbar px-0">
-                <div>
-                    <a class="navbar-brand fw-bold" href="<?= base_url('admin/ordenes') ?>">Panel POT</a>
-                    <?php if (admin_is_logged_in()): ?>
-                        <div class="muted-text small">
-                            <?= esc(admin_auth_user()['full_name'] ?? admin_auth_user()['username'] ?? 'Usuario') ?>
-                        </div>
-                    <?php endif; ?>
+    <?php if (admin_is_logged_in()): ?>
+        <?php
+        $currentPath = trim(current_url(true)->getPath(), '/');
+        $adminUser = admin_auth_user();
+        $navigationMain = [
+            [
+                'label' => 'Dashboard',
+                'href' => base_url('admin/ordenes'),
+                'match' => ['admin/ordenes'],
+                'icon' => 'fa-solid fa-grid-2',
+            ],
+        ];
+        $navigationGeneral = admin_can_manage_users() ? [
+            ['label' => 'Usuarios', 'href' => base_url('admin/usuarios'), 'match' => ['admin/usuarios'], 'icon' => 'fa-solid fa-user-shield'],
+            ['label' => 'Clientes', 'href' => base_url('admin/clientes'), 'match' => ['admin/clientes'], 'icon' => 'fa-solid fa-user-group'],
+            ['label' => 'Pacientes', 'href' => base_url('admin/pacientes'), 'match' => ['admin/pacientes'], 'icon' => 'fa-solid fa-notes-medical'],
+            ['label' => 'Servicios', 'href' => base_url('admin/servicios'), 'match' => ['admin/servicios'], 'icon' => 'fa-solid fa-tooth'],
+            ['label' => 'Blog', 'href' => base_url('admin/blog'), 'match' => ['admin/blog'], 'icon' => 'fa-solid fa-newspaper'],
+            ['label' => 'Galería', 'href' => base_url('admin/galeria'), 'match' => ['admin/galeria'], 'icon' => 'fa-solid fa-images'],
+            ['label' => 'Mensajes', 'href' => base_url('admin/mensajes-contacto'), 'match' => ['admin/mensajes-contacto'], 'icon' => 'fa-solid fa-envelope'],
+            ['label' => 'Configuración', 'href' => base_url('admin/configuracion'), 'match' => ['admin/configuracion'], 'icon' => 'fa-solid fa-gear'],
+        ] : [];
+        ?>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-sidebar-brand">
+                    <a href="<?= base_url('admin/ordenes') ?>" class="admin-sidebar-logo">
+                        <span class="admin-sidebar-logo-mark">P</span>
+                        <span class="admin-sidebar-logo-text">
+                            <strong>Panel POT</strong>
+                            <small>Prótesis Dental</small>
+                        </span>
+                    </a>
                 </div>
 
-                <?php if (admin_is_logged_in()): ?>
-                    <button class="navbar-toggler site-navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavigation" aria-controls="adminNavigation" aria-expanded="false" aria-label="Abrir menú del panel">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-lg-end admin-nav-wrap" id="adminNavigation">
-                        <div class="navbar-nav admin-shell-nav ms-auto">
-                            <a class="nav-link" href="<?= base_url('admin/ordenes') ?>">Órdenes</a>
-                            <?php if (admin_can_manage_users()): ?>
-                                <a class="nav-link" href="<?= base_url('admin/usuarios') ?>">Usuarios</a>
-                                <a class="nav-link" href="<?= base_url('admin/clientes') ?>">Clientes</a>
-                                <a class="nav-link" href="<?= base_url('admin/pacientes') ?>">Pacientes</a>
-                                <a class="nav-link" href="<?= base_url('admin/servicios') ?>">Servicios</a>
-                                <a class="nav-link" href="<?= base_url('admin/blog') ?>">Blog</a>
-                                <a class="nav-link" href="<?= base_url('admin/galeria') ?>">Galería</a>
-                                <a class="nav-link" href="<?= base_url('admin/configuracion') ?>">Configuración</a>
-                                <a class="nav-link" href="<?= base_url('admin/mensajes-contacto') ?>">Mensajes</a>
-                            <?php endif; ?>
-                            <a class="nav-link" href="<?= base_url('admin/logout') ?>">Cerrar sesión</a>
-                        </div>
+                <button class="navbar-toggler site-navbar-toggler admin-sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminSidebarNav" aria-controls="adminSidebarNav" aria-expanded="false" aria-label="Abrir menú del panel">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse admin-sidebar-collapse" id="adminSidebarNav">
+                    <div class="admin-sidebar-group">
+                        <span class="admin-sidebar-title">Menú</span>
+                        <nav class="admin-sidebar-nav">
+                            <?php foreach ($navigationMain as $item): ?>
+                                <?php $isActive = in_array($currentPath, $item['match'], true) || str_starts_with($currentPath, $item['match'][0] . '/'); ?>
+                                <a href="<?= $item['href'] ?>" class="admin-sidebar-link<?= $isActive ? ' is-active' : '' ?>">
+                                    <i class="<?= esc($item['icon']) ?>" aria-hidden="true"></i>
+                                    <span><?= esc($item['label']) ?></span>
+                                </a>
+                            <?php endforeach; ?>
+                        </nav>
                     </div>
-                <?php endif; ?>
-            </nav>
+
+                    <?php if ($navigationGeneral !== []): ?>
+                        <div class="admin-sidebar-group">
+                            <span class="admin-sidebar-title">General</span>
+                            <nav class="admin-sidebar-nav">
+                                <?php foreach ($navigationGeneral as $item): ?>
+                                    <?php $isActive = in_array($currentPath, $item['match'], true) || str_starts_with($currentPath, $item['match'][0] . '/'); ?>
+                                    <a href="<?= $item['href'] ?>" class="admin-sidebar-link<?= $isActive ? ' is-active' : '' ?>">
+                                        <i class="<?= esc($item['icon']) ?>" aria-hidden="true"></i>
+                                        <span><?= esc($item['label']) ?></span>
+                                    </a>
+                                <?php endforeach; ?>
+                            </nav>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="admin-sidebar-footer">
+                        <div class="admin-sidebar-user">
+                            <div class="admin-sidebar-avatar"><?= esc(strtoupper(substr((string) ($adminUser['username'] ?? 'A'), 0, 1))) ?></div>
+                            <div>
+                                <strong><?= esc($adminUser['full_name'] ?? $adminUser['username'] ?? 'Usuario') ?></strong>
+                                <small><?= esc(admin_user_role() === 'admin' ? 'Administrador' : 'Staff') ?></small>
+                            </div>
+                        </div>
+                        <a href="<?= base_url('admin/logout') ?>" class="admin-sidebar-link admin-sidebar-link-logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+                            <span>Cerrar sesión</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="admin-main">
+                <header class="admin-topbar">
+                    <div class="admin-topbar-copy">
+                        <span class="admin-topbar-kicker">Administración</span>
+                        <h1><?= esc($pageTitle ?? 'Admin POT') ?></h1>
+                    </div>
+                    <div class="admin-topbar-usercard">
+                        <div class="admin-topbar-usercard-text">
+                            <strong><?= esc($adminUser['full_name'] ?? $adminUser['username'] ?? 'Usuario') ?></strong>
+                            <small><?= esc(admin_user_role() === 'admin' ? 'Control total del sistema' : 'Acceso operativo') ?></small>
+                        </div>
+                        <div class="admin-topbar-avatar"><?= esc(strtoupper(substr((string) ($adminUser['username'] ?? 'A'), 0, 1))) ?></div>
+                    </div>
+                </header>
+
+                <main class="admin-main-content">
+                    <?= $this->renderSection('content') ?>
+                </main>
+            </div>
         </div>
-    </header>
-    <?= $this->renderSection('content') ?>
+    <?php else: ?>
+        <?= $this->renderSection('content') ?>
+    <?php endif; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         (() => {
