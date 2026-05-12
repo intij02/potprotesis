@@ -29,8 +29,6 @@ foreach ($orders as $order) {
     <div class="admin-dashboard-hero">
         <div>
             <span class="eyebrow eyebrow-aqua">Dashboard</span>
-            <h2>Administración de órdenes</h2>
-            <p>Consulta cargas activas, monitorea avances y entra rápido a los casos capturados.</p>
         </div>
         <div class="admin-dashboard-hero-actions">
             <span class="admin-dashboard-chip">Total: <?= esc((string) $totalOrders) ?></span>
@@ -157,7 +155,6 @@ foreach ($orders as $order) {
             <div class="table-card admin-mini-panel admin-mini-panel-dark">
                 <h3>Foco del día</h3>
                 <p>Prioriza las órdenes en proceso y las listas para entrega para mantener salida estable y comunicación clara con clínica.</p>
-                <div class="admin-mini-panel-badge">Marca POT</div>
             </div>
         </aside>
     </div>

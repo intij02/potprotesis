@@ -83,13 +83,6 @@
                     <?php endif; ?>
 
                     <div class="admin-sidebar-footer">
-                        <div class="admin-sidebar-user">
-                            <div class="admin-sidebar-avatar"><?= esc(strtoupper(substr((string) ($adminUser['username'] ?? 'A'), 0, 1))) ?></div>
-                            <div>
-                                <strong><?= esc($adminUser['full_name'] ?? $adminUser['username'] ?? 'Usuario') ?></strong>
-                                <small><?= esc(admin_user_role() === 'admin' ? 'Administrador' : 'Staff') ?></small>
-                            </div>
-                        </div>
                         <a href="<?= base_url('admin/logout') ?>" class="admin-sidebar-link admin-sidebar-link-logout">
                             <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
                             <span>Cerrar sesión</span>
