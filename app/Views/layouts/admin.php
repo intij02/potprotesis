@@ -18,18 +18,18 @@
         <?php
         $currentPath = trim(current_url(true)->getPath(), '/');
         $adminUser = admin_auth_user();
-        $navigationMain = [
+        $navigationAdmin = [
             [
                 'label' => 'Dashboard',
                 'href' => base_url('admin/ordenes'),
                 'match' => ['admin/ordenes'],
                 'icon' => 'fa-solid fa-grid-2',
             ],
-        ];
-        $navigationGeneral = admin_can_manage_users() ? [
             ['label' => 'Usuarios', 'href' => base_url('admin/usuarios'), 'match' => ['admin/usuarios'], 'icon' => 'fa-solid fa-user-shield'],
             ['label' => 'Clientes', 'href' => base_url('admin/clientes'), 'match' => ['admin/clientes'], 'icon' => 'fa-solid fa-user-group'],
             ['label' => 'Pacientes', 'href' => base_url('admin/pacientes'), 'match' => ['admin/pacientes'], 'icon' => 'fa-solid fa-notes-medical'],
+        ];
+        $navigationWeb = admin_can_manage_users() ? [
             ['label' => 'Servicios', 'href' => base_url('admin/servicios'), 'match' => ['admin/servicios'], 'icon' => 'fa-solid fa-tooth'],
             ['label' => 'Blog', 'href' => base_url('admin/blog'), 'match' => ['admin/blog'], 'icon' => 'fa-solid fa-newspaper'],
             ['label' => 'Galería', 'href' => base_url('admin/galeria'), 'match' => ['admin/galeria'], 'icon' => 'fa-solid fa-images'],
@@ -55,9 +55,9 @@
 
                 <div class="collapse admin-sidebar-collapse" id="adminSidebarNav">
                     <div class="admin-sidebar-group">
-                        <span class="admin-sidebar-title">Menú</span>
+                        <span class="admin-sidebar-title">Admin</span>
                         <nav class="admin-sidebar-nav">
-                            <?php foreach ($navigationMain as $item): ?>
+                            <?php foreach ($navigationAdmin as $item): ?>
                                 <?php $isActive = in_array($currentPath, $item['match'], true) || str_starts_with($currentPath, $item['match'][0] . '/'); ?>
                                 <a href="<?= $item['href'] ?>" class="admin-sidebar-link<?= $isActive ? ' is-active' : '' ?>">
                                     <i class="<?= esc($item['icon']) ?>" aria-hidden="true"></i>
@@ -67,11 +67,11 @@
                         </nav>
                     </div>
 
-                    <?php if ($navigationGeneral !== []): ?>
+                    <?php if ($navigationWeb !== []): ?>
                         <div class="admin-sidebar-group">
-                            <span class="admin-sidebar-title">General</span>
+                            <span class="admin-sidebar-title">Web</span>
                             <nav class="admin-sidebar-nav">
-                                <?php foreach ($navigationGeneral as $item): ?>
+                                <?php foreach ($navigationWeb as $item): ?>
                                     <?php $isActive = in_array($currentPath, $item['match'], true) || str_starts_with($currentPath, $item['match'][0] . '/'); ?>
                                     <a href="<?= $item['href'] ?>" class="admin-sidebar-link<?= $isActive ? ' is-active' : '' ?>">
                                         <i class="<?= esc($item['icon']) ?>" aria-hidden="true"></i>
